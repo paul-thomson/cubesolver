@@ -301,6 +301,11 @@ public class Main2 {
 			
 		glPopMatrix();
 	}
+	
+	private void drawCubie(Cubie cubie) {
+		float[] position = cubie.getPosition();
+		float[][] faceColours = cubie.getFaceColours();
+	}
 
 	/**
 	 * Draws a cube with the given colours

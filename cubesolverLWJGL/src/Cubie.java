@@ -49,5 +49,14 @@ public class Cubie {
 		
 		return false;
 	}
+
+	public float[] getPosition() {
+		return position;
+	}
+
+	public float[][] getFaceColours() {
+		return faceColours;
+	}
+	
 	
 }
