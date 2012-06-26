@@ -33,37 +33,37 @@ public class RCube {
 
 	private void initCubies() {
 		/** First Layer */
-		cubies.add(new Cubie(new float[]{0.0f,0.0f,size}, new float[][]{black,black,red,black,black,black})); 	// center
-		cubies.add(new Cubie(new float[]{-size,-size,size}, new float[][]{black,white,red,black,blue,black})); 	// bottom left
-		cubies.add(new Cubie(new float[]{0.0f,-size,size}, new float[][]{black,white,red,black,black,black}));	// bottom middle
-		cubies.add(new Cubie(new float[]{size,-size,size}, new float[][]{black,white,red,black,black,green})); 	// bottom right
-		cubies.add(new Cubie(new float[]{size,0,size}, new float[][]{black,black,red,black,black,green})); 		// middle right
-		cubies.add(new Cubie(new float[]{size,size,size}, new float[][]{yellow,black,red,black,black,green})); 	// top right
-		cubies.add(new Cubie(new float[]{0,size,size}, new float[][]{yellow,black,red,black,black,black})); 	// top middle
-		cubies.add(new Cubie(new float[]{-size,size,size}, new float[][]{yellow,black,red,black,blue,black})); 	// top left
-		cubies.add(new Cubie(new float[]{-size,0,size}, new float[][]{black,black,red,black,blue,black})); 	// middle left
+		cubies.add(new Cubie(new float[]{0.0f,0.0f,size}, new float[][]{black,black,red,black,black,black},cubieWidth,gap)); 	// center
+		cubies.add(new Cubie(new float[]{-size,-size,size}, new float[][]{black,white,red,black,blue,black},cubieWidth,gap)); 	// bottom left
+		cubies.add(new Cubie(new float[]{0.0f,-size,size}, new float[][]{black,white,red,black,black,black},cubieWidth,gap));	// bottom middle
+		cubies.add(new Cubie(new float[]{size,-size,size}, new float[][]{black,white,red,black,black,green},cubieWidth,gap)); 	// bottom right
+		cubies.add(new Cubie(new float[]{size,0,size}, new float[][]{black,black,red,black,black,green},cubieWidth,gap)); 		// middle right
+		cubies.add(new Cubie(new float[]{size,size,size}, new float[][]{yellow,black,red,black,black,green},cubieWidth,gap)); 	// top right
+		cubies.add(new Cubie(new float[]{0,size,size}, new float[][]{yellow,black,red,black,black,black},cubieWidth,gap)); 	// top middle
+		cubies.add(new Cubie(new float[]{-size,size,size}, new float[][]{yellow,black,red,black,blue,black},cubieWidth,gap)); 	// top left
+		cubies.add(new Cubie(new float[]{-size,0,size}, new float[][]{black,black,red,black,blue,black},cubieWidth,gap)); 	// middle left
 	
 		/** Middle Layer */
-		cubies.add(new Cubie(new float[]{0.0f,0.0f,0}, new float[][]{black,black,black,black,black,black})); 	// center
-		cubies.add(new Cubie(new float[]{-size,-size,0}, new float[][]{black,white,black,black,blue,black})); 	// bottom left
-		cubies.add(new Cubie(new float[]{0.0f,-size,0}, new float[][]{black,white,black,black,black,black}));	// bottom middle
-		cubies.add(new Cubie(new float[]{size,-size,0}, new float[][]{black,white,black,black,black,green})); 	// bottom right
-		cubies.add(new Cubie(new float[]{size,0,0}, new float[][]{black,black,black,black,black,green})); 		// middle right
-		cubies.add(new Cubie(new float[]{size,size,0}, new float[][]{yellow,black,black,black,black,green})); 	// top right
-		cubies.add(new Cubie(new float[]{0,size,0}, new float[][]{yellow,black,black,black,black,black})); 		// top middle
-		cubies.add(new Cubie(new float[]{-size,size,0}, new float[][]{yellow,black,black,black,blue,black})); 	// top left
-		cubies.add(new Cubie(new float[]{-size,0,0}, new float[][]{black,black,black,black,blue,black})); 		// middle left
+		cubies.add(new Cubie(new float[]{0.0f,0.0f,0}, new float[][]{black,black,black,black,black,black},cubieWidth,gap)); 	// center
+		cubies.add(new Cubie(new float[]{-size,-size,0}, new float[][]{black,white,black,black,blue,black},cubieWidth,gap)); 	// bottom left
+		cubies.add(new Cubie(new float[]{0.0f,-size,0}, new float[][]{black,white,black,black,black,black},cubieWidth,gap));	// bottom middle
+		cubies.add(new Cubie(new float[]{size,-size,0}, new float[][]{black,white,black,black,black,green},cubieWidth,gap)); 	// bottom right
+		cubies.add(new Cubie(new float[]{size,0,0}, new float[][]{black,black,black,black,black,green},cubieWidth,gap)); 		// middle right
+		cubies.add(new Cubie(new float[]{size,size,0}, new float[][]{yellow,black,black,black,black,green},cubieWidth,gap)); 	// top right
+		cubies.add(new Cubie(new float[]{0,size,0}, new float[][]{yellow,black,black,black,black,black},cubieWidth,gap)); 		// top middle
+		cubies.add(new Cubie(new float[]{-size,size,0}, new float[][]{yellow,black,black,black,blue,black},cubieWidth,gap)); 	// top left
+		cubies.add(new Cubie(new float[]{-size,0,0}, new float[][]{black,black,black,black,blue,black},cubieWidth,gap)); 		// middle left
 	
 		/** Last Layer */
-		cubies.add(new Cubie(new float[]{0.0f,0.0f,-size}, new float[][]{black,black,black,orange,black,black})); 	// center
-		cubies.add(new Cubie(new float[]{-size,-size,-size}, new float[][]{black,white,black,orange,blue,black})); 	// bottom left
-		cubies.add(new Cubie(new float[]{0.0f,-size,-size}, new float[][]{black,white,black,orange,black,black}));	// bottom middle
-		cubies.add(new Cubie(new float[]{size,-size,-size}, new float[][]{black,white,black,orange,black,green})); 	// bottom right
-		cubies.add(new Cubie(new float[]{size,0,-size}, new float[][]{black,black,black,orange,black,green})); 		// middle right
-		cubies.add(new Cubie(new float[]{size,size,-size}, new float[][]{yellow,black,black,orange,black,green})); 	// top right
-		cubies.add(new Cubie(new float[]{0,size,-size}, new float[][]{yellow,black,black,orange,black,black})); 		// top middle
-		cubies.add(new Cubie(new float[]{-size,size,-size}, new float[][]{yellow,black,black,orange,blue,black})); 	// top left
-		cubies.add(new Cubie(new float[]{-size,0,-size}, new float[][]{black,black,black,orange,blue,black})); 		// middle left
+		cubies.add(new Cubie(new float[]{0.0f,0.0f,-size}, new float[][]{black,black,black,orange,black,black},cubieWidth,gap)); 	// center
+		cubies.add(new Cubie(new float[]{-size,-size,-size}, new float[][]{black,white,black,orange,blue,black},cubieWidth,gap)); 	// bottom left
+		cubies.add(new Cubie(new float[]{0.0f,-size,-size}, new float[][]{black,white,black,orange,black,black},cubieWidth,gap));	// bottom middle
+		cubies.add(new Cubie(new float[]{size,-size,-size}, new float[][]{black,white,black,orange,black,green},cubieWidth,gap)); 	// bottom right
+		cubies.add(new Cubie(new float[]{size,0,-size}, new float[][]{black,black,black,orange,black,green},cubieWidth,gap)); 		// middle right
+		cubies.add(new Cubie(new float[]{size,size,-size}, new float[][]{yellow,black,black,orange,black,green},cubieWidth,gap)); 	// top right
+		cubies.add(new Cubie(new float[]{0,size,-size}, new float[][]{yellow,black,black,orange,black,black},cubieWidth,gap)); 		// top middle
+		cubies.add(new Cubie(new float[]{-size,size,-size}, new float[][]{yellow,black,black,orange,blue,black},cubieWidth,gap)); 	// top left
+		cubies.add(new Cubie(new float[]{-size,0,-size}, new float[][]{black,black,black,orange,blue,black},cubieWidth,gap)); 		// middle left
 	
 	}
 	

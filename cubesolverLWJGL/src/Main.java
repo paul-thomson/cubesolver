@@ -157,6 +157,7 @@ public class Main {
 			
 		glPopMatrix();
 	}
+	int count = 0;
 
 	/**
 	 * Create the internal representation of the rubik's cube
@@ -164,8 +165,14 @@ public class Main {
 	private void drawCube(RCube cube) {
 		ArrayList<Cubie> cubies = cube.getCubies();
 		for (Cubie cubie : cubies) {
-			drawCubie(cubie);
+			if (cubie.isOnFace(Face.FRONT)) {
+				drawCubie(cubie, Face.FRONT);
+			} else {
+				drawCubie(cubie,Face.NONE);
+			}
 		}
+//		System.out.println("rotations = " + count);
+		count = 0;
 	}
 	
 	/**
@@ -173,11 +180,12 @@ public class Main {
 	 * of an object into the OpenGL view.
 	 * @param cubie
 	 */
-	private void drawCubie(Cubie cubie) {
+	private void drawCubie(Cubie cubie, Face face) {
 		float[] position = cubie.getPosition();
 		float[][] faceColours = cubie.getFaceColours();
 		
 		glPushMatrix();
+		rotateFace(face);
 			glTranslatef(position[0],position[1],position[2]);
 			drawSmallCube(faceColours);
 		glPopMatrix();
@@ -243,33 +251,41 @@ public class Main {
 	private void rotateFace(Face face) {
 		switch (face) {
 		case FRONT:
+			count++;
 			glTranslatef(0.0f,0.0f,2.05f);
 			glRotatef(rotation,0,0,1);
 			glTranslatef(0.0f,0.0f,-2.05f);
+			break;
+			
 		case BACK:
 			glTranslatef(0.0f,0.0f,-2.05f);
 			glRotatef(-rotation,0,0,1);
 			glTranslatef(0.0f,0.0f,2.05f);
+			break;
 			
 		case UP:
 			glTranslatef(0.0f,2.05f,0.0f);
 			glRotatef(rotation,0,1,0);
 			glTranslatef(0.0f,-2.05f,0.0f);
+			break;
 			
 		case DOWN:
 			glTranslatef(0.0f,-2.05f,0.0f);
 			glRotatef(rotation,0,1,0);
 			glTranslatef(0.0f,2.05f,0.0f);
+			break;
 			
 		case LEFT:
 			glTranslatef(-2.05f,0.0f,0.0f);
 			glRotatef(rotation,1,0,0);
 			glTranslatef(2.05f,0.0f,0.0f);
+			break;
 			
 		case RIGHT:
 			glTranslatef(2.05f,0.0f,0.0f);
 			glRotatef(rotation,1,0,0);
 			glTranslatef(-2.05f,0.0f,0.0f);
+			break;
 		
 		}	
 	}
