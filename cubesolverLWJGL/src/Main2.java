@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL11.*; // static import means it does not need t
 public class Main2 {
 
 	/** position of quad */
-	float x = 400, y = 300, z = -2;
+	float x = 0, y = 0, z = -2;
 	/** angle of quad rotation */
 	float rotation = 0;
 
@@ -62,19 +62,18 @@ public class Main2 {
 	public void update(int delta) {
 		// rotate quad
 		rotation += 0.15f * delta;
-		System.out.println(rotation);
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x -= 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) x += 0.35f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x -= 0.01f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) x += 0.01f * delta;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) y += 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) y -= 0.35f * delta;
-
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) y += 0.01f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) y -= 0.01f * delta;
+		
 		// keep quad on the screen
-		if (x < 0) x = 0;
-		if (x > 800) x = 800;
-		if (y < 0) y = 0;
-		if (y > 600) y = 600;
+//		if (x < 0) x = 0;
+//		if (x > 800) x = 800;
+//		if (y < 0) y = 0;
+//		if (y > 600) y = 600;
 
 		updateFPS(); // update FPS Counter
 	}
@@ -136,72 +135,54 @@ public class Main2 {
 
 	public void renderGL() {
 		// Clear The Screen And The Depth Buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // Done Drawing The Triangle
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
 		glLoadIdentity();                   // Reset The Current Modelview Matrix
-		glTranslatef(0.0f,0.0f,-15.0f);
+		glTranslatef(x,y,-15.0f);
 			glPushMatrix();
 //			glRotatef(rotation,1.0f,1.0f,1.0f);
-				glBegin(GL_QUADS);                  // middle
 					drawCube(black,black,red,black,black,black);
-				glEnd();
 			glPopMatrix();
 				
 			glPushMatrix();
 				glRotatef(rotation,1.0f,1.0f,1.0f);
 				glTranslatef(-2.05f,-2.05f,0.0f);		// bottom left
-				glBegin(GL_QUADS);                  
 					drawCube(black,white,red,black,blue,black);
-				glEnd();
 			glPopMatrix();
 				
 			glPushMatrix();
 				glTranslatef(2.05f,0.0f,0.0f);		// bottom middle
-				glBegin(GL_QUADS);                  
 					drawCube(black,white,red,black,black,black);
-				glEnd();
 			glPopMatrix();
 			
 			glPushMatrix();
 				glTranslatef(2.05f,-2.05f,0.0f);		// bottom right
-				glBegin(GL_QUADS);                  
 					drawCube(black,white,red,black,black,green);
-				glEnd();
 			glPopMatrix();
 	
 			glPushMatrix();
 				glTranslatef(0.0f,2.05f,0.0f);		// middle right
-				glBegin(GL_QUADS);                  
 					drawCube(black,black,red,black,black,green);
-				glEnd();
 			glPopMatrix();
 			
 			glPushMatrix();
 				glTranslatef(2.05f,2.05f,0.0f);		// top right
-				glBegin(GL_QUADS);                  
 					drawCube(yellow,black,red,black,black,green);
-				glEnd();
 			glPopMatrix();
 	
 			glPushMatrix();
 				glTranslatef(-2.05f,0.0f,0.0f);		// top middle
-				glBegin(GL_QUADS);                  
 					drawCube(yellow,black,red,black,black,black);
-				glEnd();
 			glPopMatrix();
 	
 			glPushMatrix();
 				glTranslatef(-2.05f,2.05f,0.0f);		// top left
-				glBegin(GL_QUADS);                  
 					drawCube(yellow,black,red,black,blue,black);
-				glEnd();
 			glPopMatrix();
 			
 			glPushMatrix();
 				glTranslatef(0.0f,-2.05f,0.0f);		// middle left
-				glBegin(GL_QUADS);                  
 					drawCube(black,black,red,black,blue,black);
-				glEnd();
 			glPopMatrix();
 			
 		glPopMatrix();
@@ -219,6 +200,7 @@ public class Main2 {
 	private void drawCube(float[] c0, float[] c1,
 							float[] c2, float[] c3,
 							float[] c4, float[] c5) {
+		glBegin(GL_QUADS);
 		glColor3f(c0[0],c0[1],c0[2]);             // Set The Color To Green
 		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Top)
 		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Top)
@@ -254,6 +236,7 @@ public class Main2 {
 		glVertex3f( 1.0f, 1.0f, 1.0f);         // Top Left Of The Quad (Right)
 		glVertex3f( 1.0f,-1.0f, 1.0f);         // Bottom Left Of The Quad (Right)
 		glVertex3f( 1.0f,-1.0f,-1.0f);         // Bottom Right Of The Quad (Right)
+		glEnd();
 
 	}
 
