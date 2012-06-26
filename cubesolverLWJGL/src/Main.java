@@ -115,10 +115,10 @@ public class Main {
 		GL11.glColor3f(0.5f, 0.5f, 1.0f);
 		// draw quad
 		GL11.glPushMatrix();
-		//GL11.glTranslatef(x, y, z);
+		//GL11.glTranslatef(POS_X, POS_Y, POS_Z);
 		//GL11.glRotatef(10.0f, 1.0f, 0.0f, 0.0f);
 		//GL11.glRotatef(rotation, 0.0f, 1.0f, 0.0f);
-		//GL11.glTranslatef(-x, -y, z);
+		//GL11.glTranslatef(-POS_X, -POS_Y, POS_Z);
 
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glColor3f(0.5f, 0.5f, 1.0f);

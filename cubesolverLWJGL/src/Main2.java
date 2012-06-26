@@ -10,9 +10,12 @@ import static org.lwjgl.opengl.GL11.*; // static import means it does not need t
 public class Main2 {
 
 	/** position of quad */
-	float x = 0, y = 0, z = -2;
+	float POS_X = 0, POS_Y = 0, POS_Z = -2;
 	/** angle of quad rotation */
 	float rotation = 0;
+	
+	float ROT_X = 20;
+	float ROT_Y = 35;
 
 	/** time at last frame */
 	long lastFrame;
@@ -63,17 +66,31 @@ public class Main2 {
 		// rotate quad
 		rotation += 0.15f * delta;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x -= 0.01f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) x += 0.01f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) POS_X -= 0.01f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) POS_X += 0.01f * delta;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) y += 0.01f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) y -= 0.01f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) POS_Y += 0.01f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) POS_Y -= 0.01f * delta;
 		
+		if (Keyboard.isKeyDown(Keyboard.KEY_W)) ROT_X -= 0.05f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_S)) ROT_X += 0.05f * delta;
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_D)) ROT_Y += 0.05f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_A)) ROT_Y -= 0.05f * delta;
+
+		// reset
+		if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
+			POS_X = 0;
+			POS_Y = 0;
+			ROT_X = 20;
+			ROT_Y = 35;
+		}
+
 		// keep quad on the screen
-//		if (x < 0) x = 0;
-//		if (x > 800) x = 800;
-//		if (y < 0) y = 0;
-//		if (y > 600) y = 600;
+//		if (POS_X < 0) POS_X = 0;
+//		if (POS_X > 800) POS_X = 800;
+//		if (POS_Y < 0) POS_Y = 0;
+//		if (POS_Y > 600) POS_Y = 600;
 
 		updateFPS(); // update FPS Counter
 	}
@@ -138,8 +155,9 @@ public class Main2 {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
 		glLoadIdentity();                   // Reset The Current Modelview Matrix
-		glTranslatef(x,y,-15.0f);
-		glRotatef(45, 0, 1, 0);
+		glTranslatef(POS_X,POS_Y,-17.0f);
+		glRotatef(ROT_X, 1, 0, 0);
+		glRotatef(ROT_Y, 0, 1, 0);
 		
 			/** Front layer */
 			glPushMatrix();
@@ -336,51 +354,6 @@ public class Main2 {
 
 	}
 
-	/**
-	 * Draw a cube around the given 3d point... but this shouldn't 
-	 * be used because instead you should translate first and draw around origin.
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
-	@SuppressWarnings("unused")
-	private void drawCubeSilly(float x, float y, float z) {
-		glColor3f(x,1.0f,0.0f);             // Set The Color To Green
-		glVertex3f(x + 1,y + 1,z - 1);         // Top Right Of The Quad (Top)
-		glVertex3f(x - 1,y + 1,z - 1);         // Top Left Of The Quad (Top)
-		glVertex3f(x - 1,y + 1,z + 1);         // Bottom Left Of The Quad (Top)
-		glVertex3f(x + 1,y + 1,z + 1);         // Bottom Right Of The Quad (Top)
-
-		glColor3f(1.0f,0.5f,0.0f);             // Set The Color To Orange
-		glVertex3f(x + 1,y - 1,z + 1);         // Top Right Of The Quad (Bottom)
-		glVertex3f(x - 1,y - 1,z + 1);         // Top Left Of The Quad (Bottom)
-		glVertex3f(x - 1,y - 1,z - 1);         // Bottom Left Of The Quad (Bottom)
-		glVertex3f(x + 1,y - 1,z - 1);         // Bottom Right Of The Quad (Bottom)
-
-		glColor3f(1.0f,0.0f,0.0f);             // Set The Color To Red
-		glVertex3f(x + 1,y + 1,z + 1);         // Top Right Of The Quad (Front)
-		glVertex3f(x - 1,y + 1,z + 1);         // Top Left Of The Quad (Front)
-		glVertex3f(x - 1,y - 1,z + 1);         // Bottom Left Of The Quad (Front)
-		glVertex3f(x + 1,y - 1,z + 1);         // Bottom Right Of The Quad (Front)
-
-		glColor3f(1.0f,1.0f,0.0f);             // Set The Color To Yellow
-		glVertex3f(x + 1,y - 1,z - 1);         // Bottom Left Of The Quad (Back)
-		glVertex3f(x - 1,y - 1,z - 1);         // Bottom Right Of The Quad (Back)
-		glVertex3f(x - 1,y + 1,z - 1);         // Top Right Of The Quad (Back)
-		glVertex3f(x + 1,y + 1,z - 1);         // Top Left Of The Quad (Back)
-
-		glColor3f(0.0f,0.0f,1.0f);             // Set The Color To Blue
-		glVertex3f(-1.0f,y + 1,z+  1);         // Top Right Of The Quad (Left)
-		glVertex3f(-1.0f,y + 1,z - 1);         // Top Left Of The Quad (Left)
-		glVertex3f(-1.0f,y - 1,z - 1);         // Bottom Left Of The Quad (Left)
-		glVertex3f(-1.0f,y - 1,z + 1);         // Bottom Right Of The Quad (Left)
-
-		glColor3f(1.0f,0.0f,1.0f);             // Set The Color To Violet
-		glVertex3f( 1.0f,y + 1,z - 1);         // Top Right Of The Quad (Right)
-		glVertex3f( 1.0f,y + 1,z + 1);         // Top Left Of The Quad (Right)
-		glVertex3f( 1.0f,y - 1,z + 1);         // Bottom Left Of The Quad (Right)
-		glVertex3f( 1.0f,y - 1,z - 1);         // Bottom Right Of The Quad (Right)
-	}
 
 	public static void main(String[] argv) {
 		Main2 starter = new Main2();
