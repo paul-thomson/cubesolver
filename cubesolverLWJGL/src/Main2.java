@@ -139,19 +139,20 @@ public class Main2 {
 
 		glLoadIdentity();                   // Reset The Current Modelview Matrix
 		glTranslatef(x,y,-15.0f);
+		glRotatef(45, 0, 1, 0);
+		
 			glPushMatrix();
-//			glRotatef(rotation,1.0f,1.0f,1.0f);
-					drawCube(black,black,red,black,black,black);
+				glRotatef(rotation,1.0f,1.0f,1.0f);
+				drawCube(black,black,red,black,black,black);
 			glPopMatrix();
 				
 			glPushMatrix();
-				glRotatef(rotation,1.0f,1.0f,1.0f);
 				glTranslatef(-2.05f,-2.05f,0.0f);		// bottom left
 					drawCube(black,white,red,black,blue,black);
 			glPopMatrix();
 				
 			glPushMatrix();
-				glTranslatef(2.05f,0.0f,0.0f);		// bottom middle
+				glTranslatef(0.0f,-2.05f,0.0f);		// bottom middle
 					drawCube(black,white,red,black,black,black);
 			glPopMatrix();
 			
@@ -161,7 +162,7 @@ public class Main2 {
 			glPopMatrix();
 	
 			glPushMatrix();
-				glTranslatef(0.0f,2.05f,0.0f);		// middle right
+				glTranslatef(2.05f,0.0f,0.0f);		// middle right
 					drawCube(black,black,red,black,black,green);
 			glPopMatrix();
 			
@@ -171,7 +172,7 @@ public class Main2 {
 			glPopMatrix();
 	
 			glPushMatrix();
-				glTranslatef(-2.05f,0.0f,0.0f);		// top middle
+				glTranslatef(0.0f,2.05f,0.0f);		// top middle
 					drawCube(yellow,black,red,black,black,black);
 			glPopMatrix();
 	
@@ -181,7 +182,7 @@ public class Main2 {
 			glPopMatrix();
 			
 			glPushMatrix();
-				glTranslatef(0.0f,-2.05f,0.0f);		// middle left
+				glTranslatef(-2.05f,0.0f,0.0f);		// middle left
 					drawCube(black,black,red,black,blue,black);
 			glPopMatrix();
 			
