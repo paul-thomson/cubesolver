@@ -354,6 +354,48 @@ public class Main2 {
 
 	}
 
+	/**
+	 * Applies the corresponding rotation to the current matrix. 
+	 * This assumes any cubes drawn on top of this matrix are part 
+	 * of the face being rotated.
+	 * 
+	 */
+	private void rotateFace(Face face) {
+		switch (face) {
+		case FRONT:
+			glTranslatef(0.0f,0.0f,2.05f);
+			glRotatef(rotation,0,0,1);
+			glTranslatef(0.0f,0.0f,-2.05f);
+		case BACK:
+			glTranslatef(0.0f,0.0f,-2.05f);
+			glRotatef(-rotation,0,0,1);
+			glTranslatef(0.0f,0.0f,2.05f);
+			
+		case UP:
+			glTranslatef(0.0f,2.05f,0.0f);
+			glRotatef(rotation,0,1,0);
+			glTranslatef(0.0f,-2.05f,0.0f);
+			
+		case DOWN:
+			glTranslatef(0.0f,-2.05f,0.0f);
+			glRotatef(rotation,0,1,0);
+			glTranslatef(0.0f,2.05f,0.0f);
+			
+		case LEFT:
+			glTranslatef(-2.05f,0.0f,0.0f);
+			glRotatef(rotation,1,0,0);
+			glTranslatef(2.05f,0.0f,0.0f);
+			
+		case RIGHT:
+			glTranslatef(2.05f,0.0f,0.0f);
+			glRotatef(rotation,1,0,0);
+			glTranslatef(-2.05f,0.0f,0.0f);
+		
+		
+		}
+		
+		
+	}
 
 	public static void main(String[] argv) {
 		Main2 starter = new Main2();
