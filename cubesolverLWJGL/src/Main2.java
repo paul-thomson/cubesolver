@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -25,16 +27,7 @@ public class Main2 {
 	/** last fps time */
 	long lastFPS;
 	
-	/** Colours */
-	float[] red = new float[]{1.0f,0.0f,0.0f};
-	float[] green = new float[]{0.0f,1.0f,0.0f};
-	float[] blue = new float[]{0.0f,0.0f,1.0f};
-	float[] orange = new float[]{1.0f,0.4f,0.1f};
-	float[] yellow = new float[]{1.0f,1.0f,0.1f};
-	float[] white = new float[]{1.0f,1.0f,1.0f};
-	float[] black = new float[]{0.0f,0.0f,0.0f};
 	
-	float[][] cube = new float[][]{yellow,white,red,orange,blue,green};
 
 	public void start() {
 		try {
@@ -159,198 +152,80 @@ public class Main2 {
 		glRotatef(ROT_X, 1, 0, 0);
 		glRotatef(ROT_Y, 0, 1, 0);
 		
-			/** Front layer */
-			glPushMatrix();
-				glTranslatef(0.0f,0.0f,2.05f);
-				drawSmallCube(black,black,red,black,black,black);
-			glPopMatrix();
-				
-			glPushMatrix();
-				glTranslatef(-2.05f,-2.05f,2.05f);		// bottom left
-				drawSmallCube(black,white,red,black,blue,black);
-			glPopMatrix();
-				
-			glPushMatrix();
-				glTranslatef(0.0f,-2.05f,2.05f);		// bottom middle
-				drawSmallCube(black,white,red,black,black,black);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glTranslatef(2.05f,-2.05f,2.05f);		// bottom right
-				drawSmallCube(black,white,red,black,black,green);
-			glPopMatrix();
-	
-			glPushMatrix();
-				glTranslatef(2.05f,0.0f,2.05f);		// middle right
-				drawSmallCube(black,black,red,black,black,green);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glTranslatef(2.05f,2.05f,2.05f);		// top right
-				drawSmallCube(yellow,black,red,black,black,green);
-			glPopMatrix();
-	
-			glPushMatrix();
-				glTranslatef(0.0f,2.05f,2.05f);		// top middle
-				drawSmallCube(yellow,black,red,black,black,black);
-			glPopMatrix();
-	
-			glPushMatrix();
-				glTranslatef(-2.05f,2.05f,2.05f);		// top left
-				drawSmallCube(yellow,black,red,black,blue,black);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glTranslatef(-2.05f,0.0f,2.05f);		// middle left
-				drawSmallCube(black,black,red,black,blue,black);
-			glPopMatrix();
-			
-			
-			/** Middle Layer */
-			
-			glPushMatrix();
-				glTranslatef(0.0f,0.0f,0.0f);
-				drawSmallCube(black,black,black,black,black,black);
-			glPopMatrix();
-				
-			glPushMatrix();
-				glTranslatef(-2.05f,-2.05f,0.0f);		// bottom left
-				drawSmallCube(black,white,black,black,blue,black);
-			glPopMatrix();
-				
-			glPushMatrix();
-				glTranslatef(0.0f,-2.05f,0.0f);		// bottom middle
-				drawSmallCube(black,white,black,black,black,black);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glTranslatef(2.05f,-2.05f,0.0f);		// bottom right
-				drawSmallCube(black,white,black,black,black,green);
-			glPopMatrix();
-	
-			glPushMatrix();
-				glTranslatef(2.05f,0.0f,0.0f);		// middle right
-				drawSmallCube(black,black,black,black,black,green);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glTranslatef(2.05f,2.05f,0.0f);		// top right
-				drawSmallCube(yellow,black,black,black,black,green);
-			glPopMatrix();
-	
-			glPushMatrix();
-				glTranslatef(0.0f,2.05f,0.0f);		// top middle
-				drawSmallCube(yellow,black,black,black,black,black);
-			glPopMatrix();
-	
-			glPushMatrix();
-				glTranslatef(-2.05f,2.05f,0.0f);		// top left
-				drawSmallCube(yellow,black,black,black,blue,black);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glTranslatef(-2.05f,0.0f,0.0f);		// middle left
-				drawSmallCube(black,black,black,black,blue,black);
-			glPopMatrix();
-			
-		/** Back Layer */
-			glPushMatrix();
-				glTranslatef(0.0f,0.0f,-2.05f);
-				drawSmallCube(black,black,black,orange,black,black);
-			glPopMatrix();
-				
-			glPushMatrix();
-				glTranslatef(-2.05f,-2.05f,-2.05f);		// bottom left
-				drawSmallCube(black,white,black,orange,blue,black);
-			glPopMatrix();
-				
-			glPushMatrix();
-				glTranslatef(0.0f,-2.05f,-2.05f);		// bottom middle
-				drawSmallCube(black,white,black,orange,black,black);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glTranslatef(2.05f,-2.05f,-2.05f);		// bottom right
-				drawSmallCube(black,white,black,orange,black,green);
-			glPopMatrix();
-	
-			glPushMatrix();
-				glTranslatef(2.05f,0.0f,-2.05f);		// middle right
-				drawSmallCube(black,black,black,orange,black,green);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glTranslatef(2.05f,2.05f,-2.05f);		// top right
-				drawSmallCube(yellow,black,black,orange,black,green);
-			glPopMatrix();
-	
-			glPushMatrix();
-				glTranslatef(0.0f,2.05f,-2.05f);		// top middle
-				drawSmallCube(yellow,black,black,orange,black,black);
-			glPopMatrix();
-	
-			glPushMatrix();
-				glTranslatef(-2.05f,2.05f,-2.05f);		// top left
-				drawSmallCube(yellow,black,black,orange,blue,black);
-			glPopMatrix();
-			
-			glPushMatrix();
-				glTranslatef(-2.05f,0.0f,-2.05f);		// middle left
-				drawSmallCube(black,black,black,orange,blue,black);
-			glPopMatrix();
+		RCube cube = new RCube(2.0f,0.05f);
+		drawCube(cube);
 			
 		glPopMatrix();
 	}
+
+	/**
+	 * Create the internal representation of the rubik's cube
+	 */
+	private void drawCube(RCube cube) {
+		ArrayList<Cubie> cubies = cube.getCubies();
+		for (Cubie cubie : cubies) {
+			drawCubie(cubie);
+		}
+	}
 	
+	/**
+	 * Draws a cube from the cubie object. Essentially converting from the Java view 
+	 * of an object into the OpenGL view.
+	 * @param cubie
+	 */
 	private void drawCubie(Cubie cubie) {
 		float[] position = cubie.getPosition();
 		float[][] faceColours = cubie.getFaceColours();
+		
+		glPushMatrix();
+			glTranslatef(position[0],position[1],position[2]);
+			drawSmallCube(faceColours);
+		glPopMatrix();
+		
 	}
 
 	/**
 	 * Draws a cube with the given colours
-	 * @param c0 Up
-	 * @param c1 Down
-	 * @param c2 Front
-	 * @param c3 Back
-	 * @param c4 Left
-	 * @param c5 Right
+	 * @param c Up
+	 * @param c Down
+	 * @param c Front
+	 * @param c Back
+	 * @param c Left
+	 * @param c Right
 	 */
-	private void drawSmallCube(float[] c0, float[] c1,
-							float[] c2, float[] c3,
-							float[] c4, float[] c5) {
+	private void drawSmallCube(float[][] c) {
 		glBegin(GL_QUADS);
-		glColor3f(c0[0],c0[1],c0[2]);             // Set The Color To Green
+		glColor3f(c[0][0],c[0][1],c[0][2]);             // Set The Color To Green
 		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Top)
 		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Top)
 		glVertex3f(-1.0f, 1.0f, 1.0f);         // Bottom Left Of The Quad (Top)
 		glVertex3f( 1.0f, 1.0f, 1.0f);         // Bottom Right Of The Quad (Top)
 		
-		glColor3f(c1[0],c1[1],c1[2]);             // Set The Color To Orange
+		glColor3f(c[1][0],c[1][1],c[1][2]);             // Set The Color To Orange
 		glVertex3f( 1.0f,-1.0f, 1.0f);         // Top Right Of The Quad (Bottom)
 		glVertex3f(-1.0f,-1.0f, 1.0f);         // Top Left Of The Quad (Bottom)
 		glVertex3f(-1.0f,-1.0f,-1.0f);         // Bottom Left Of The Quad (Bottom)
 		glVertex3f( 1.0f,-1.0f,-1.0f);         // Bottom Right Of The Quad (Bottom)
 		
-		glColor3f(c2[0],c2[1],c2[2]);             // Set The Color To Red
+		glColor3f(c[2][0],c[2][1],c[2][2]);             // Set The Color To Red
 		glVertex3f( 1.0f, 1.0f, 1.0f);         // Top Right Of The Quad (Front)
 		glVertex3f(-1.0f, 1.0f, 1.0f);         // Top Left Of The Quad (Front)
 		glVertex3f(-1.0f,-1.0f, 1.0f);         // Bottom Left Of The Quad (Front)
 		glVertex3f( 1.0f,-1.0f, 1.0f);         // Bottom Right Of The Quad (Front)
 		
-		glColor3f(c3[0],c3[1],c3[2]);             // Set The Color To Yellow
+		glColor3f(c[3][0],c[3][1],c[3][2]);             // Set The Color To Yellow
 		glVertex3f( 1.0f,-1.0f,-1.0f);         // Bottom Left Of The Quad (Back)
 		glVertex3f(-1.0f,-1.0f,-1.0f);         // Bottom Right Of The Quad (Back)
 		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Back)
 		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Back)
 		
-		glColor3f(c4[0],c4[1],c4[2]);             // Set The Color To Blue
+		glColor3f(c[4][0],c[4][1],c[4][2]);             // Set The Color To Blue
 		glVertex3f(-1.0f, 1.0f, 1.0f);         // Top Right Of The Quad (Left)
 		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Left)
 		glVertex3f(-1.0f,-1.0f,-1.0f);         // Bottom Left Of The Quad (Left)
 		glVertex3f(-1.0f,-1.0f, 1.0f);         // Bottom Right Of The Quad (Left)
 		
-		glColor3f(c5[0],c5[1],c5[2]);             // Set The Color To Violet
+		glColor3f(c[5][0],c[5][1],c[5][2]);             // Set The Color To Violet
 		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Right)
 		glVertex3f( 1.0f, 1.0f, 1.0f);         // Top Left Of The Quad (Right)
 		glVertex3f( 1.0f,-1.0f, 1.0f);         // Bottom Left Of The Quad (Right)
