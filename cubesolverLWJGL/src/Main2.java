@@ -141,49 +141,144 @@ public class Main2 {
 		glTranslatef(x,y,-15.0f);
 		glRotatef(45, 0, 1, 0);
 		
+			/** Front layer */
 			glPushMatrix();
-				glRotatef(rotation,1.0f,1.0f,1.0f);
-				drawCube(black,black,red,black,black,black);
+				glTranslatef(0.0f,0.0f,2.05f);
+				drawSmallCube(black,black,red,black,black,black);
+			glPopMatrix();
+				
+			glPushMatrix();
+				glTranslatef(-2.05f,-2.05f,2.05f);		// bottom left
+				drawSmallCube(black,white,red,black,blue,black);
+			glPopMatrix();
+				
+			glPushMatrix();
+				glTranslatef(0.0f,-2.05f,2.05f);		// bottom middle
+				drawSmallCube(black,white,red,black,black,black);
+			glPopMatrix();
+			
+			glPushMatrix();
+				glTranslatef(2.05f,-2.05f,2.05f);		// bottom right
+				drawSmallCube(black,white,red,black,black,green);
+			glPopMatrix();
+	
+			glPushMatrix();
+				glTranslatef(2.05f,0.0f,2.05f);		// middle right
+				drawSmallCube(black,black,red,black,black,green);
+			glPopMatrix();
+			
+			glPushMatrix();
+				glTranslatef(2.05f,2.05f,2.05f);		// top right
+				drawSmallCube(yellow,black,red,black,black,green);
+			glPopMatrix();
+	
+			glPushMatrix();
+				glTranslatef(0.0f,2.05f,2.05f);		// top middle
+				drawSmallCube(yellow,black,red,black,black,black);
+			glPopMatrix();
+	
+			glPushMatrix();
+				glTranslatef(-2.05f,2.05f,2.05f);		// top left
+				drawSmallCube(yellow,black,red,black,blue,black);
+			glPopMatrix();
+			
+			glPushMatrix();
+				glTranslatef(-2.05f,0.0f,2.05f);		// middle left
+				drawSmallCube(black,black,red,black,blue,black);
+			glPopMatrix();
+			
+			
+			/** Middle Layer */
+			
+			glPushMatrix();
+				glTranslatef(0.0f,0.0f,0.0f);
+				drawSmallCube(black,black,black,black,black,black);
 			glPopMatrix();
 				
 			glPushMatrix();
 				glTranslatef(-2.05f,-2.05f,0.0f);		// bottom left
-					drawCube(black,white,red,black,blue,black);
+				drawSmallCube(black,white,black,black,blue,black);
 			glPopMatrix();
 				
 			glPushMatrix();
 				glTranslatef(0.0f,-2.05f,0.0f);		// bottom middle
-					drawCube(black,white,red,black,black,black);
+				drawSmallCube(black,white,black,black,black,black);
 			glPopMatrix();
 			
 			glPushMatrix();
 				glTranslatef(2.05f,-2.05f,0.0f);		// bottom right
-					drawCube(black,white,red,black,black,green);
+				drawSmallCube(black,white,black,black,black,green);
 			glPopMatrix();
 	
 			glPushMatrix();
 				glTranslatef(2.05f,0.0f,0.0f);		// middle right
-					drawCube(black,black,red,black,black,green);
+				drawSmallCube(black,black,black,black,black,green);
 			glPopMatrix();
 			
 			glPushMatrix();
 				glTranslatef(2.05f,2.05f,0.0f);		// top right
-					drawCube(yellow,black,red,black,black,green);
+				drawSmallCube(yellow,black,black,black,black,green);
 			glPopMatrix();
 	
 			glPushMatrix();
 				glTranslatef(0.0f,2.05f,0.0f);		// top middle
-					drawCube(yellow,black,red,black,black,black);
+				drawSmallCube(yellow,black,black,black,black,black);
 			glPopMatrix();
 	
 			glPushMatrix();
 				glTranslatef(-2.05f,2.05f,0.0f);		// top left
-					drawCube(yellow,black,red,black,blue,black);
+				drawSmallCube(yellow,black,black,black,blue,black);
 			glPopMatrix();
 			
 			glPushMatrix();
 				glTranslatef(-2.05f,0.0f,0.0f);		// middle left
-					drawCube(black,black,red,black,blue,black);
+				drawSmallCube(black,black,black,black,blue,black);
+			glPopMatrix();
+			
+		/** Back Layer */
+			glPushMatrix();
+				glTranslatef(0.0f,0.0f,-2.05f);
+				drawSmallCube(black,black,black,orange,black,black);
+			glPopMatrix();
+				
+			glPushMatrix();
+				glTranslatef(-2.05f,-2.05f,-2.05f);		// bottom left
+				drawSmallCube(black,white,black,orange,blue,black);
+			glPopMatrix();
+				
+			glPushMatrix();
+				glTranslatef(0.0f,-2.05f,-2.05f);		// bottom middle
+				drawSmallCube(black,white,black,orange,black,black);
+			glPopMatrix();
+			
+			glPushMatrix();
+				glTranslatef(2.05f,-2.05f,-2.05f);		// bottom right
+				drawSmallCube(black,white,black,orange,black,green);
+			glPopMatrix();
+	
+			glPushMatrix();
+				glTranslatef(2.05f,0.0f,-2.05f);		// middle right
+				drawSmallCube(black,black,black,orange,black,green);
+			glPopMatrix();
+			
+			glPushMatrix();
+				glTranslatef(2.05f,2.05f,-2.05f);		// top right
+				drawSmallCube(yellow,black,black,orange,black,green);
+			glPopMatrix();
+	
+			glPushMatrix();
+				glTranslatef(0.0f,2.05f,-2.05f);		// top middle
+				drawSmallCube(yellow,black,black,orange,black,black);
+			glPopMatrix();
+	
+			glPushMatrix();
+				glTranslatef(-2.05f,2.05f,-2.05f);		// top left
+				drawSmallCube(yellow,black,black,orange,blue,black);
+			glPopMatrix();
+			
+			glPushMatrix();
+				glTranslatef(-2.05f,0.0f,-2.05f);		// middle left
+				drawSmallCube(black,black,black,orange,blue,black);
 			glPopMatrix();
 			
 		glPopMatrix();
@@ -198,7 +293,7 @@ public class Main2 {
 	 * @param c4 Left
 	 * @param c5 Right
 	 */
-	private void drawCube(float[] c0, float[] c1,
+	private void drawSmallCube(float[] c0, float[] c1,
 							float[] c2, float[] c3,
 							float[] c4, float[] c5) {
 		glBegin(GL_QUADS);
