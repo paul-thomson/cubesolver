@@ -1,3 +1,6 @@
+import java.awt.Point;
+import java.awt.geom.Point2D.Float;
+
 /**
  * This class holds information about each smaller cube (Cubie) of a rubik's cube.
  */
@@ -70,38 +73,65 @@ public class Cubie {
 	public void rotateCubieOnFace(Face face) {
 		//TODO: positions
 		switch (face) {
-		case FRONT:
-			setFaceColours(new float[][]{	faceColours[0],faceColours[1],
-											faceColours[5],faceColours[4],
-											faceColours[2],faceColours[3]});
-			
-		case BACK:
-			setFaceColours(new float[][]{	faceColours[0],faceColours[1],
-											faceColours[5],faceColours[4],
-											faceColours[2],faceColours[3]});
-			
+					
 		case UP:
 			setFaceColours(new float[][]{	faceColours[5],faceColours[4],
 											faceColours[2],faceColours[3],
 											faceColours[0],faceColours[1]});
+			
+			break;
 			
 		case DOWN:
 			setFaceColours(new float[][]{	faceColours[5],faceColours[4],
 											faceColours[2],faceColours[3],
 											faceColours[0],faceColours[1]});
 			
+			break;
+			
+		case FRONT:
+			setFaceColours(new float[][]{	faceColours[4],faceColours[5],
+											faceColours[2],faceColours[3],
+											faceColours[1],faceColours[0]});
+
+//			setFaceColours(new float[][]{	faceColours[0],faceColours[0],
+//											faceColours[0],faceColours[0],
+//											faceColours[0],faceColours[0]});
+			setPosition(new float[]{position[1],-position[0],position[2]});
+			break;
+			
+		case BACK:
+			setFaceColours(new float[][]{	faceColours[0],faceColours[1],
+											faceColours[5],faceColours[4],
+											faceColours[2],faceColours[3]});
+			
+			break;
+			
 		case LEFT:
 			setFaceColours(new float[][]{	faceColours[2],faceColours[3],
 											faceColours[1],faceColours[0],
 											faceColours[4],faceColours[5]});
 			
+			break;
+			
 		case RIGHT:
 			setFaceColours(new float[][]{	faceColours[2],faceColours[3],
 											faceColours[1],faceColours[0],
 											faceColours[4],faceColours[5]});
+			
+			break;
 		}
 	}
 
+	/**
+	 * Returns the point (x,y) 90 degrees CW around the origin
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public Float rotatePoint(float x, float y) {
+		return new Point.Float(y,-x);
+	}
+	
 	public float[] getPosition() {
 		return position;
 	}

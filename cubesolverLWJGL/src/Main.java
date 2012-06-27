@@ -13,8 +13,7 @@ public class Main {
 
 	/** position of quad */
 	float POS_X = 0, POS_Y = 0, POS_Z = -2;
-	/** angle of quad rotation */
-	float rotation = 0;
+	
 	
 	float ROT_X = 20;
 	float ROT_Y = 35;
@@ -26,6 +25,11 @@ public class Main {
 	int fps;
 	/** last fps time */
 	long lastFPS;
+	
+	/** The face which is currently turning */
+	Face turningFace = Face.NONE;
+	/** angle of face rotation */
+	float rotation = 0;
 	
 	
 
@@ -56,8 +60,10 @@ public class Main {
 	}
 
 	public void update(int delta) {
-		// rotate quad
-		rotation += 0.15f * delta;
+		if (rotation != 0) {
+			System.out.println("ssdf");
+			rotation += 0.15f * delta;
+		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) POS_X -= 0.01f * delta;
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) POS_X += 0.01f * delta;
@@ -70,6 +76,12 @@ public class Main {
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) ROT_Y += 0.05f * delta;
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) ROT_Y -= 0.05f * delta;
+		
+		//TODO other keys
+		if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
+			rotation += 0.15f * delta;
+			turningFace = Face.FRONT;
+		}
 
 		// reset
 		if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
@@ -78,13 +90,8 @@ public class Main {
 			ROT_X = 20;
 			ROT_Y = 35;
 			rotation = 0;
+			turningFace = Face.NONE;
 		}
-
-		// keep quad on the screen
-//		if (POS_X < 0) POS_X = 0;
-//		if (POS_X > 800) POS_X = 800;
-//		if (POS_Y < 0) POS_Y = 0;
-//		if (POS_Y > 600) POS_Y = 600;
 
 		updateFPS(); // update FPS Counter
 	}
@@ -158,22 +165,31 @@ public class Main {
 			
 		glPopMatrix();
 	}
-	int count = 0;
 
 	/**
 	 * Create the internal representation of the rubik's cube
 	 */
 	private void drawCube(RCube cube) {
 		ArrayList<Cubie> cubies = cube.getCubies();
+		boolean stop = false;
+		if (rotation >= 90) {
+			stop = true;
+		}
 		for (Cubie cubie : cubies) {
-			if (cubie.isOnFace(Face.DOWN)) {
-				drawCubie(cubie, Face.DOWN);
+			if (cubie.isOnFace(turningFace)) {
+				if (stop) {
+					cubie.rotateCubieOnFace(turningFace);
+					drawCubie(cubie,Face.NONE);
+				} else {
+					drawCubie(cubie, turningFace);
+				}
 			} else {
 				drawCubie(cubie,Face.NONE);
 			}
 		}
-//		System.out.println("rotations = " + count);
-		count = 0;
+		if (stop) {
+			rotation = 90;
+		}
 	}
 	
 	/**
@@ -252,9 +268,8 @@ public class Main {
 	private void rotateFace(Face face) {
 		switch (face) {
 		case FRONT:
-			count++;
 			glTranslatef(0.0f,0.0f,2.05f);
-			glRotatef(rotation,0,0,1);
+			glRotatef(-rotation,0,0,1);
 			glTranslatef(0.0f,0.0f,-2.05f);
 			break;
 			

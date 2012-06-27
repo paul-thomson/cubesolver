@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 /**
  * Internal representation of a rubik's cube
- *
  */
 public class RCube {
 	
@@ -13,7 +12,7 @@ public class RCube {
 	float[] orange = new float[]{1.0f,0.4f,0.1f};
 	float[] yellow = new float[]{1.0f,1.0f,0.1f};
 	float[] white = new float[]{1.0f,1.0f,1.0f};
-	float[] black = new float[]{0.0f,0.0f,0.0f};
+	float[] black = new float[]{0.2f,0.2f,0.2f};
 	
 	/** Unused */
 	float[][] cube = new float[][]{yellow,white,red,orange,blue,green};
