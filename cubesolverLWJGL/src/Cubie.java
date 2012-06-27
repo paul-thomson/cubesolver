@@ -61,6 +61,46 @@ public class Cubie {
 		}
 		return false;
 	}
+	
+	/**
+	 * Rotates the values of the cubie (faceColours and position) as if the face is rotating 
+	 * 90 degrees
+	 * @param face
+	 */
+	public void rotateCubieOnFace(Face face) {
+		//TODO: positions
+		switch (face) {
+		case FRONT:
+			setFaceColours(new float[][]{	faceColours[0],faceColours[1],
+											faceColours[5],faceColours[4],
+											faceColours[2],faceColours[3]});
+			
+		case BACK:
+			setFaceColours(new float[][]{	faceColours[0],faceColours[1],
+											faceColours[5],faceColours[4],
+											faceColours[2],faceColours[3]});
+			
+		case UP:
+			setFaceColours(new float[][]{	faceColours[5],faceColours[4],
+											faceColours[2],faceColours[3],
+											faceColours[0],faceColours[1]});
+			
+		case DOWN:
+			setFaceColours(new float[][]{	faceColours[5],faceColours[4],
+											faceColours[2],faceColours[3],
+											faceColours[0],faceColours[1]});
+			
+		case LEFT:
+			setFaceColours(new float[][]{	faceColours[2],faceColours[3],
+											faceColours[1],faceColours[0],
+											faceColours[4],faceColours[5]});
+			
+		case RIGHT:
+			setFaceColours(new float[][]{	faceColours[2],faceColours[3],
+											faceColours[1],faceColours[0],
+											faceColours[4],faceColours[5]});
+		}
+	}
 
 	public float[] getPosition() {
 		return position;
@@ -68,6 +108,14 @@ public class Cubie {
 
 	public float[][] getFaceColours() {
 		return faceColours;
+	}
+	
+	private void setPosition(float[] position) {
+		this.position = position;
+	}
+	
+	private void setFaceColours(float[][] faceColours) {
+		this.faceColours = faceColours;
 	}
 	
 	

@@ -31,6 +31,9 @@ public class RCube {
 		initCubies();
 	}
 
+	/**
+	 * Create and add all 27 cubies to the list of cubies. This creates the Rubik's cube.
+	 */
 	private void initCubies() {
 		/** First Layer */
 		cubies.add(new Cubie(new float[]{0.0f,0.0f,size}, new float[][]{black,black,red,black,black,black},cubieWidth,gap)); 	// center
@@ -66,6 +69,7 @@ public class RCube {
 		cubies.add(new Cubie(new float[]{-size,0,-size}, new float[][]{black,black,black,orange,blue,black},cubieWidth,gap)); 		// middle left
 	
 	}
+	
 	
 	public ArrayList<Cubie> getCubies() {
 		return cubies;

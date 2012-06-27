@@ -77,6 +77,7 @@ public class Main {
 			POS_Y = 0;
 			ROT_X = 20;
 			ROT_Y = 35;
+			rotation = 0;
 		}
 
 		// keep quad on the screen
@@ -165,8 +166,8 @@ public class Main {
 	private void drawCube(RCube cube) {
 		ArrayList<Cubie> cubies = cube.getCubies();
 		for (Cubie cubie : cubies) {
-			if (cubie.isOnFace(Face.FRONT)) {
-				drawCubie(cubie, Face.FRONT);
+			if (cubie.isOnFace(Face.DOWN)) {
+				drawCubie(cubie, Face.DOWN);
 			} else {
 				drawCubie(cubie,Face.NONE);
 			}
