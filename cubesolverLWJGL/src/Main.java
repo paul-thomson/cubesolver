@@ -61,7 +61,6 @@ public class Main {
 
 	public void update(int delta) {
 		if (rotation != 0) {
-			System.out.println("ssdf");
 			rotation += 0.15f * delta;
 		}
 
@@ -81,6 +80,10 @@ public class Main {
 		if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
 			rotation += 0.15f * delta;
 			turningFace = Face.FRONT;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
+			rotation += 0.15f * delta;
+			turningFace = Face.UP;
 		}
 
 		// reset
@@ -159,7 +162,6 @@ public class Main {
 		glTranslatef(POS_X,POS_Y,-17.0f);
 		glRotatef(ROT_X, 1, 0, 0);
 		glRotatef(ROT_Y, 0, 1, 0);
-		
 		RCube cube = new RCube(2.0f,0.05f);
 		drawCube(cube);
 			
@@ -178,7 +180,7 @@ public class Main {
 		for (Cubie cubie : cubies) {
 			if (cubie.isOnFace(turningFace)) {
 				if (stop) {
-					cubie.rotateCubieOnFace(turningFace);
+					cubie.rotateCubieOnFace(turningFace, false);
 					drawCubie(cubie,Face.NONE);
 				} else {
 					drawCubie(cubie, turningFace);
@@ -188,7 +190,10 @@ public class Main {
 			}
 		}
 		if (stop) {
-			rotation = 90;
+			System.out.println("stopping");
+			rotation = 0;
+			turningFace = Face.NONE;
+			stop = false;
 		}
 	}
 	
@@ -202,7 +207,7 @@ public class Main {
 		float[][] faceColours = cubie.getFaceColours();
 		
 		glPushMatrix();
-		rotateFace(face);
+		rotateFace(face, false);
 			glTranslatef(position[0],position[1],position[2]);
 			drawSmallCube(faceColours);
 		glPopMatrix();
@@ -265,41 +270,48 @@ public class Main {
 	 * of the face being rotated.
 	 * 
 	 */
-	private void rotateFace(Face face) {
+	private void rotateFace(Face face, boolean inverse) {
+		float angle;
 		switch (face) {
 		case FRONT:
+			angle = inverse ? rotation : -rotation;
 			glTranslatef(0.0f,0.0f,2.05f);
-			glRotatef(-rotation,0,0,1);
+			glRotatef(angle,0,0,1);
 			glTranslatef(0.0f,0.0f,-2.05f);
 			break;
 			
 		case BACK:
+			angle = inverse ? rotation : -rotation;
 			glTranslatef(0.0f,0.0f,-2.05f);
-			glRotatef(-rotation,0,0,1);
+			glRotatef(angle,0,0,1);
 			glTranslatef(0.0f,0.0f,2.05f);
 			break;
 			
 		case UP:
+			angle = inverse ? rotation : -rotation;
 			glTranslatef(0.0f,2.05f,0.0f);
-			glRotatef(rotation,0,1,0);
+			glRotatef(angle,0,1,0);
 			glTranslatef(0.0f,-2.05f,0.0f);
 			break;
 			
 		case DOWN:
+			angle = inverse ? rotation : -rotation;
 			glTranslatef(0.0f,-2.05f,0.0f);
-			glRotatef(rotation,0,1,0);
+			glRotatef(angle,0,1,0);
 			glTranslatef(0.0f,2.05f,0.0f);
 			break;
 			
 		case LEFT:
+			angle = inverse ? rotation : -rotation;
 			glTranslatef(-2.05f,0.0f,0.0f);
-			glRotatef(rotation,1,0,0);
+			glRotatef(angle,1,0,0);
 			glTranslatef(2.05f,0.0f,0.0f);
 			break;
 			
 		case RIGHT:
+			angle = inverse ? rotation : -rotation;
 			glTranslatef(2.05f,0.0f,0.0f);
-			glRotatef(rotation,1,0,0);
+			glRotatef(angle,1,0,0);
 			glTranslatef(-2.05f,0.0f,0.0f);
 			break;
 		

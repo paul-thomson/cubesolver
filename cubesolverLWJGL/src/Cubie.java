@@ -70,22 +70,23 @@ public class Cubie {
 	 * 90 degrees
 	 * @param face
 	 */
-	public void rotateCubieOnFace(Face face) {
+	public void rotateCubieOnFace(Face face, boolean inverse) {
 		//TODO: positions
-		switch (face) {
-					
+		switch (face) {	
 		case UP:
-			setFaceColours(new float[][]{	faceColours[5],faceColours[4],
-											faceColours[2],faceColours[3],
-											faceColours[0],faceColours[1]});
+			setFaceColours(new float[][]{	faceColours[0],faceColours[1],
+											faceColours[5],faceColours[4],
+											faceColours[2],faceColours[3]});
 			
+			setPosition(new float[]{-position[2],position[1],position[0]});
 			break;
 			
 		case DOWN:
-			setFaceColours(new float[][]{	faceColours[5],faceColours[4],
-											faceColours[2],faceColours[3],
-											faceColours[0],faceColours[1]});
+			setFaceColours(new float[][]{	faceColours[0],faceColours[1],
+											faceColours[5],faceColours[4],
+											faceColours[2],faceColours[3]});
 			
+			setPosition(new float[]{-position[2],position[1],position[0]});
 			break;
 			
 		case FRONT:
@@ -93,9 +94,6 @@ public class Cubie {
 											faceColours[2],faceColours[3],
 											faceColours[1],faceColours[0]});
 
-//			setFaceColours(new float[][]{	faceColours[0],faceColours[0],
-//											faceColours[0],faceColours[0],
-//											faceColours[0],faceColours[0]});
 			setPosition(new float[]{position[1],-position[0],position[2]});
 			break;
 			
@@ -104,6 +102,7 @@ public class Cubie {
 											faceColours[5],faceColours[4],
 											faceColours[2],faceColours[3]});
 			
+			setPosition(new float[]{-position[1],position[0],position[2]});
 			break;
 			
 		case LEFT:
@@ -111,6 +110,7 @@ public class Cubie {
 											faceColours[1],faceColours[0],
 											faceColours[4],faceColours[5]});
 			
+			setPosition(new float[]{position[0],-position[2],position[1]});
 			break;
 			
 		case RIGHT:
@@ -118,6 +118,7 @@ public class Cubie {
 											faceColours[1],faceColours[0],
 											faceColours[4],faceColours[5]});
 			
+			setPosition(new float[]{position[0],position[2],-position[1]});	
 			break;
 		}
 	}
