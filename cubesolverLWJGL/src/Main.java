@@ -28,6 +28,8 @@ public class Main {
 	
 	/** The face which is currently turning */
 	Face turningFace = Face.NONE;
+	/** If the face is turning inverseTurn */
+	boolean inverseTurn = false;
 	/** angle of face rotation */
 	float rotation = 0;
 	
@@ -66,17 +68,17 @@ public class Main {
 			rotation += 0.15f * delta;
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) POS_X -= 0.01f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) POS_X += 0.01f * delta;
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) POS_Y += 0.01f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) POS_Y -= 0.01f * delta;
-		
-//		if (Keyboard.isKeyDown(Keyboard.KEY_W)) ROT_X -= 0.05f * delta;
-//		if (Keyboard.isKeyDown(Keyboard.KEY_S)) ROT_X += 0.05f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) POS_X -= 0.01f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) POS_X += 0.01f * delta;
 //
-//		if (Keyboard.isKeyDown(Keyboard.KEY_D)) ROT_Y += 0.05f * delta;
-//		if (Keyboard.isKeyDown(Keyboard.KEY_A)) ROT_Y -= 0.05f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) POS_Y += 0.01f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) POS_Y -= 0.01f * delta;
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) ROT_X -= 0.05f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) ROT_X += 0.05f * delta;
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) ROT_Y += 0.05f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) ROT_Y -= 0.05f * delta;
 		
 		if (turningFace == Face.NONE) { 
 			if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
@@ -97,7 +99,12 @@ public class Main {
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
 				rotation += 0.15f * delta;
 				turningFace = Face.RIGHT;
-			} 
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				inverseTurn = true;
+			} else {
+				inverseTurn = false;
+			}
 		}
 
 		// reset
@@ -108,6 +115,7 @@ public class Main {
 			ROT_Y = 35;
 			rotation = 0;
 			turningFace = Face.NONE;
+			inverseTurn = false;
 			cube = null;
 		}
 
@@ -197,7 +205,7 @@ public class Main {
 		for (Cubie cubie : cubies) {
 			if (cubie.isOnFace(turningFace)) {
 				if (stop) {
-					cubie.rotateCubieOnFace(turningFace, false);
+					cubie.rotateCubieOnFace(turningFace, inverseTurn);
 					drawCubie(cubie,Face.NONE);
 				} else {
 					drawCubie(cubie, turningFace);
@@ -207,7 +215,6 @@ public class Main {
 			}
 		}
 		if (stop) {
-			System.out.println("stopping");
 			rotation = 0;
 			turningFace = Face.NONE;
 			stop = false;
@@ -224,7 +231,7 @@ public class Main {
 		float[][] faceColours = cubie.getFaceColours();
 		
 		glPushMatrix();
-		rotateFace(face, false);
+		rotateFace(face, inverseTurn);
 			glTranslatef(position[0],position[1],position[2]);
 			drawSmallCube(faceColours);
 		glPopMatrix();
