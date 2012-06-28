@@ -27,17 +27,6 @@ public class Cubie {
 	public boolean isOnFace(Face face) {
 		
 		switch (face) {
-		case FRONT:
-			if (position[2] > cubieWidth) {
-				return true;
-			}
-			break;
-		case BACK:
-			if (position[2] < -cubieWidth) {
-				return true;
-			}
-			break;
-			
 		case UP:
 			if (position[1] > cubieWidth) {
 				return true;
@@ -46,6 +35,17 @@ public class Cubie {
 			
 		case DOWN:
 			if (position[1] < -cubieWidth) {
+				return true;
+			}
+			break;
+			
+		case FRONT:
+			if (position[2] > cubieWidth) {
+				return true;
+			}
+			break;
+		case BACK:
+			if (position[2] < -cubieWidth) {
 				return true;
 			}
 			break;
@@ -71,7 +71,6 @@ public class Cubie {
 	 * @param face
 	 */
 	public void rotateCubieOnFace(Face face, boolean inverse) {
-		//TODO: positions
 		switch (face) {	
 		case UP:
 			setFaceColours(new float[][]{	faceColours[0],faceColours[1],
@@ -98,16 +97,16 @@ public class Cubie {
 			break;
 			
 		case BACK:
-			setFaceColours(new float[][]{	faceColours[0],faceColours[1],
-											faceColours[5],faceColours[4],
-											faceColours[2],faceColours[3]});
+			setFaceColours(new float[][]{	faceColours[5],faceColours[4],
+											faceColours[2],faceColours[3],
+											faceColours[0],faceColours[1]});
 			
 			setPosition(new float[]{-position[1],position[0],position[2]});
 			break;
 			
 		case LEFT:
-			setFaceColours(new float[][]{	faceColours[2],faceColours[3],
-											faceColours[1],faceColours[0],
+			setFaceColours(new float[][]{	faceColours[3],faceColours[2],
+											faceColours[0],faceColours[1],
 											faceColours[4],faceColours[5]});
 			
 			setPosition(new float[]{position[0],-position[2],position[1]});

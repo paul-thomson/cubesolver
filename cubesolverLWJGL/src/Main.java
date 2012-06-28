@@ -31,6 +31,8 @@ public class Main {
 	/** angle of face rotation */
 	float rotation = 0;
 	
+	RCube cube = null;
+	
 	
 
 	public void start() {
@@ -70,30 +72,43 @@ public class Main {
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) POS_Y += 0.01f * delta;
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) POS_Y -= 0.01f * delta;
 		
-		if (Keyboard.isKeyDown(Keyboard.KEY_W)) ROT_X -= 0.05f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_S)) ROT_X += 0.05f * delta;
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_D)) ROT_Y += 0.05f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_A)) ROT_Y -= 0.05f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_W)) ROT_X -= 0.05f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_S)) ROT_X += 0.05f * delta;
+//
+//		if (Keyboard.isKeyDown(Keyboard.KEY_D)) ROT_Y += 0.05f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_A)) ROT_Y -= 0.05f * delta;
 		
-		//TODO other keys
-		if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
-			rotation += 0.15f * delta;
-			turningFace = Face.FRONT;
-		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
-			rotation += 0.15f * delta;
-			turningFace = Face.UP;
+		if (turningFace == Face.NONE) { 
+			if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
+				rotation += 0.15f * delta;
+				turningFace = Face.UP;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+				rotation += 0.15f * delta;
+				turningFace = Face.DOWN;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
+				rotation += 0.15f * delta;
+				turningFace = Face.FRONT;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+				rotation += 0.15f * delta;
+				turningFace = Face.BACK;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_L)) {
+				rotation += 0.15f * delta;
+				turningFace = Face.LEFT;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
+				rotation += 0.15f * delta;
+				turningFace = Face.RIGHT;
+			} 
 		}
 
 		// reset
-		if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
 			POS_X = 0;
 			POS_Y = 0;
 			ROT_X = 20;
 			ROT_Y = 35;
 			rotation = 0;
 			turningFace = Face.NONE;
+			cube = null;
 		}
 
 		updateFPS(); // update FPS Counter
@@ -162,7 +177,9 @@ public class Main {
 		glTranslatef(POS_X,POS_Y,-17.0f);
 		glRotatef(ROT_X, 1, 0, 0);
 		glRotatef(ROT_Y, 0, 1, 0);
-		RCube cube = new RCube(2.0f,0.05f);
+		if (cube == null) {
+			cube = new RCube(2.0f,0.05f);
+		}
 		drawCube(cube);
 			
 		glPopMatrix();
@@ -281,7 +298,7 @@ public class Main {
 			break;
 			
 		case BACK:
-			angle = inverse ? rotation : -rotation;
+			angle = inverse ? -rotation : rotation;
 			glTranslatef(0.0f,0.0f,-2.05f);
 			glRotatef(angle,0,0,1);
 			glTranslatef(0.0f,0.0f,2.05f);
@@ -302,7 +319,7 @@ public class Main {
 			break;
 			
 		case LEFT:
-			angle = inverse ? rotation : -rotation;
+			angle = inverse ? -rotation : rotation;
 			glTranslatef(-2.05f,0.0f,0.0f);
 			glRotatef(angle,1,0,0);
 			glTranslatef(2.05f,0.0f,0.0f);
