@@ -5,6 +5,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.Drawable;
 import org.lwjgl.util.glu.GLU;
 import static org.lwjgl.opengl.GL11.*; // static import means it does not need to be explicitly referenced
 
@@ -13,7 +14,6 @@ public class Main {
 
 	/** position of quad */
 	float POS_X = 0, POS_Y = 0, POS_Z = -2;
-	
 	
 	float ROT_X = 20;
 	float ROT_Y = 35;
@@ -34,8 +34,6 @@ public class Main {
 	float rotation = 0;
 	
 	RCube cube = null;
-	
-	
 
 	public void start() {
 		try {
@@ -55,7 +53,6 @@ public class Main {
 
 			update(delta);
 			renderGL();
-
 			Display.update();
 			Display.sync(60); // cap fps to 60fps
 		}
