@@ -35,12 +35,16 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 
 import static org.lwjgl.opengl.GL11.*; // static import means it does not need to be explicitly referenced
 
 
 public class Main {
+	
+	UnicodeFont font;
 
 	/** position of quad */
 	float POS_X = 0, POS_Y = 0, POS_Z = -2;
@@ -73,7 +77,7 @@ public class Main {
 			e.printStackTrace();
 			System.exit(0);
 		}
-
+		initFont();
 		getDelta(); // call once before loop to initialise lastFrame
 		lastFPS = getTime(); // call before loop to initialise fps timer
 
@@ -90,6 +94,24 @@ public class Main {
 		}
 
 		Display.destroy();
+	}
+
+	/**
+	 * Load all the textures for the font at startup so it is not done on the fly (which is slow) 
+	 */
+	private void initFont() {
+		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+		font = new UnicodeFont(awtFont);
+		font.addAsciiGlyphs();   // Add Glyphs
+		font.addGlyphs(400, 600); // Add Glyphs
+		font.getEffects().add(new ColorEffect(java.awt.Color.WHITE)); // Add Effects
+		try {
+			font.loadGlyphs();
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 
 	public void update(int delta) {
@@ -187,22 +209,31 @@ public class Main {
 	}
 	
 	public void init2D() {
-	    glDisable(GL_DEPTH_TEST);
-	    glDisable(GL_LIGHTING);
+		
+		glShadeModel(GL_SMOOTH);       
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_LIGHTING);                   
+
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);               
+		glClearDepth(1);                                      
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
 		glMatrixMode(GL_PROJECTION);
 	    glLoadIdentity();
 		DisplayMode displayMode = Display.getDisplayMode();
-	    glOrtho(0.0f, (float) displayMode.getWidth(), 0.0f, (float) displayMode.getHeight(), 1.0f, -1.0f);
+	    glOrtho(0.0f, (float) displayMode.getWidth(), (float) displayMode.getHeight(), 0.0f, 1.0f, -1.0f);
 
 	    glMatrixMode(GL_MODELVIEW);
 	    glLoadIdentity();
-	    //glTranslatef(0.375f, 0.375f, 0.0f);
 
 	}
 
 	public void init3D() {
 		glClearDepth(1.0); // Depth Buffer Setup
 		glEnable(GL_DEPTH_TEST); // Enables Depth Testing
+		glDisable(GL_BLEND);
 		
 		glDepthFunc(GL_LEQUAL);
 		glMatrixMode(GL_PROJECTION);
@@ -220,29 +251,10 @@ public class Main {
 	}
 	
 	public void render2D() {
-		//TODO
-		glShadeModel(GL_SMOOTH);       
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_LIGHTING);                   
-
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);               
-		glClearDepth(1);                                      
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
 		Color.white.bind();
 		
-		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-		UnicodeFont font = new UnicodeFont(awtFont);
-		font.drawString(100, 50, "THE", Color.yellow);
-//		glBegin(GL_QUADS);
-//		glColor3f(0.0f,1.0f,0.0f);             // Set The Color To Green
-//		glVertex3f( 0.0f, 0.0f,0.0f);         // Top Right Of The Quad (Top)
-//		glVertex3f(50.0f, 0.0f,0.0f);         // Top Left Of The Quad (Top)
-//		glVertex3f(50.0f, 50.0f,0.0f);         // Bottom Left Of The Quad (Top)
-//		glVertex3f( 0.0f, 50.0f,0.0f);         // Bottom Right Of The Quad (Top)
-//		glEnd();
+		font.drawString(100, 50, "THE LIGHTWEIGHT JAVA GAMES LIBRARY", Color.yellow);
 		
 	}
 
