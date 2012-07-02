@@ -1,3 +1,28 @@
+/**		float[] lightPosition = new float[]{1,1,0,1};
+		float[] lightAmbient = new float[]{0,0,0,1};
+		float[] lightDiffuse = new float[]{1,1,1,1};
+		float[] lightSpecular = new float[]{1,1,1,1};
+		
+		ByteBuffer temp = ByteBuffer.allocateDirect(16);
+		temp.order(ByteOrder.nativeOrder());
+		glLight(GL_LIGHT1, GL_AMBIENT, (FloatBuffer)temp.asFloatBuffer().put(lightAmbient).flip());              
+		glLight(GL_LIGHT1, GL_DIFFUSE, (FloatBuffer)temp.asFloatBuffer().put(lightDiffuse).flip());            
+		glLight(GL_LIGHT1, GL_POSITION,(FloatBuffer)temp.asFloatBuffer().put(lightPosition).flip());  
+		glLight(GL_LIGHT1, GL_SPECULAR,(FloatBuffer)temp.asFloatBuffer().put(lightSpecular).flip());
+		glEnable(GL_LIGHT1);  
+		glEnable(GL_LIGHTING);
+		
+		glEnable(GL_COLOR_MATERIAL);
+		glColorMaterial(GL_AMBIENT_AND_DIFFUSE, GL_EMISSION);
+		
+		float[] materialSpecular = new float[]{1,1,1,1};
+		float[] materialEmission = new float[]{0,0,0,1};
+		
+		glMaterial(GL_SPECULAR, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialSpecular).flip());
+		glMaterial(GL_EMISSION, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialEmission).flip());
+TODO REMOVE THIS COMMENT */
+
+import java.awt.Font;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -9,6 +34,9 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.glu.GLU;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.UnicodeFont;
+
 import static org.lwjgl.opengl.GL11.*; // static import means it does not need to be explicitly referenced
 
 
@@ -46,7 +74,6 @@ public class Main {
 			System.exit(0);
 		}
 
-		initGL(); // init OpenGL
 		getDelta(); // call once before loop to initialise lastFrame
 		lastFPS = getTime(); // call before loop to initialise fps timer
 
@@ -54,7 +81,10 @@ public class Main {
 			int delta = getDelta();
 
 			update(delta);
-			renderGL();
+			init3D(); // init OpenGL
+			render3D();
+			init2D();
+			render2D();
 			Display.update();
 			Display.sync(60); // cap fps to 60fps
 		}
@@ -155,51 +185,68 @@ public class Main {
 		}
 		fps++;
 	}
+	
+	public void init2D() {
+	    glDisable(GL_DEPTH_TEST);
+	    glDisable(GL_LIGHTING);
+		glMatrixMode(GL_PROJECTION);
+	    glLoadIdentity();
+		DisplayMode displayMode = Display.getDisplayMode();
+	    glOrtho(0.0f, (float) displayMode.getWidth(), 0.0f, (float) displayMode.getHeight(), 1.0f, -1.0f);
 
-	public void initGL() {
+	    glMatrixMode(GL_MODELVIEW);
+	    glLoadIdentity();
+	    //glTranslatef(0.375f, 0.375f, 0.0f);
+
+	}
+
+	public void init3D() {
 		glClearDepth(1.0); // Depth Buffer Setup
 		glEnable(GL_DEPTH_TEST); // Enables Depth Testing
-//		float[] lightPosition = new float[]{1,1,0,1};
-//		float[] lightAmbient = new float[]{0,0,0,1};
-//		float[] lightDiffuse = new float[]{1,1,1,1};
-//		float[] lightSpecular = new float[]{1,1,1,1};
-//		
-//		ByteBuffer temp = ByteBuffer.allocateDirect(16);
-//		temp.order(ByteOrder.nativeOrder());
-//		glLight(GL_LIGHT1, GL_AMBIENT, (FloatBuffer)temp.asFloatBuffer().put(lightAmbient).flip());              
-//		glLight(GL_LIGHT1, GL_DIFFUSE, (FloatBuffer)temp.asFloatBuffer().put(lightDiffuse).flip());            
-//		glLight(GL_LIGHT1, GL_POSITION,(FloatBuffer)temp.asFloatBuffer().put(lightPosition).flip());  
-//		glLight(GL_LIGHT1, GL_SPECULAR,(FloatBuffer)temp.asFloatBuffer().put(lightSpecular).flip());
-//		glEnable(GL_LIGHT1);  
-//		glEnable(GL_LIGHTING);
-//		
-//		glEnable(GL_COLOR_MATERIAL);
-//		glColorMaterial(GL_AMBIENT_AND_DIFFUSE, GL_EMISSION);
-//		
-//		float[] materialSpecular = new float[]{1,1,1,1};
-//		float[] materialEmission = new float[]{0,0,0,1};
-//		
-//		glMaterial(GL_SPECULAR, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialSpecular).flip());
-//		glMaterial(GL_EMISSION, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialEmission).flip());
 		
-		glDepthFunc(GL_LEQUAL); // The Type Of Depth Testing To Do
+		glDepthFunc(GL_LEQUAL);
 		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity(); // Reset The Projection Matrix
+		glLoadIdentity(); 
 
-		// Calculate The Aspect Ratio Of The Window
 		DisplayMode displayMode = Display.getDisplayMode();
 		GLU.gluPerspective(
 				45.0f,
 				(float) displayMode.getWidth() / (float) displayMode.getHeight(),
 				0.1f,
 				100.0f);
-		glMatrixMode(GL_MODELVIEW); // Select The Modelview Matrix
+		glMatrixMode(GL_MODELVIEW);
 
-		// Really Nice Perspective Calculations
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	}
+	
+	public void render2D() {
+		//TODO
+		glShadeModel(GL_SMOOTH);       
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_LIGHTING);                   
 
-	public void renderGL() {
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);               
+		glClearDepth(1);                                      
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		Color.white.bind();
+		
+		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+		UnicodeFont font = new UnicodeFont(awtFont);
+		font.drawString(100, 50, "THE", Color.yellow);
+//		glBegin(GL_QUADS);
+//		glColor3f(0.0f,1.0f,0.0f);             // Set The Color To Green
+//		glVertex3f( 0.0f, 0.0f,0.0f);         // Top Right Of The Quad (Top)
+//		glVertex3f(50.0f, 0.0f,0.0f);         // Top Left Of The Quad (Top)
+//		glVertex3f(50.0f, 50.0f,0.0f);         // Bottom Left Of The Quad (Top)
+//		glVertex3f( 0.0f, 50.0f,0.0f);         // Bottom Right Of The Quad (Top)
+//		glEnd();
+		
+	}
+
+	public void render3D() {
 		// Clear The Screen And The Depth Buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
