@@ -1,3 +1,6 @@
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
 import org.lwjgl.LWJGLException;
@@ -5,7 +8,6 @@ import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.Drawable;
 import org.lwjgl.util.glu.GLU;
 import static org.lwjgl.opengl.GL11.*; // static import means it does not need to be explicitly referenced
 
@@ -157,6 +159,29 @@ public class Main {
 	public void initGL() {
 		glClearDepth(1.0); // Depth Buffer Setup
 		glEnable(GL_DEPTH_TEST); // Enables Depth Testing
+//		float[] lightPosition = new float[]{1,1,0,1};
+//		float[] lightAmbient = new float[]{0,0,0,1};
+//		float[] lightDiffuse = new float[]{1,1,1,1};
+//		float[] lightSpecular = new float[]{1,1,1,1};
+//		
+//		ByteBuffer temp = ByteBuffer.allocateDirect(16);
+//		temp.order(ByteOrder.nativeOrder());
+//		glLight(GL_LIGHT1, GL_AMBIENT, (FloatBuffer)temp.asFloatBuffer().put(lightAmbient).flip());              
+//		glLight(GL_LIGHT1, GL_DIFFUSE, (FloatBuffer)temp.asFloatBuffer().put(lightDiffuse).flip());            
+//		glLight(GL_LIGHT1, GL_POSITION,(FloatBuffer)temp.asFloatBuffer().put(lightPosition).flip());  
+//		glLight(GL_LIGHT1, GL_SPECULAR,(FloatBuffer)temp.asFloatBuffer().put(lightSpecular).flip());
+//		glEnable(GL_LIGHT1);  
+//		glEnable(GL_LIGHTING);
+//		
+//		glEnable(GL_COLOR_MATERIAL);
+//		glColorMaterial(GL_AMBIENT_AND_DIFFUSE, GL_EMISSION);
+//		
+//		float[] materialSpecular = new float[]{1,1,1,1};
+//		float[] materialEmission = new float[]{0,0,0,1};
+//		
+//		glMaterial(GL_SPECULAR, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialSpecular).flip());
+//		glMaterial(GL_EMISSION, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialEmission).flip());
+		
 		glDepthFunc(GL_LEQUAL); // The Type Of Depth Testing To Do
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity(); // Reset The Projection Matrix
@@ -203,12 +228,12 @@ public class Main {
 			if (cubie.isOnFace(turningFace)) {
 				if (stop) {
 					cubie.rotateCubieOnFace(turningFace, inverseTurn);
-					drawCubie(cubie,Face.NONE);
+					drawCubie(cubie, Face.NONE);
 				} else {
 					drawCubie(cubie, turningFace);
 				}
 			} else {
-				drawCubie(cubie,Face.NONE);
+				drawCubie(cubie, Face.NONE);
 			}
 		}
 		if (stop) {
