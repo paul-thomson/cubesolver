@@ -1,3 +1,5 @@
+package cube;
+
 import java.util.ArrayList;
 
 /**

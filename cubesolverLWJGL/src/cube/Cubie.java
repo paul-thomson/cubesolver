@@ -1,3 +1,5 @@
+package cube;
+
 import java.awt.Point;
 import java.awt.geom.Point2D.Float;
 

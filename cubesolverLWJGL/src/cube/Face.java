@@ -1,3 +1,4 @@
+package cube;
 
 public enum Face {
 	FRONT,
