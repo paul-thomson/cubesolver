@@ -9,7 +9,6 @@ public class RCube {
 	
 	/** position of cube */
 	float POS_X = 0, POS_Y = 0, POS_Z = -17;
-	
 	/** Angle of the cube */
 	float ROT_X = 20, ROT_Y = 35, ROT_Z = 0;
 	
@@ -24,11 +23,15 @@ public class RCube {
 	
 	/** Unused */
 	float[][] cube = new float[][]{yellow,white,red,orange,blue,green};
-	
+	/** Width of a cubie */
 	float cubieWidth;
+	/** Size of the gap between cubies */
 	float gap;
+	/** Total size of a cubie: width + gap */
 	float size;
+	/** The list of cubies (should be 27 in length) */
 	ArrayList<Cubie> cubies;
+	/** The current turn the cube is performing */
 	Turn currentTurn;
 	
 	public RCube(float cubieWidth, float gap) {
@@ -44,6 +47,7 @@ public class RCube {
 	 * Create and add all 27 cubies to the list of cubies. This creates the Rubik's cube.
 	 */
 	private void initCubies() {
+		
 		/** First Layer */
 		cubies.add(new Cubie(new float[]{0.0f,0.0f,size}, new float[][]{black,black,red,black,black,black},cubieWidth,gap)); 	// center
 		cubies.add(new Cubie(new float[]{-size,-size,size}, new float[][]{black,white,red,black,blue,black},cubieWidth,gap)); 	// bottom left
@@ -76,7 +80,6 @@ public class RCube {
 		cubies.add(new Cubie(new float[]{0,size,-size}, new float[][]{yellow,black,black,orange,black,black},cubieWidth,gap)); 		// top middle
 		cubies.add(new Cubie(new float[]{-size,size,-size}, new float[][]{yellow,black,black,orange,blue,black},cubieWidth,gap)); 	// top left
 		cubies.add(new Cubie(new float[]{-size,0,-size}, new float[][]{black,black,black,orange,blue,black},cubieWidth,gap)); 		// middle left
-	
 	}
 	
 	public ArrayList<Cubie> getCubies() {
@@ -113,7 +116,6 @@ public class RCube {
 
 	public void stopTurning() {
 		currentTurn = new Turn();
-		
 	}
 
 }

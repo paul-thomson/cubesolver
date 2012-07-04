@@ -10,8 +10,10 @@ public class Turn {
 	private float rotationAngle;
 	private Face turningFace;
 	private boolean inverseTurn;
-	private boolean stopped;
 	
+	/**
+	 * Creates a default turn with 0 angle, turning face NONE and no inverse turn.
+	 */
 	public Turn() {
 		this.rotationAngle = 0;
 		this.turningFace = Face.NONE;
@@ -34,9 +36,5 @@ public class Turn {
 
 	public boolean isInverseTurn() {
 		return inverseTurn;
-	}
-	
-	public boolean isTurnCompleted() {
-		return stopped;
 	}
 }

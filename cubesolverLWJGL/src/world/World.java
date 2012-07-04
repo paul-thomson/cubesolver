@@ -11,6 +11,9 @@ import cube.Face;
 import cube.RCube;
 import cube.Turn;
 
+/**
+ * Holds the {@link RCube cube} and the {@link Renderer} used to draw that cube.
+ */
 public class World {
 	
 	Renderer renderer;
@@ -21,7 +24,8 @@ public class World {
 	}
 	
 	/**
-	 * Create the internal representation of the rubik's cube
+	 * Update the internal representation of the {@link RCube cube} and 
+	 * make calls to the {@link Renderer} to draw the cube.
 	 */
 	private void drawCube(RCube cube) {
 		ArrayList<Cubie> cubies = cube.getCubies();
@@ -41,12 +45,12 @@ public class World {
 				renderer.drawCubie(cubie, null);
 			}
 		}
-		if (turn.isTurnCompleted()) {
-			cube.setTurning(new Turn()); // resets the turn
-		}
 	}
 
-	//TODO comments
+	/**
+	 * Use the {@link Renderer} to draw the cube and update the 
+	 * state of the cube using {@link #drawCube}
+	 */
 	public void render() {
 		int delta = renderer.getDelta();
 		//FIXME below is silly?
@@ -55,22 +59,30 @@ public class World {
 		}
 		update(delta);
 		renderer.init3D();
-		renderer.render3D(cube);
+		renderer.prepare3D(cube);
 		drawCube(cube);
-			
+		
+		//FIXME put this in renderer
 		glPopMatrix();
 		renderer.init2D();
 		renderer.render2D();
 		
 	}
 
-	//TODO comments
+	/**
+	 * Performs some setup which is performed once before the rendering loop starts
+	 */
 	public void initialiseRendering() {
 		renderer.initFont();
 		renderer.getDelta(); // call once before loop to initialise lastFrame
 		renderer.setLastFPS(renderer.getTime()); // call before loop to initialise fps timer		
 	}
 	
+	/**
+	 * An event handler. Deals with input from the keyboard and updates the necessary 
+	 * objects
+	 * @param delta
+	 */
 	public void update(int delta) {
 		float[] rotations = cube.getRotation();
 		float ROT_X = rotations[0];
@@ -125,8 +137,6 @@ public class World {
 			//FIXME below is silly
 			cube = new RCube(2.0f,0.05f);
 		}
-		
-		
 		renderer.updateFPS(); // update FPS Counter
 	}
 }

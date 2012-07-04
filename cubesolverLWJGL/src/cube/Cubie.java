@@ -10,12 +10,13 @@ public class Cubie {
 
 	/** The position of the cubie relative to the center cubie */
 	float[] position = new float[3];
-
 	/** The colours of each face of the cubie */
 	float[][] faceColours = new float[6][3];
-
+	/** The width of a cubie */
 	float cubieWidth;
+	/** The size of the gaps between cubies */
 	float gap;
+	/** The total size of one cube: width + gap */
 	float size;
 
 	public Cubie(float[] position, float[][] faceColours, float cubieWidth, float gap) {
@@ -26,8 +27,11 @@ public class Cubie {
 		this.size = cubieWidth + gap; 
 	}
 
+	/**
+	 * Returns true if the object is on the given face
+	 * @param face
+	 */
 	public boolean isOnFace(Face face) {
-
 		switch (face) {
 		case UP:
 			if (position[1] > cubieWidth) {
@@ -204,6 +208,4 @@ public class Cubie {
 	private void setFaceColours(float[][] faceColours) {
 		this.faceColours = faceColours;
 	}
-
-
 }

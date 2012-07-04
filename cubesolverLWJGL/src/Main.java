@@ -25,14 +25,9 @@ TODO REMOVE THIS COMMENT */
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import world.Renderer;
 import world.World;
 
-
 public class Main {
-	
-	
-
 	public void start() {
 		try {
 			Display.setDisplayMode(new DisplayMode(800, 600));
@@ -51,11 +46,8 @@ public class Main {
 			Display.update();
 			Display.sync(60); // cap fps to 60fps
 		}
-
 		Display.destroy();
 	}
-
-	
 
 	public static void main(String[] argv) {
 		Main starter = new Main();

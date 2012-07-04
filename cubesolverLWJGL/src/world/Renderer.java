@@ -3,10 +3,7 @@ package world;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Font;
-import java.util.ArrayList;
-
 import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.glu.GLU;
@@ -20,21 +17,20 @@ import cube.Face;
 import cube.RCube;
 import cube.Turn;
 
+/**
+ * The class used for rendering the {@link World} and the GUI.
+ */
 public class Renderer {
 	
 	UnicodeFont font;
 	
 	//TODO move into constructor
-
-
 	/** time at last frame */
 	long lastFrame;
-
 	/** frames per second */
 	int fps;
 	/** last fps time */
 	private long lastFPS;
-	
 	
 	/**
 	 * Load all the textures for the font at startup so it is not done on the fly (which is slow) 
@@ -52,9 +48,7 @@ public class Renderer {
 			System.exit(0);
 		}
 	}
-
 	
-
 	/** 
 	 * Calculate how many milliseconds have passed 
 	 * since last frame.
@@ -65,7 +59,6 @@ public class Renderer {
 		long time = getTime();
 		int delta = (int) (time - lastFrame);
 		lastFrame = time;
-
 		return delta;
 	}
 
@@ -91,6 +84,10 @@ public class Renderer {
 		fps++;
 	}
 	
+	/**
+	 * Change OpenGL into a suitable mode for drawing 2D images 
+	 * (like GUI).
+	 */
 	public void init2D() {
 		
 		glShadeModel(GL_SMOOTH);       
@@ -113,6 +110,9 @@ public class Renderer {
 
 	}
 
+	/**
+	 * Change OpenGL into a mode suitable for drawing 3D images (the rubik's cube).
+	 */
 	public void init3D() {
 		glClearDepth(1.0); // Depth Buffer Setup
 		glEnable(GL_DEPTH_TEST); // Enables Depth Testing
@@ -133,6 +133,9 @@ public class Renderer {
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	}
 	
+	/**
+	 * Performing 2D rendering like GUI
+	 */
 	public void render2D() {
 		
 		Color.white.bind();
@@ -141,7 +144,11 @@ public class Renderer {
 		
 	}
 
-	public void render3D(RCube cube) {
+	/**
+	 * Set up the 3D world for drawing the cube
+	 * @param cube
+	 */
+	public void prepare3D(RCube cube) {
 		// Clear The Screen And The Depth Buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 		
@@ -154,11 +161,8 @@ public class Renderer {
 		glTranslatef(POS_X,POS_Y,POS_Z);
 		glRotatef(ROT_X, 1, 0, 0);
 		glRotatef(ROT_Y, 0, 1, 0);
-		
 	}
 
-	
-	
 	/**
 	 * Draws a cube from the cubie object. Essentially converting from the Java view 
 	 * of an object into the OpenGL view.
