@@ -7,6 +7,12 @@ import java.util.ArrayList;
  */
 public class RCube {
 	
+	/** position of cube */
+	float POS_X = 0, POS_Y = 0, POS_Z = -17;
+	
+	/** Angle of the cube */
+	float ROT_X = 20, ROT_Y = 35, ROT_Z = 0;
+	
 	/** Colours */
 	float[] red = new float[]{1.0f,0.0f,0.0f};
 	float[] green = new float[]{0.0f,1.0f,0.0f};
@@ -23,12 +29,14 @@ public class RCube {
 	float gap;
 	float size;
 	ArrayList<Cubie> cubies;
+	Turn currentTurn;
 	
 	public RCube(float cubieWidth, float gap) {
 		this.cubieWidth = cubieWidth;
 		this.gap = gap;
 		this.size = cubieWidth + gap;
 		cubies = new ArrayList<Cubie>();
+		currentTurn = new Turn();
 		initCubies();
 	}
 
@@ -71,9 +79,41 @@ public class RCube {
 	
 	}
 	
-	
 	public ArrayList<Cubie> getCubies() {
 		return cubies;
+	}
+
+	public Turn getTurn() {
+		return currentTurn;
+	}
+	
+	public void setTurning(Turn turn) {
+		this.currentTurn = turn;
+	}
+	
+	public float[] getPosition() {
+		return new float[]{POS_X,POS_Y,POS_Z};
+	}
+	
+	public float[] getRotation() {
+		return new float[]{ROT_X,ROT_Y,ROT_Z};
+	}
+	
+	public void setPosition(float[] pos) {
+		POS_X = pos[0];
+		POS_Y = pos[1];
+		POS_Z = pos[2];
+	}
+	
+	public void setRotation(float[] rot) {
+		ROT_X = rot[0];
+		ROT_Y = rot[1];
+		ROT_Z = rot[2];
+	}
+
+	public void stopTurning() {
+		currentTurn = new Turn();
+		
 	}
 
 }

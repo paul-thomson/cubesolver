@@ -22,31 +22,11 @@
 		glMaterial(GL_EMISSION, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialEmission).flip());
 TODO REMOVE THIS COMMENT */
 
-import java.awt.Font;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-
 import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.util.glu.GLU;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
-
 import world.Renderer;
 import world.World;
-
-import cube.Cubie;
-import cube.Face;
-import cube.RCube;
-
-import static org.lwjgl.opengl.GL11.*; // static import means it does not need to be explicitly referenced
 
 
 public class Main {
@@ -64,20 +44,10 @@ public class Main {
 		
 		World world = new World();
 		
-		Renderer renderer = new Renderer();
+		world.initialiseRendering();
 		
-		renderer.initFont();
-		renderer.getDelta(); // call once before loop to initialise lastFrame
-		renderer.setLastFPS(renderer.getTime()); // call before loop to initialise fps timer
-
 		while (!Display.isCloseRequested()) {
-			int delta = renderer.getDelta();
-
-			renderer.update(delta);
-			renderer.init3D(); // init OpenGL
-			renderer.render3D();
-			renderer.init2D();
-			renderer.render2D();
+			world.render();
 			Display.update();
 			Display.sync(60); // cap fps to 60fps
 		}

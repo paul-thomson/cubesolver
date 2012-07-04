@@ -72,8 +72,10 @@ public class Cubie {
 	 * 90 degrees
 	 * @param face
 	 */
-	public void rotateCubieOnFace(Face face, boolean inverse) {
+	public void rotateCubieOnFace(Turn turn) {
 		//TODO this is messy, should clean up
+		Face face = turn.getTurningFace();
+		boolean inverse = turn.isInverseTurn();
 		if (inverse) {
 			switch (face) {	
 			case UP:

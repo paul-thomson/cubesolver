@@ -18,16 +18,14 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import cube.Cubie;
 import cube.Face;
 import cube.RCube;
+import cube.Turn;
 
 public class Renderer {
 	
 	UnicodeFont font;
-
-	/** position of quad */
-	float POS_X = 0, POS_Y = 0, POS_Z = -2;
 	
-	float ROT_X = 20;
-	float ROT_Y = 35;
+	//TODO move into constructor
+
 
 	/** time at last frame */
 	long lastFrame;
@@ -37,14 +35,6 @@ public class Renderer {
 	/** last fps time */
 	private long lastFPS;
 	
-	/** The face which is currently turning */
-	Face turningFace = Face.NONE;
-	/** If the face is turning inverseTurn */
-	boolean inverseTurn = false;
-	/** angle of face rotation */
-	float rotation = 0;
-	
-	RCube cube = null;
 	
 	/**
 	 * Load all the textures for the font at startup so it is not done on the fly (which is slow) 
@@ -63,58 +53,7 @@ public class Renderer {
 		}
 	}
 
-	public void update(int delta) {
-		if (rotation != 0) {
-			rotation += 0.15f * delta;
-		}
-		
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) ROT_X -= 0.05f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) ROT_X += 0.05f * delta;
-
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) ROT_Y += 0.05f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) ROT_Y -= 0.05f * delta;
-		
-		if (turningFace == Face.NONE) { 
-			if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
-				rotation += 0.15f * delta;
-				turningFace = Face.UP;
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				rotation += 0.15f * delta;
-				turningFace = Face.DOWN;
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
-				rotation += 0.15f * delta;
-				turningFace = Face.FRONT;
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-				rotation += 0.15f * delta;
-				turningFace = Face.BACK;
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_L)) {
-				rotation += 0.15f * delta;
-				turningFace = Face.LEFT;
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
-				rotation += 0.15f * delta;
-				turningFace = Face.RIGHT;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-				inverseTurn = true;
-			} else {
-				inverseTurn = false;
-			}
-		}
-
-		// reset
-		if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-			POS_X = 0;
-			POS_Y = 0;
-			ROT_X = 20;
-			ROT_Y = 35;
-			rotation = 0;
-			turningFace = Face.NONE;
-			inverseTurn = false;
-			cube = null;
-		}
-
-		updateFPS(); // update FPS Counter
-	}
+	
 
 	/** 
 	 * Calculate how many milliseconds have passed 
@@ -202,20 +141,20 @@ public class Renderer {
 		
 	}
 
-	public void render3D() {
+	public void render3D(RCube cube) {
 		// Clear The Screen And The Depth Buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-
+		
+		float[] position = cube.getPosition();
+		float POS_X = position[0], POS_Y = position[1], POS_Z = position[2];
+		float[] rotation = cube.getRotation();
+		float ROT_X = rotation[0], ROT_Y = rotation[1], ROT_Z = rotation[2];
+		
 		glLoadIdentity();                   // Reset The Current Modelview Matrix
-		glTranslatef(POS_X,POS_Y,-17.0f);
+		glTranslatef(POS_X,POS_Y,POS_Z);
 		glRotatef(ROT_X, 1, 0, 0);
 		glRotatef(ROT_Y, 0, 1, 0);
-		if (cube == null) {
-			cube = new RCube(2.0f,0.05f);
-		}
-		drawCube(cube);
-			
-		glPopMatrix();
+		
 	}
 
 	
@@ -225,12 +164,14 @@ public class Renderer {
 	 * of an object into the OpenGL view.
 	 * @param cubie
 	 */
-	private void drawCubie(Cubie cubie, Face face) {
+	void drawCubie(Cubie cubie, Turn turn) {
 		float[] position = cubie.getPosition();
 		float[][] faceColours = cubie.getFaceColours();
 		
 		glPushMatrix();
-		rotateFace(face, inverseTurn);
+		if (turn != null) {
+			rotateFace(turn);
+		}
 			glTranslatef(position[0],position[1],position[2]);
 			drawSmallCube(faceColours);
 		glPopMatrix();
@@ -293,7 +234,10 @@ public class Renderer {
 	 * of the face being rotated.
 	 * 
 	 */
-	private void rotateFace(Face face, boolean inverse) {
+	private void rotateFace(Turn turn) {
+		Face face = turn.getTurningFace();
+		float rotation = turn.getRotationAngle();
+		boolean inverse = turn.isInverseTurn();
 		float angle;
 		switch (face) {
 		case FRONT:
