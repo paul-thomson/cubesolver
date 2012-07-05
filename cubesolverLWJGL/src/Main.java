@@ -22,9 +22,18 @@
 		glMaterial(GL_EMISSION, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialEmission).flip());
 TODO REMOVE THIS COMMENT */
 
+import java.io.IOException;
+
+import gui.UserInterface;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+
+import de.matthiasmann.twl.GUI;
+import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
+import de.matthiasmann.twl.theme.ThemeManager;
+
 import world.World;
 
 public class Main {
@@ -37,15 +46,41 @@ public class Main {
 			System.exit(0);
 		}
 		
-		World world = new World();
 		
-		world.initialiseRendering();
-		
-		while (!Display.isCloseRequested()) {
-			world.render();
-			Display.update();
-			Display.sync(60); // cap fps to 60fps
+		try {
+			LWJGLRenderer renderer = new LWJGLRenderer();
+			UserInterface userInterface = new UserInterface();
+			GUI gui = new GUI(userInterface, renderer);
+
+			ThemeManager theme = ThemeManager.createThemeManager(
+					UserInterface.class.getResource("chutzpah.xml"), renderer);
+
+			gui.applyTheme(theme);
+
+
+			World world = new World();
+			world.initialiseRendering();
+
+			while (!Display.isCloseRequested()) {
+				
+				world.render();
+				gui.update();
+
+				Display.update();
+				
+				Display.sync(60); // cap fps to 60fps
+				
+			}
+
+			gui.destroy();
+			theme.destroy();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
 		}
+		
 		Display.destroy();
 	}
 

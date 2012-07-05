@@ -64,8 +64,8 @@ public class World {
 		
 		//FIXME put this in renderer
 		glPopMatrix();
-		renderer.init2D();
-		renderer.render2D();
+//		renderer.init2D();
+//		renderer.render2D();
 		
 	}
 
