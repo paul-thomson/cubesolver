@@ -133,6 +133,11 @@
             <alias ref="none" tint="#FFFFFF"/>
         </select>
     </images>
+    
+    <images file="firststageicon.png" format="RGBA">
+        <area name="button.firststageicon.overlay" xywh="*"/>
+    </images>
+    
     <fontDef name="normal" filename="ptsans.fnt" default="true" color="#C32B2B2B">
         <fontParam if="error" color="red"/>
         <fontParam if="warning" color="orange"/>
@@ -335,6 +340,7 @@
                 <param name="adjuster"><gap>0</gap></param>
                 <param name="vbutton"><gap>0</gap></param>
             </map></param>
+            
     </theme>
     <theme name="textarea" ref="label">
         <param name="fonts">
@@ -426,5 +432,11 @@
         </theme>
         <theme name="hscrollbar" ref="hscrollbar">
         </theme>
+    </theme>
+    <theme name="userinterface" ref="-defaults">
+	    <theme name="firststageicon" ref="button">
+	        <param name=""><image>button.firststageicon.*</image></param>
+	    </theme>
+    
     </theme>
 </themes>
