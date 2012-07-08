@@ -14,7 +14,7 @@ public class UserInterface extends Widget {
 	private final ResizableFrame resizableFrame;
 
 	private final DialogLayout layout;
-	private final Button icon;
+	private final FirstStageIcon icon;
 	private final Label title;
 	private final TextArea description;
 
@@ -35,8 +35,8 @@ public class UserInterface extends Widget {
 		resizableFrame = new ResizableFrame();
 		resizableFrame.setTheme("resizableframe");
 		add(resizableFrame);
-
-		icon = new Button();
+		
+		icon = new FirstStageIcon();
 		icon.setTheme("firststageicon");
 		//        add(icon);
 
@@ -67,19 +67,23 @@ public class UserInterface extends Widget {
 		//        add(hint2Text);
 
 		DialogLayout.Group hTitle = layout.createSequentialGroup()
-				//				.addGap()
+								.addGap()
 				.addWidget(title);
-		DialogLayout.Group hSummary = layout.createSequentialGroup(description,icon);
+		DialogLayout.Group hSummary = layout.createSequentialGroup().addWidget(description)
+																	.addGap()
+																	.addWidget(icon);
 		DialogLayout.Group hTip1 = layout.createSequentialGroup(hint1Image,hint1Text);
 		DialogLayout.Group hTip2 = layout.createSequentialGroup(hint2Image,hint2Text);
 		layout.setHorizontalGroup(layout.createParallelGroup(hTitle,hSummary,hTip1,hTip2));
 
+		DialogLayout.Group vDescription = layout.createSequentialGroup(description).addGap();
+		DialogLayout.Group vIcon = layout.createSequentialGroup(icon).addGap();
+		
 		layout.setVerticalGroup(layout.createSequentialGroup(
 				layout.createParallelGroup()
-				//	.addGap()
 				.addWidget(title),
-				layout.createParallelGroup(description,icon),
-				layout.createParallelGroup(hint1Image,hint1Text),
+				layout.createParallelGroup().addGroup(vDescription).addGroup(vIcon),
+				layout.createParallelGroup(hint1Text,hint1Image),
 				layout.createParallelGroup(hint2Text,hint2Image)
 				));
 //		add(layout);
@@ -95,28 +99,29 @@ public class UserInterface extends Widget {
 				resizableFrame.setSize(300,600);
 				resizableFrame.setPosition(500,0);
 		//		
-				icon.adjustSize();
-				icon.setSize(100, 100);
+//				icon.adjustSize();
+//				icon.setSize(200, 200);
 		//		icon.setPosition(680,60);
 		//		
-				title.adjustSize();
-		//		title.setPosition(690, 30);
+//				title.adjustSize();
+//				title.setPosition(690, 30);
 		//		
-				description.setSize(150,100);
+//				description.adjustSize();
+//				description.setSize(100,100);
 		//		description.setPosition(520, 60);
 		//		
-				hint1Image.adjustSize();
-				hint1Image.setSize(50,50);
+//				hint1Image.adjustSize();
+//				hint1Image.setSize(50,50);
 		//		hint1Image.setPosition(520,300);
 		//
-				hint1Text.adjustSize();
+//				hint1Text.adjustSize();
 		//		hint1Text.setPosition(580,300);
 		//
-				hint2Text.adjustSize();
+//				hint2Text.adjustSize();
 		//		hint2Text.setPosition(580,370);
 		//		
-				hint2Image.adjustSize();
-				hint2Image.setSize(50,50);
+//				hint2Image.adjustSize();
+//				hint2Image.setSize(50,50);
 //				hint2Image.setPosition(100,100);
 
 	}

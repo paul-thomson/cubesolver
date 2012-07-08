@@ -340,7 +340,9 @@
                 <param name="adjuster"><gap>0</gap></param>
                 <param name="vbutton"><gap>0</gap></param>
             </map></param>
-            
+            <theme name="firststageicon" ref="button">
+	        <param name=""><image>button.firststageicon.*</image></param>
+	    </theme>
     </theme>
     <theme name="textarea" ref="label">
         <param name="fonts">
@@ -433,10 +435,5 @@
         <theme name="hscrollbar" ref="hscrollbar">
         </theme>
     </theme>
-    <theme name="userinterface" ref="-defaults">
-	    <theme name="firststageicon" ref="button">
-	        <param name=""><image>button.firststageicon.*</image></param>
-	    </theme>
-    
-    </theme>
+   
 </themes>
