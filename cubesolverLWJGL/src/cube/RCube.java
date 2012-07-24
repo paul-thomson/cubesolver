@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class RCube {
 	
 	/** position of cube */
-	float POS_X = -3.5f, POS_Y = 0, POS_Z = -17;
+	float POS_X = 0.0f, POS_Y = 0.0f, POS_Z = -17;
 	/** Angle of the cube */
 	float ROT_X = 20, ROT_Y = 35, ROT_Z = 0;
 	

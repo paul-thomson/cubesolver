@@ -1,16 +1,44 @@
 package world;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LEQUAL;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_NICEST;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_PERSPECTIVE_CORRECTION_HINT;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_SMOOTH;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glClearDepth;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glDepthFunc;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glHint;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glShadeModel;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex3f;
 
-import java.awt.Font;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.glu.GLU;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
 
 import cube.Cubie;
 import cube.Face;
@@ -21,9 +49,7 @@ import cube.Turn;
  * The class used for rendering the {@link World} and the GUI.
  */
 public class Renderer {
-	
-	UnicodeFont font;
-	
+		
 	//TODO move into constructor
 	/** time at last frame */
 	long lastFrame;
@@ -31,23 +57,6 @@ public class Renderer {
 	int fps;
 	/** last fps time */
 	private long lastFPS;
-	
-	/**
-	 * Load all the textures for the font at startup so it is not done on the fly (which is slow) 
-	 */
-	public void initFont() {
-		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-		font = new UnicodeFont(awtFont);
-		font.addAsciiGlyphs();   // Add Glyphs
-		font.addGlyphs(400, 600); // Add Glyphs
-		font.getEffects().add(new ColorEffect(java.awt.Color.WHITE)); // Add Effects
-		try {
-			font.loadGlyphs();
-		} catch (SlickException e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
 	
 	/** 
 	 * Calculate how many milliseconds have passed 
@@ -131,17 +140,6 @@ public class Renderer {
 		glMatrixMode(GL_MODELVIEW);
 
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	}
-	
-	/**
-	 * Performing 2D rendering like GUI
-	 */
-	public void render2D() {
-		
-		Color.white.bind();
-		
-		font.drawString(100, 50, "THE LIGHTWEIGHT JAVA GAMES LIBRARY", Color.yellow);
-		
 	}
 
 	/**
@@ -236,7 +234,6 @@ public class Renderer {
 	 * Applies the corresponding rotation to the current matrix. 
 	 * This assumes any cubes drawn on top of this matrix are part 
 	 * of the face being rotated.
-	 * 
 	 */
 	private void rotateFace(Turn turn) {
 		Face face = turn.getTurningFace();
@@ -244,6 +241,7 @@ public class Renderer {
 		boolean inverse = turn.isInverseTurn();
 		float angle;
 		switch (face) {
+		case Z:
 		case FRONT:
 			angle = inverse ? rotation : -rotation;
 			glTranslatef(0.0f,0.0f,2.05f);
@@ -257,7 +255,7 @@ public class Renderer {
 			glRotatef(angle,0,0,1);
 			glTranslatef(0.0f,0.0f,2.05f);
 			break;
-			
+		case Y:
 		case UP:
 			angle = inverse ? rotation : -rotation;
 			glTranslatef(0.0f,2.05f,0.0f);
@@ -278,14 +276,15 @@ public class Renderer {
 			glRotatef(angle,1,0,0);
 			glTranslatef(2.05f,0.0f,0.0f);
 			break;
-			
+		case X:
 		case RIGHT:
 			angle = inverse ? rotation : -rotation;
 			glTranslatef(2.05f,0.0f,0.0f);
 			glRotatef(angle,1,0,0);
 			glTranslatef(-2.05f,0.0f,0.0f);
 			break;
-		
+		default:
+			System.out.println("PROBLEM with rotateFace in Renderer");
 		}	
 	}
 

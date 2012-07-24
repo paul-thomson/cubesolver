@@ -33,6 +33,10 @@ public class Cubie {
 	 */
 	public boolean isOnFace(Face face) {
 		switch (face) {
+		case X:
+		case Y:
+		case Z:
+			return true;
 		case UP:
 			if (position[1] > cubieWidth) {
 				return true;
@@ -82,6 +86,7 @@ public class Cubie {
 		boolean inverse = turn.isInverseTurn();
 		if (inverse) {
 			switch (face) {	
+			case Y:
 			case UP:
 				setFaceColours(new float[][]{	faceColours[0],faceColours[1],
 						faceColours[4],faceColours[5],
@@ -97,7 +102,7 @@ public class Cubie {
 
 				setPosition(new float[]{position[2],position[1],-position[0]});
 				break;
-
+			case Z:
 			case FRONT:
 				setFaceColours(new float[][]{	faceColours[5],faceColours[4],
 						faceColours[2],faceColours[3],
@@ -113,7 +118,7 @@ public class Cubie {
 
 				setPosition(new float[]{position[1],-position[0],position[2]});
 				break;
-
+			
 			case LEFT:
 				setFaceColours(new float[][]{	faceColours[2],faceColours[3],
 						faceColours[1],faceColours[0],
@@ -121,7 +126,7 @@ public class Cubie {
 
 				setPosition(new float[]{position[0],position[2],-position[1]});
 				break;
-
+			case X:
 			case RIGHT:
 				setFaceColours(new float[][]{	faceColours[3],faceColours[2],
 						faceColours[0],faceColours[1],
@@ -132,6 +137,7 @@ public class Cubie {
 			}
 		} else {
 			switch (face) {	
+			case Y:
 			case UP:
 				setFaceColours(new float[][]{	faceColours[0],faceColours[1],
 						faceColours[5],faceColours[4],
@@ -147,7 +153,7 @@ public class Cubie {
 
 				setPosition(new float[]{-position[2],position[1],position[0]});
 				break;
-
+			case Z:
 			case FRONT:
 				setFaceColours(new float[][]{	faceColours[4],faceColours[5],
 						faceColours[2],faceColours[3],
@@ -171,7 +177,7 @@ public class Cubie {
 
 				setPosition(new float[]{position[0],-position[2],position[1]});
 				break;
-
+			case X:
 			case RIGHT:
 				setFaceColours(new float[][]{	faceColours[2],faceColours[3],
 						faceColours[1],faceColours[0],

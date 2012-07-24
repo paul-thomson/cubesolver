@@ -1,89 +1,82 @@
-///**		float[] lightPosition = new float[]{1,1,0,1};
-//		float[] lightAmbient = new float[]{0,0,0,1};
-//		float[] lightDiffuse = new float[]{1,1,1,1};
-//		float[] lightSpecular = new float[]{1,1,1,1};
-//		
-//		ByteBuffer temp = ByteBuffer.allocateDirect(16);
-//		temp.order(ByteOrder.nativeOrder());
-//		glLight(GL_LIGHT1, GL_AMBIENT, (FloatBuffer)temp.asFloatBuffer().put(lightAmbient).flip());              
-//		glLight(GL_LIGHT1, GL_DIFFUSE, (FloatBuffer)temp.asFloatBuffer().put(lightDiffuse).flip());            
-//		glLight(GL_LIGHT1, GL_POSITION,(FloatBuffer)temp.asFloatBuffer().put(lightPosition).flip());  
-//		glLight(GL_LIGHT1, GL_SPECULAR,(FloatBuffer)temp.asFloatBuffer().put(lightSpecular).flip());
-//		glEnable(GL_LIGHT1);  
-//		glEnable(GL_LIGHTING);
-//		
-//		glEnable(GL_COLOR_MATERIAL);
-//		glColorMaterial(GL_AMBIENT_AND_DIFFUSE, GL_EMISSION);
-//		
-//		float[] materialSpecular = new float[]{1,1,1,1};
-//		float[] materialEmission = new float[]{0,0,0,1};
-//		
-//		glMaterial(GL_SPECULAR, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialSpecular).flip());
-//		glMaterial(GL_EMISSION, GL_COLOR, (FloatBuffer)temp.asFloatBuffer().put(materialEmission).flip());
-//TODO REMOVE THIS COMMENT */
-//
-//import java.io.IOException;
-//
-//import org.lwjgl.LWJGLException;
-//import org.lwjgl.opengl.Display;
-//import org.lwjgl.opengl.DisplayMode;
-//
-//import de.matthiasmann.twl.GUI;
-//import de.matthiasmann.twl.renderer.lwjgl.LWJGLRenderer;
-//import de.matthiasmann.twl.theme.ThemeManager;
-//
-//import world.World;
-//
-//public class Main {
-//	public void start() {
-//		try {
-//			Display.setDisplayMode(new DisplayMode(800, 600));
-//			Display.create();
-//		} catch (LWJGLException e) {
-//			e.printStackTrace();
-//			System.exit(0);
-//		}
-//		
-//		
-//		try {
-//			LWJGLRenderer renderer = new LWJGLRenderer();
-//			UserInterface userInterface = new UserInterface();
-//			GUI gui = new GUI(userInterface, renderer);
-//
-//			ThemeManager theme = ThemeManager.createThemeManager(
-//					UserInterface.class.getResource("chutzpah.xml"), renderer);
-//
-//			gui.applyTheme(theme);
-//
-//
-//			World world = new World();
-//			world.initialiseRendering();
-//
-//			while (!Display.isCloseRequested()) {
-//				
-//				world.render();
-//				gui.update();
-//
-//				Display.update();
-//				
-//				Display.sync(60); // cap fps to 60fps
-//				
-//			}
-//
-//			gui.destroy();
-//			theme.destroy();
-//			
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (LWJGLException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		Display.destroy();
-//	}
-//
-//	public static void main(String[] argv) {
-//		Main starter = new Main();
-//		starter.start();
-//	}
-//}
+import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+
+import world.World;
+
+public class Main extends JFrame{
+
+	private static boolean closeRequested = false;
+	private static Dimension openGLSize = new Dimension(750, 500);
+	private static JPanel cubePanel;
+
+	public static void main(String[] args)
+	{
+		Frame frame = new Frame("Cube Solver");
+		frame.setLayout(new BorderLayout());
+		final Canvas canvas = new Canvas();
+		canvas.setSize(openGLSize);
+
+		canvas.addComponentListener(new ComponentAdapter() {
+			//maybe does nothing now?
+		});
+
+		frame.addWindowFocusListener(new WindowAdapter() {
+			@Override
+			public void windowGainedFocus(WindowEvent e)
+			{ canvas.requestFocusInWindow(); }
+		});
+
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e)
+			{ closeRequested = true; }
+		});
+		cubePanel = new CubePanel();
+		
+		frame.add(cubePanel, BorderLayout.EAST);
+		frame.add(canvas, BorderLayout.WEST);
+
+		try {
+			Display.setParent(canvas);
+			Display.setVSyncEnabled(true);
+			
+			frame.setResizable(false);
+			frame.setMinimumSize(new Dimension(1024, 700));
+			frame.pack();
+			frame.setVisible(true);
+			Display.create();
+			
+			World world = new World();
+			world.initialiseRendering();
+
+			while(!Display.isCloseRequested() && !closeRequested)
+			{
+				
+				GL11.glViewport(0, 0, openGLSize.width, openGLSize.height);
+
+				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+				world.render();
+				Display.update();
+			}
+
+			Display.destroy();
+			frame.dispose();
+			System.exit(0);
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+}

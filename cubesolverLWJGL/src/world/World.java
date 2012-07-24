@@ -3,6 +3,7 @@ package world;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import org.lwjgl.input.Keyboard;
 
@@ -18,6 +19,7 @@ public class World {
 	
 	Renderer renderer;
 	RCube cube;
+	LinkedList<Turn> queue = new LinkedList<>();
 	
 	public World() {
 		renderer = new Renderer();
@@ -64,8 +66,6 @@ public class World {
 		
 		//FIXME put this in renderer
 		glPopMatrix();
-//		renderer.init2D();
-//		renderer.render2D();
 		
 	}
 
@@ -73,7 +73,6 @@ public class World {
 	 * Performs some setup which is performed once before the rendering loop starts
 	 */
 	public void initialiseRendering() {
-		renderer.initFont();
 		renderer.getDelta(); // call once before loop to initialise lastFrame
 		renderer.setLastFPS(renderer.getTime()); // call before loop to initialise fps timer		
 	}
@@ -93,6 +92,8 @@ public class World {
 		float rotationAngle = turn.getRotationAngle();
 		boolean inverseTurn = turn.isInverseTurn();
 		
+		//FIXME use case statements
+		
 		if (rotationAngle != 0) {
 			rotationAngle += 0.15f * delta;
 		}
@@ -102,7 +103,7 @@ public class World {
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) ROT_Y += 0.05f * delta;
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) ROT_Y -= 0.05f * delta;
-		
+
 		if (turningFace == Face.NONE) { 
 			if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
 				rotationAngle += 0.15f * delta;
@@ -122,6 +123,15 @@ public class World {
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
 				rotationAngle += 0.15f * delta;
 				turningFace = Face.RIGHT;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+				rotationAngle += 0.15f * delta;
+				turningFace = Face.X;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
+				rotationAngle += 0.15f * delta;
+				turningFace = Face.Y;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+				rotationAngle += 0.15f * delta;
+				turningFace = Face.Z;
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 				inverseTurn = true;
@@ -132,11 +142,17 @@ public class World {
 
 		cube.setRotation(new float[]{ROT_X,ROT_Y,ROT_Z});
 		cube.setTurning(new Turn(turningFace,inverseTurn,rotationAngle));
-		// reset
-		if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-			//FIXME below is silly
-			cube = new RCube(2.0f,0.05f);
-		}
 		renderer.updateFPS(); // update FPS Counter
 	}
+	//TODO
+//	public static String generateString() {
+//		Random rng = new Random();
+//	    char[] text = new char[length];
+//	    for (int i = 0; i < length; i++)
+//	    {
+//	        text[i] = characters.charAt(rng.nextInt(characters.length()));
+//	    }
+//	    return new String(text);
+//	}
+
 }

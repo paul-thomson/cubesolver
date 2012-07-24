@@ -6,10 +6,13 @@ package cube;
  */
 public enum Face {
 	FRONT,
+	Z,
 	BACK,
 	UP,
+	Y,
 	DOWN,
 	LEFT,
 	RIGHT,
+	X,
 	NONE
 }
