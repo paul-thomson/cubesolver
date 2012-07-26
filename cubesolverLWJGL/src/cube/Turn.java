@@ -25,6 +25,11 @@ public class Turn {
 		this.turningFace = turningFace;
 		this.inverseTurn = inverseTurn;
 	}
+	
+	/** Copy constructor */
+	public Turn(Turn turn) {
+		this(turn.getTurningFace(),turn.isInverseTurn(),turn.getRotationAngle());
+	}
 
 	public float getRotationAngle() {
 		return rotationAngle;
@@ -36,5 +41,13 @@ public class Turn {
 
 	public boolean isInverseTurn() {
 		return inverseTurn;
+	}
+	
+	/** 
+	 * Change the rotationAngle of the face by the amount
+	 * @param amount
+	 */
+	public void continueTurning(float amount) {
+		rotationAngle += amount;
 	}
 }

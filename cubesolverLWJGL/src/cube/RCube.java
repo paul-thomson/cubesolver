@@ -1,6 +1,8 @@
 package cube;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Internal representation of a rubik's cube
@@ -32,14 +34,14 @@ public class RCube {
 	/** The list of cubies (should be 27 in length) */
 	ArrayList<Cubie> cubies;
 	/** The current turn the cube is performing */
-	Turn currentTurn;
+	LinkedList<Turn> turnQueue;
 	
 	public RCube(float cubieWidth, float gap) {
 		this.cubieWidth = cubieWidth;
 		this.gap = gap;
 		this.size = cubieWidth + gap;
 		cubies = new ArrayList<Cubie>();
-		currentTurn = new Turn();
+		turnQueue = new LinkedList<>();
 		initCubies();
 	}
 
@@ -86,12 +88,30 @@ public class RCube {
 		return cubies;
 	}
 
+	/** Returns the first element of the turn turnQueue	 */
 	public Turn getTurn() {
-		return currentTurn;
+		if (turnQueue.size() != 0) {
+			return turnQueue.peek();
+		} else {
+			return new Turn();
+		}
 	}
 	
-	public void setTurning(Turn turn) {
-		this.currentTurn = turn;
+	/** Adds the turn to the end of the turn queue */
+	public void addToTurnQueue(Turn turn) {
+		turnQueue.add(turn);
+	}
+	
+	/**
+	 * Used for adding entire algorithms to the queue.
+	 * 
+	 * Not sure about parameter... ???? 
+	 * @param turns
+	 */
+	public void addListToTurnQueue(Iterable<Turn> turns) {
+		for (Turn turn : turns) {
+			addToTurnQueue(turn);
+		}
 	}
 	
 	public float[] getPosition() {
@@ -115,7 +135,14 @@ public class RCube {
 	}
 
 	public void stopTurning() {
-		currentTurn = new Turn();
+		turnQueue.pop();
+	}
+	
+	public boolean isTurning() {
+		return turnQueue.size() > 0;
 	}
 
+	public void continueTurning(float amount) {
+		turnQueue.peek().continueTurning(amount);
+	}
 }

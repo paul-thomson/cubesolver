@@ -3,7 +3,7 @@ package world;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
 
@@ -19,7 +19,7 @@ public class World {
 	
 	Renderer renderer;
 	RCube cube;
-	LinkedList<Turn> queue = new LinkedList<>();
+	
 	
 	public World() {
 		renderer = new Renderer();
@@ -33,11 +33,12 @@ public class World {
 		ArrayList<Cubie> cubies = cube.getCubies();
 		Turn turn = cube.getTurn();
 		Face turningFace = turn.getTurningFace();
-		
+		if (turn.getRotationAngle() >= 90) {
+			cube.stopTurning();
+		}
 		for (Cubie cubie : cubies) {
 			if (cubie.isOnFace(turningFace)) {
 				if (turn.getRotationAngle() >= 90) {
-					cube.stopTurning();
 					cubie.rotateCubieOnFace(turn);
 					renderer.drawCubie(cubie, null);
 				} else {
@@ -83,76 +84,99 @@ public class World {
 	 * @param delta
 	 */
 	public void update(int delta) {
+		//TODO remove all rotation stuff
 		float[] rotations = cube.getRotation();
 		float ROT_X = rotations[0];
 		float ROT_Y = rotations[1];
 		float ROT_Z = rotations[2];
-		Turn turn = cube.getTurn();
+		/* Use a copy of the turn */
+		Turn turn = new Turn(cube.getTurn());
 		Face turningFace = turn.getTurningFace();
-		float rotationAngle = turn.getRotationAngle();
-		boolean inverseTurn = turn.isInverseTurn();
 		
-		//FIXME use case statements
 		
-		if (rotationAngle != 0) {
-			rotationAngle += 0.15f * delta;
+		if (turningFace != Face.NONE) {
+			cube.continueTurning(0.15f * delta);
 		}
+		//FIXME use case statements
+
 		
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) ROT_X -= 0.05f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) ROT_X += 0.05f * delta;
+		//TODO remove later
+//		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) ROT_X -= 0.05f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) ROT_X += 0.05f * delta;
+//
+//		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) ROT_Y += 0.05f * delta;
+//		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) ROT_Y -= 0.05f * delta;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) ROT_Y += 0.05f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) ROT_Y -= 0.05f * delta;
-
-		if (turningFace == Face.NONE) { 
+		if (!cube.isTurning()) { 
 			if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
-				rotationAngle += 0.15f * delta;
 				turningFace = Face.UP;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				rotationAngle += 0.15f * delta;
 				turningFace = Face.DOWN;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
-				rotationAngle += 0.15f * delta;
 				turningFace = Face.FRONT;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-				rotationAngle += 0.15f * delta;
 				turningFace = Face.BACK;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_L)) {
-				rotationAngle += 0.15f * delta;
 				turningFace = Face.LEFT;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
-				rotationAngle += 0.15f * delta;
 				turningFace = Face.RIGHT;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-				rotationAngle += 0.15f * delta;
 				turningFace = Face.X;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
-				rotationAngle += 0.15f * delta;
 				turningFace = Face.Y;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-				rotationAngle += 0.15f * delta;
 				turningFace = Face.Z;
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_K)) {
+				cube.addListToTurnQueue(parseTurnsFromString(generateString(21)));
 			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-				inverseTurn = true;
-			} else {
-				inverseTurn = false;
+			if (turningFace != Face.NONE) { 
+				cube.addToTurnQueue(new Turn(turningFace,Keyboard.isKeyDown(Keyboard.KEY_LSHIFT),0));
 			}
 		}
-
 		cube.setRotation(new float[]{ROT_X,ROT_Y,ROT_Z});
-		cube.setTurning(new Turn(turningFace,inverseTurn,rotationAngle));
 		renderer.updateFPS(); // update FPS Counter
 	}
-	//TODO
-//	public static String generateString() {
-//		Random rng = new Random();
-//	    char[] text = new char[length];
-//	    for (int i = 0; i < length; i++)
-//	    {
-//	        text[i] = characters.charAt(rng.nextInt(characters.length()));
-//	    }
-//	    return new String(text);
-//	}
-
+	
+	/**
+	 * Generates a random string from a list of characters 
+	 * chosen to represent each face of the cube.
+	 * @param length
+	 * @return
+	 */
+	public static String generateString(int length) {
+		String characters = "FBUDLR";
+		Random rng = new Random();
+	    char[] text = new char[length];
+	    for (int i = 0; i < length; i++) {
+	        text[i] = characters.charAt(rng.nextInt(characters.length()));
+	    }
+	    return new String(text);
+	}
+	
+	/**
+	 * Creates a list of Turns from a string of characters. The string will be a list 
+	 * of initials to represent each face of the cube, optionally followed by a ' to indicate 
+	 * and inverse turn.
+	 * FIXME currently will error if ' is present at the beginning
+	 * @param turns
+	 * @return
+	 */
+	public static ArrayList<Turn> parseTurnsFromString(String turns) {
+		ArrayList<Turn> turnsToReturn = new ArrayList<Turn>();
+		
+		for (int i = turns.length() - 1; i >= 0; i--) {
+			boolean inverseTurn = false;
+			if (turns.charAt(i) == '\'') {
+				//prime turn
+				inverseTurn = true;
+				i--;
+			}
+			turnsToReturn.add(new Turn(
+					Face.getFaceFromChar(turns.charAt(i)), 
+					inverseTurn, 
+					0
+					));
+		}
+		return turnsToReturn;
+	}
 }
