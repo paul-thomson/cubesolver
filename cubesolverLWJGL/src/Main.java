@@ -43,7 +43,8 @@ public class Main extends JFrame{
 			public void windowClosing(WindowEvent e)
 			{ closeRequested = true; }
 		});
-		cubePanel = new CubePanel();
+		World world = new World();
+		cubePanel = new CubePanel(world);
 		
 		frame.add(cubePanel, BorderLayout.EAST);
 		frame.add(canvas, BorderLayout.WEST);
@@ -58,7 +59,6 @@ public class Main extends JFrame{
 			frame.setVisible(true);
 			Display.create();
 			
-			World world = new World();
 			world.initialiseRendering();
 
 			while(!Display.isCloseRequested() && !closeRequested)

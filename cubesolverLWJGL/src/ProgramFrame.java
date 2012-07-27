@@ -56,7 +56,7 @@ public class ProgramFrame extends JFrame {
 		lblStage.setFont(new Font("Tahoma", Font.PLAIN, 26));
 		
 		JLabel lblNewLabel = new JLabel();
-		lblNewLabel.setIcon(new ImageIcon(ProgramFrame.class.getResource("/gui/firststageicon.png")));
+
 		
 		JTextArea txtrToGetThe = new JTextArea();
 		txtrToGetThe.setWrapStyleWord(true);
@@ -72,6 +72,9 @@ public class ProgramFrame extends JFrame {
 		
 		JLabel lblf = new JLabel("2F");
 		lblf.setIcon(new ImageIcon(ProgramFrame.class.getResource("/gui/s1hint1.png")));
+		
+		JLabel lblLUL = new JLabel("L' U' L");
+		lblf.setIcon(new ImageIcon(ProgramFrame.class.getResource("/gui/s1hint3.png")));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -86,7 +89,8 @@ public class ProgramFrame extends JFrame {
 								.addComponent(txtrToGetThe, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(ComponentPlacement.RELATED)
 								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)))
-						.addComponent(label))
+						.addComponent(label)
+						.addComponent(lblLUL))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -100,10 +104,12 @@ public class ProgramFrame extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(24)
 							.addComponent(txtrToGetThe, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
 					.addComponent(lblf)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(label)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(lblLUL)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblAlgorithmGoesHere)
 					.addContainerGap())

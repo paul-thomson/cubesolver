@@ -37,7 +37,7 @@ public enum Face {
 		case('X'):
 			return X;
 		default:
-			System.err.println("Could not find face from char");
+			System.err.println("Could not find face from char : " + character);
 			return NONE;
 		}
 	}

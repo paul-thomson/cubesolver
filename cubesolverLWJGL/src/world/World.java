@@ -84,28 +84,14 @@ public class World {
 	 * @param delta
 	 */
 	public void update(int delta) {
-		//TODO remove all rotation stuff
-		float[] rotations = cube.getRotation();
-		float ROT_X = rotations[0];
-		float ROT_Y = rotations[1];
-		float ROT_Z = rotations[2];
 		/* Use a copy of the turn */
 		Turn turn = new Turn(cube.getTurn());
 		Face turningFace = turn.getTurningFace();
-		
 		
 		if (turningFace != Face.NONE) {
 			cube.continueTurning(0.15f * delta);
 		}
 		//FIXME use case statements
-
-		
-		//TODO remove later
-//		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) ROT_X -= 0.05f * delta;
-//		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) ROT_X += 0.05f * delta;
-//
-//		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) ROT_Y += 0.05f * delta;
-//		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) ROT_Y -= 0.05f * delta;
 
 		if (!cube.isTurning()) { 
 			if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
@@ -133,7 +119,6 @@ public class World {
 				cube.addToTurnQueue(new Turn(turningFace,Keyboard.isKeyDown(Keyboard.KEY_LSHIFT),0));
 			}
 		}
-		cube.setRotation(new float[]{ROT_X,ROT_Y,ROT_Z});
 		renderer.updateFPS(); // update FPS Counter
 	}
 	
@@ -157,11 +142,12 @@ public class World {
 	 * Creates a list of Turns from a string of characters. The string will be a list 
 	 * of initials to represent each face of the cube, optionally followed by a ' to indicate 
 	 * and inverse turn.
-	 * FIXME currently will error if ' is present at the beginning
+	 * FIXME currently will error if ' is present at the beginning, also do other sanitise stuff
 	 * @param turns
 	 * @return
 	 */
 	public static ArrayList<Turn> parseTurnsFromString(String turns) {
+		turns = turns.replaceAll(" ", "");
 		ArrayList<Turn> turnsToReturn = new ArrayList<Turn>();
 		
 		for (int i = turns.length() - 1; i >= 0; i--) {
@@ -171,12 +157,16 @@ public class World {
 				inverseTurn = true;
 				i--;
 			}
-			turnsToReturn.add(new Turn(
+			turnsToReturn.add(0,new Turn(
 					Face.getFaceFromChar(turns.charAt(i)), 
 					inverseTurn, 
 					0
 					));
 		}
 		return turnsToReturn;
+	}
+	
+	public void performTurns(ArrayList<Turn> turns) {
+		cube.addListToTurnQueue(turns);
 	}
 }
