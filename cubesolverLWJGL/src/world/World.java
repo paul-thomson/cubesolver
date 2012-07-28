@@ -149,7 +149,7 @@ public class World {
 	public static ArrayList<Turn> parseTurnsFromString(String turns) {
 		turns = turns.replaceAll(" ", "");
 		ArrayList<Turn> turnsToReturn = new ArrayList<Turn>();
-		
+
 		for (int i = turns.length() - 1; i >= 0; i--) {
 			boolean inverseTurn = false;
 			if (turns.charAt(i) == '\'') {
