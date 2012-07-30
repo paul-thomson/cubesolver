@@ -19,7 +19,6 @@ public class Main extends JFrame{
 
 	private static boolean closeRequested = false;
 	private static Dimension openGLSize = new Dimension(750, 500);
-	private static JPanel cubePanel;
 
 	public static void main(String[] args)
 	{
@@ -44,9 +43,16 @@ public class Main extends JFrame{
 			{ closeRequested = true; }
 		});
 		World world = new World();
-		cubePanel = new CubePanel(world);
 		
-		frame.add(cubePanel, BorderLayout.EAST);
+//		cubePanel = new CubePanelOld(world);
+		CubePanelInfo panelInfo = new CubePanelInfo("Stage One - Cross", "firststageicon.png","To get the cross you turn the top layer to get a bottom layer piece above the correct position. Then perform the correct algorithm below:");
+		panelInfo.addHint("F F", "s1hint1.png", "The edge is now oriented correctly so swivel it around into the correct position");
+		panelInfo.addHint("U' R' F R", "s1hint2.png", "The edge is not oriented correctly so we position and orient it at the same time. Notice the second R ensures we do not ruin other cross pieces");
+		panelInfo.addHint("L' U' L", "s1hint3.png", "If you need to move an edge piece which will then affect and correct cross piece remember to put the cross piece back");
+		
+		CubePanelTemplate cubePanel = new CubePanelTemplate(world,panelInfo);
+		
+		frame.add(cubePanel, BorderLayout.EAST);		
 		frame.add(canvas, BorderLayout.WEST);
 
 		try {
