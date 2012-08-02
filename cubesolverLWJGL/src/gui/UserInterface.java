@@ -1,3 +1,5 @@
+package gui;
+
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Dimension;
@@ -6,24 +8,25 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
+import main.Main;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
+import world.EventHandler;
 
-import world.World;
-
-public class Main extends JFrame {
-
-	private static boolean closeRequested = false;
-	private static Dimension openGLSize = new Dimension(750, 500);
-
-	public static void main(String[] args)
-	{
-		Frame frame = new Frame("Cube Solver");
+public class UserInterface {
+	
+	Frame frame;
+	Canvas canvas;
+	public static Dimension openGLSize = new Dimension(750, 500);
+	EventHandler eventHandler;
+	
+	public UserInterface(EventHandler eventHandler) {
+		this.eventHandler = eventHandler;
+	}
+	
+	public void setup() {
+		frame = new Frame("Cube Solver");
 		frame.setLayout(new BorderLayout());
-		final Canvas canvas = new Canvas();
+		canvas = new Canvas();
 		canvas.setSize(openGLSize);
 
 		canvas.addComponentListener(new ComponentAdapter() {
@@ -39,9 +42,8 @@ public class Main extends JFrame {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e)
-			{ closeRequested = true; }
+			{ Main.requestClose(); }
 		});
-		World world = new World();
 		
 		CubePanelInfo panelInfo1 = new CubePanelInfo("Stage One - Cross", "firststageicon.png","To get the cross you turn the top layer to get a bottom layer piece above the correct position. Then perform the correct algorithm below:");
 		panelInfo1.addHint("F F", "s1hint1.png", "The edge is now oriented correctly so swivel it around into the correct position");
@@ -70,42 +72,25 @@ public class Main extends JFrame {
 		panelInfo6.addHint("R' F R' B B R F' R' B B R R", "s6hint2.png", "To get headlights simply perform the algorithm then reevaluate");
 		
 		CubePanelInfo panelInfo7 = new CubePanelInfo("Stage 7 - Edge positioning", "s7icon.png", "Put the solved edge to the back of the cube and perform the algorithm until the other edges are solved");
-		panelInfo7.addHint("R U' R U R U R u' R' U' R R", "s7hint1.png", "Perform the algorithm until the edges are positioned correctly");
-		panelInfo7.addHint("R U' R U R U R u' R' U' R R", "s7hint2.png", "No edges are solved so perform the algorithm to solve one edge");
+		panelInfo7.addHint("R U' R U R U R U' R' U' R R", "s7hint1.png", "Perform the algorithm until the edges are positioned correctly");
+		panelInfo7.addHint("R U' R U R U R U' R' U' R R", "s7hint2.png", "No edges are solved so perform the algorithm to solve one edge");
 		
-		
-		CubePanelTemplate cubePanel = new CubePanelTemplate(world,panelInfo7);
+		CubePanelTemplate cubePanel = new CubePanelTemplate(eventHandler,panelInfo7);
 		
 		frame.add(cubePanel, BorderLayout.EAST);		
-		frame.add(canvas, BorderLayout.WEST);
-
-		try {
-			Display.setParent(canvas);
-			Display.setVSyncEnabled(true);
-			
-			frame.setResizable(false);
-			frame.setMinimumSize(new Dimension(1024, 700));
-			frame.pack();
-			frame.setVisible(true);
-			Display.create();
-			
-			world.initialiseRendering();
-
-			while(!Display.isCloseRequested() && !closeRequested) {
-				
-				GL11.glViewport(0, 0, openGLSize.width, openGLSize.height);
-
-				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-				world.render();
-				Display.update();
-			}
-
-			Display.destroy();
-			frame.dispose();
-			System.exit(0);
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-		}
+		frame.add(canvas, BorderLayout.WEST);		
+		frame.setResizable(false);
+		frame.setMinimumSize(new Dimension(1024, 700));
+		frame.pack();
+		frame.setVisible(true);
 	}
 	
+	public Canvas getCanvas() {
+		return canvas;
+	}
+	
+	public void dispose() {
+		frame.dispose();
+	}
+
 }

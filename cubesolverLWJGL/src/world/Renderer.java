@@ -34,64 +34,25 @@ import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glShadeModel;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex3f;
+import main.Main;
 
-import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.newdawn.slick.Color;
 
 import cube.Cubie;
 import cube.Face;
 import cube.RCube;
 import cube.Turn;
 
+
 /**
  * The class used for rendering the {@link World} and the GUI.
  */
 public class Renderer {
 		
-	//TODO move into constructor
-	/** time at last frame */
-	long lastFrame;
-	/** frames per second */
-	int fps;
-	/** last fps time */
-	private long lastFPS;
-	
-	/** 
-	 * Calculate how many milliseconds have passed 
-	 * since last frame.
-	 * 
-	 * @return milliseconds passed since last frame 
-	 */
-	public int getDelta() {
-		long time = getTime();
-		int delta = (int) (time - lastFrame);
-		lastFrame = time;
-		return delta;
-	}
-
-	/**
-	 * Get the accurate system time
-	 * 
-	 * @return The system time in milliseconds
-	 */
-	public long getTime() {
-		// TODO MOVE INTO UTILS OR SOMETHING
-		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-	}
-
-	/**
-	 * Calculate the FPS and set it in the title bar
-	 */
-	public void updateFPS() {
-		if (getTime() - getLastFPS() > 1000) {
-			Display.setTitle("FPS: " + fps);
-			fps = 0;
-			setLastFPS(getLastFPS() + 1000);
-		}
-		fps++;
-	}
 	
 	/**
 	 * Change OpenGL into a suitable mode for drawing 2D images 
@@ -140,6 +101,11 @@ public class Renderer {
 		glMatrixMode(GL_MODELVIEW);
 
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+		
+		//TODO texture stuff
+		Color.white.bind();
+		Main.texture.bind();
+		
 	}
 
 	/**
@@ -153,9 +119,9 @@ public class Renderer {
 		float[] position = cube.getPosition();
 		float POS_X = position[0], POS_Y = position[1], POS_Z = position[2];
 		float[] rotation = cube.getRotation();
-		float ROT_X = rotation[0], ROT_Y = rotation[1], ROT_Z = rotation[2];
+		float ROT_X = rotation[0], ROT_Y = rotation[1];// ROT_Z = rotation[2];
 		
-		glLoadIdentity();                   // Reset The Current Modelview Matrix
+		glLoadIdentity();
 		glTranslatef(POS_X,POS_Y,POS_Z);
 		glRotatef(ROT_X, 1, 0, 0);
 		glRotatef(ROT_Y, 0, 1, 0);
@@ -190,44 +156,107 @@ public class Renderer {
 	 * @param c Right
 	 */
 	private void drawSmallCube(float[][] c) {
+//		glBegin(GL_QUADS);
+//		glColor3f(c[0][0],c[0][1],c[0][2]);             // Set The Color To Green
+//		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Top)
+//		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Top)
+//		glVertex3f(-1.0f, 1.0f, 1.0f);         // Bottom Left Of The Quad (Top)
+//		glVertex3f( 1.0f, 1.0f, 1.0f);         // Bottom Right Of The Quad (Top)
+//		
+//		glColor3f(c[1][0],c[1][1],c[1][2]);             // Set The Color To Orange
+//		glVertex3f( 1.0f,-1.0f, 1.0f);         // Top Right Of The Quad (Bottom)
+//		glVertex3f(-1.0f,-1.0f, 1.0f);         // Top Left Of The Quad (Bottom)
+//		glVertex3f(-1.0f,-1.0f,-1.0f);         // Bottom Left Of The Quad (Bottom)
+//		glVertex3f( 1.0f,-1.0f,-1.0f);         // Bottom Right Of The Quad (Bottom)
+//		
+//		glColor3f(c[2][0],c[2][1],c[2][2]);             // Set The Color To Red
+//		glVertex3f( 1.0f, 1.0f, 1.0f);         // Top Right Of The Quad (Front)
+//		glVertex3f(-1.0f, 1.0f, 1.0f);         // Top Left Of The Quad (Front)
+//		glVertex3f(-1.0f,-1.0f, 1.0f);         // Bottom Left Of The Quad (Front)
+//		glVertex3f( 1.0f,-1.0f, 1.0f);         // Bottom Right Of The Quad (Front)
+//		
+//		glColor3f(c[3][0],c[3][1],c[3][2]);             // Set The Color To Yellow
+//		glVertex3f( 1.0f,-1.0f,-1.0f);         // Bottom Left Of The Quad (Back)
+//		glVertex3f(-1.0f,-1.0f,-1.0f);         // Bottom Right Of The Quad (Back)
+//		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Back)
+//		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Back)
+//		
+//		glColor3f(c[4][0],c[4][1],c[4][2]);             // Set The Color To Blue
+//		glVertex3f(-1.0f, 1.0f, 1.0f);         // Top Right Of The Quad (Left)
+//		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Left)
+//		glVertex3f(-1.0f,-1.0f,-1.0f);         // Bottom Left Of The Quad (Left)
+//		glVertex3f(-1.0f,-1.0f, 1.0f);         // Bottom Right Of The Quad (Left)
+//		
+//		glColor3f(c[5][0],c[5][1],c[5][2]);             // Set The Color To Violet
+//		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Right)
+//		glVertex3f( 1.0f, 1.0f, 1.0f);         // Top Left Of The Quad (Right)
+//		glVertex3f( 1.0f,-1.0f, 1.0f);         // Bottom Left Of The Quad (Right)
+//		glVertex3f( 1.0f,-1.0f,-1.0f);         // Bottom Right Of The Quad (Right)
+//		glEnd();
+
 		glBegin(GL_QUADS);
 		glColor3f(c[0][0],c[0][1],c[0][2]);             // Set The Color To Green
+		GL11.glTexCoord2f(1,0);
 		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Top)
+		GL11.glTexCoord2f(0,0);
 		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Top)
+		GL11.glTexCoord2f(0,1);
 		glVertex3f(-1.0f, 1.0f, 1.0f);         // Bottom Left Of The Quad (Top)
+		GL11.glTexCoord2f(1,1);
 		glVertex3f( 1.0f, 1.0f, 1.0f);         // Bottom Right Of The Quad (Top)
 		
 		glColor3f(c[1][0],c[1][1],c[1][2]);             // Set The Color To Orange
+		GL11.glTexCoord2f(1,0);
 		glVertex3f( 1.0f,-1.0f, 1.0f);         // Top Right Of The Quad (Bottom)
+		GL11.glTexCoord2f(0,0);
 		glVertex3f(-1.0f,-1.0f, 1.0f);         // Top Left Of The Quad (Bottom)
+		GL11.glTexCoord2f(0,1);
 		glVertex3f(-1.0f,-1.0f,-1.0f);         // Bottom Left Of The Quad (Bottom)
+		GL11.glTexCoord2f(1,1);
 		glVertex3f( 1.0f,-1.0f,-1.0f);         // Bottom Right Of The Quad (Bottom)
 		
 		glColor3f(c[2][0],c[2][1],c[2][2]);             // Set The Color To Red
+		GL11.glTexCoord2f(1,0);
 		glVertex3f( 1.0f, 1.0f, 1.0f);         // Top Right Of The Quad (Front)
+		GL11.glTexCoord2f(0,0);
 		glVertex3f(-1.0f, 1.0f, 1.0f);         // Top Left Of The Quad (Front)
+		GL11.glTexCoord2f(0,1);
 		glVertex3f(-1.0f,-1.0f, 1.0f);         // Bottom Left Of The Quad (Front)
+		GL11.glTexCoord2f(1,1);
 		glVertex3f( 1.0f,-1.0f, 1.0f);         // Bottom Right Of The Quad (Front)
 		
 		glColor3f(c[3][0],c[3][1],c[3][2]);             // Set The Color To Yellow
+		GL11.glTexCoord2f(0,1);
 		glVertex3f( 1.0f,-1.0f,-1.0f);         // Bottom Left Of The Quad (Back)
+		GL11.glTexCoord2f(1,1);
 		glVertex3f(-1.0f,-1.0f,-1.0f);         // Bottom Right Of The Quad (Back)
+		GL11.glTexCoord2f(1,0);
 		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Back)
+		GL11.glTexCoord2f(0,0);
 		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Back)
 		
 		glColor3f(c[4][0],c[4][1],c[4][2]);             // Set The Color To Blue
+		GL11.glTexCoord2f(1,0);
 		glVertex3f(-1.0f, 1.0f, 1.0f);         // Top Right Of The Quad (Left)
+		GL11.glTexCoord2f(0,0);
 		glVertex3f(-1.0f, 1.0f,-1.0f);         // Top Left Of The Quad (Left)
+		GL11.glTexCoord2f(0,1);
 		glVertex3f(-1.0f,-1.0f,-1.0f);         // Bottom Left Of The Quad (Left)
+		GL11.glTexCoord2f(1,1);
 		glVertex3f(-1.0f,-1.0f, 1.0f);         // Bottom Right Of The Quad (Left)
 		
 		glColor3f(c[5][0],c[5][1],c[5][2]);             // Set The Color To Violet
+		GL11.glTexCoord2f(1,0);
 		glVertex3f( 1.0f, 1.0f,-1.0f);         // Top Right Of The Quad (Right)
+		GL11.glTexCoord2f(0,0);
 		glVertex3f( 1.0f, 1.0f, 1.0f);         // Top Left Of The Quad (Right)
+		GL11.glTexCoord2f(0,1);
 		glVertex3f( 1.0f,-1.0f, 1.0f);         // Bottom Left Of The Quad (Right)
+		GL11.glTexCoord2f(1,1);
 		glVertex3f( 1.0f,-1.0f,-1.0f);         // Bottom Right Of The Quad (Right)
 		glEnd();
 
+		
 	}
 
 	/**
@@ -284,16 +313,7 @@ public class Renderer {
 			glTranslatef(-2.05f,0.0f,0.0f);
 			break;
 		default:
-			System.out.println("PROBLEM with rotateFace in Renderer");
+			System.err.println("PROBLEM with rotateFace in Renderer");
 		}	
 	}
-
-	public long getLastFPS() {
-		return lastFPS;
-	}
-
-	public void setLastFPS(long lastFPS) {
-		this.lastFPS = lastFPS;
-	}
-
 }

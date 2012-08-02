@@ -1,5 +1,4 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+package gui;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -12,19 +11,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import world.World;
+import world.EventHandler;
 
 
-public class CubePanelTemplate extends JPanel implements ActionListener {
-	World world;
+@SuppressWarnings("serial")
+public class CubePanelTemplate extends JPanel {
+	EventHandler eventHandler;
 	JLabel title;
 	JLabel bottomTextBox;
 	JTextArea summary;
 	JLabel summaryIcon;
 	ArrayList<Hint> hints;
 	
-	public CubePanelTemplate(World world, CubePanelInfo panelInfo) {
-		this.world = world;
+	public CubePanelTemplate(EventHandler eventHandler, CubePanelInfo panelInfo) {
+		this.eventHandler = eventHandler;
 		title = panelInfo.getTitle();
 		bottomTextBox = panelInfo.getBottomTextBox();
 		summary = panelInfo.getSummary();
@@ -52,7 +52,7 @@ public class CubePanelTemplate extends JPanel implements ActionListener {
 			JButton button = hints.get(i).getButton();
 			JTextArea hintText = hints.get(i).getText();
 			button.setActionCommand(button.getText());
-			button.addActionListener(this);
+			button.addActionListener(eventHandler);
 			
 			horizontalHintGroup.addComponent(button, Alignment.LEADING,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
 			horizontalHintTextGroup.addComponent(hintText, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE);
@@ -94,12 +94,6 @@ public class CubePanelTemplate extends JPanel implements ActionListener {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(verticalGroup));
 		setLayout(groupLayout);
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		world.performTurns(World.parseTurnsFromString(e.getActionCommand()));
 		
 	}
 

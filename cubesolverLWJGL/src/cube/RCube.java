@@ -1,7 +1,6 @@
 package cube;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -18,10 +17,10 @@ public class RCube {
 	float[] red = new float[]{1.0f,0.0f,0.0f};
 	float[] green = new float[]{0.0f,1.0f,0.0f};
 	float[] blue = new float[]{0.0f,0.0f,1.0f};
-	float[] orange = new float[]{1.0f,0.4f,0.1f};
-	float[] yellow = new float[]{1.0f,1.0f,0.1f};
+	float[] orange = new float[]{1.0f,0.35f,0.0f};
+	float[] yellow = new float[]{1.0f,1.0f,0.0f};
 	float[] white = new float[]{1.0f,1.0f,1.0f};
-	float[] black = new float[]{0.2f,0.2f,0.2f};
+	float[] black = new float[]{0.0f,0.0f,0.0f};
 	
 	/** Unused */
 	float[][] cube = new float[][]{yellow,white,red,orange,blue,green};

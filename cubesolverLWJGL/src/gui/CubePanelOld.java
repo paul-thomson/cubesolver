@@ -1,3 +1,4 @@
+package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +13,11 @@ import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
+import world.EventHandler;
 import world.World;
 
 
+@SuppressWarnings("serial")
 public class CubePanelOld extends JPanel implements ActionListener {
 	World world;
 
@@ -142,6 +145,6 @@ public class CubePanelOld extends JPanel implements ActionListener {
 		setLayout(groupLayout);
 	}
 	public void actionPerformed(ActionEvent e) {
-		world.performTurns(World.parseTurnsFromString(e.getActionCommand()));
+		world.performTurns(EventHandler.parseTurnsFromString(e.getActionCommand()));
 	}
 }

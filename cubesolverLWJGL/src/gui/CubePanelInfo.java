@@ -1,14 +1,13 @@
+package gui;
 import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-
-public class CubePanelInfo extends JPanel {
+public class CubePanelInfo {
 	public static Font titleFont = new Font("Tahoma", Font.PLAIN, 26);
 	private JLabel title;
 	private JLabel summaryIcon;
@@ -22,7 +21,7 @@ public class CubePanelInfo extends JPanel {
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 
 		summaryIcon = new JLabel("");
-		summaryIcon.setIcon(new ImageIcon(CubePanelInfo.class.getResource(summaryIconPath)));
+		summaryIcon.setIcon(new ImageIcon(getClass().getClassLoader().getResource(summaryIconPath)));
 
 		summary = new JTextArea(summaryText);
 		summary.setLineWrap(true);
