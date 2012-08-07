@@ -31,9 +31,6 @@ public class CubePanelTemplate extends JPanel {
 		summaryIcon = panelInfo.getSummaryIcon();
 		hints = panelInfo.getHints();
 
-		
-		
-		
 		GroupLayout groupLayout = new GroupLayout(this);
 		
 		ParallelGroup horizontalHintGroup = groupLayout.createParallelGroup(Alignment.TRAILING,false);
@@ -52,7 +49,7 @@ public class CubePanelTemplate extends JPanel {
 			JButton button = hints.get(i).getButton();
 			JTextArea hintText = hints.get(i).getText();
 			button.setActionCommand(button.getText());
-			button.addActionListener(eventHandler);
+			button.addActionListener(this.eventHandler);
 			
 			horizontalHintGroup.addComponent(button, Alignment.LEADING,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
 			horizontalHintTextGroup.addComponent(hintText, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE);
@@ -93,6 +90,7 @@ public class CubePanelTemplate extends JPanel {
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(verticalGroup));
+		
 		setLayout(groupLayout);
 		
 	}

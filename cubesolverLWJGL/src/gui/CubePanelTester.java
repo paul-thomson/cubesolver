@@ -18,13 +18,13 @@ import world.World;
 
 
 @SuppressWarnings("serial")
-public class CubePanelBuilder extends JPanel implements ActionListener {
+public class CubePanelTester extends JPanel implements ActionListener {
 	World world;
 
 	/**
 	 * Create the panel.
 	 */
-	public CubePanelBuilder(World world) {
+	public CubePanelTester(World world) {
 		this.world = world;
 		
 		JLabel title = new JLabel("Stage One - Cross");
@@ -32,7 +32,7 @@ public class CubePanelBuilder extends JPanel implements ActionListener {
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JLabel summaryIcon = new JLabel("");
-		summaryIcon.setIcon(new ImageIcon(CubePanelBuilder.class.getResource("firststageicon.png")));
+		summaryIcon.setIcon(new ImageIcon(CubePanelTester.class.getResource("firststageicon.png")));
 		
 		JTextArea summary = new JTextArea("To get the cross you turn the top layer to get a bottom layer piece above the correct position. Then perform the correct algorithm below:");
 		summary.setLineWrap(true);
@@ -44,7 +44,7 @@ public class CubePanelBuilder extends JPanel implements ActionListener {
 		bottomTextBox.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JButton hint1Button = new JButton("F F");
-		hint1Button.setIcon(new ImageIcon(CubePanelBuilder.class.getResource("s1hint1.png")));
+		hint1Button.setIcon(new ImageIcon(CubePanelTester.class.getResource("s1hint1.png")));
 		hint1Button.setVerticalTextPosition(SwingConstants.BOTTOM);
 		hint1Button.setHorizontalTextPosition(SwingConstants.CENTER);
 		JTextArea hint1Text = new JTextArea("The edge is now oriented correctly so swivel it around into the correct position");
@@ -53,7 +53,7 @@ public class CubePanelBuilder extends JPanel implements ActionListener {
 		hint1Text.setLineWrap(true);
 		
 		JButton hint2Button = new JButton("U' R' F R");
-		hint2Button.setIcon(new ImageIcon(CubePanelBuilder.class.getResource("s1hint2.png")));
+		hint2Button.setIcon(new ImageIcon(CubePanelTester.class.getResource("s1hint2.png")));
 		hint2Button.setVerticalTextPosition(SwingConstants.BOTTOM);
 		hint2Button.setHorizontalTextPosition(SwingConstants.CENTER);
 		JTextArea hint2Text = new JTextArea("The edge is not oriented correctly so we position and orient it at the same time. Notice the second R ensures we do not ruin other cross pieces");
@@ -62,7 +62,7 @@ public class CubePanelBuilder extends JPanel implements ActionListener {
 		hint2Text.setLineWrap(true);
 
 		JButton hint3Button = new JButton("L' U' L");
-		hint3Button.setIcon(new ImageIcon(CubePanelBuilder.class.getResource("s1hint3.png")));
+		hint3Button.setIcon(new ImageIcon(CubePanelTester.class.getResource("s1hint3.png")));
 		hint3Button.setVerticalTextPosition(SwingConstants.BOTTOM);
 		hint3Button.setHorizontalTextPosition(SwingConstants.CENTER);
 		JTextArea hint3Text = new JTextArea("If you need to move an edge piece which will then affect and correct cross piece remember to put the cross piece back");

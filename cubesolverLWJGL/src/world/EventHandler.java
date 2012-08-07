@@ -16,21 +16,15 @@ import cube.Turn;
 public class EventHandler implements ActionListener {
 
 	World world;
-
+	long lastFrame;
+	int fps;
+	private long lastFPS;
+	
 	public EventHandler(World world) {
 		this.world = world;
 		getDelta(); // call once before loop to initialise lastFrame
 		setLastFPS(getTime()); // call before loop to initialise fps timer		
 	}
-
-	/** time at last frame */
-	long lastFrame;
-	/** frames per second */
-	int fps;
-	/** last fps time */
-	private long lastFPS;
-
-
 
 	/**
 	 * An event handler. Deals with input from the keyboard and updates the necessary 
