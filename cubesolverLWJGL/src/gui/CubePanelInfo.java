@@ -3,16 +3,19 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+
+import solver.Solver;
 
 public class CubePanelInfo {
 	public static Font titleFont = new Font("Tahoma", Font.PLAIN, 26);
 	private JLabel title;
 	private JLabel summaryIcon;
 	private JTextArea summary;
-	private JLabel bottomTextBox;
+	private JButton bottomTextBox;
 	private ArrayList<Hint> hints;
 
 	public CubePanelInfo(String titleText, String summaryIconPath, String summaryText) {
@@ -28,9 +31,10 @@ public class CubePanelInfo {
 		summary.setWrapStyleWord(true);
 		summary.setOpaque(false);
 
-		bottomTextBox = new JLabel("ALGORITHM GOES HERE");
+		bottomTextBox = new JButton("ALGORITHM GOES HERE");
 		bottomTextBox.setFont(titleFont);
 		bottomTextBox.setHorizontalAlignment(SwingConstants.CENTER);
+		bottomTextBox.addActionListener(new Solver());
 		
 		hints = new ArrayList<Hint>();
 	}
@@ -55,7 +59,7 @@ public class CubePanelInfo {
 		return summary;
 	}
 
-	public JLabel getBottomTextBox() {
+	public JButton getBottomTextBox() {
 		return bottomTextBox;
 	}
 

@@ -1,7 +1,5 @@
 package world;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,15 +11,13 @@ import cube.Face;
 import cube.RCube;
 import cube.Turn;
 
-public class EventHandler implements ActionListener {
+public class EventHandler {
 
-	World world;
 	long lastFrame;
 	int fps;
 	private long lastFPS;
 	
-	public EventHandler(World world) {
-		this.world = world;
+	public EventHandler() {
 		getDelta(); // call once before loop to initialise lastFrame
 		setLastFPS(getTime()); // call before loop to initialise fps timer		
 	}
@@ -132,7 +128,7 @@ public class EventHandler implements ActionListener {
 	 * Creates a list of Turns from a string of characters. The string will be a list 
 	 * of initials to represent each face of the cube, optionally followed by a ' to indicate 
 	 * and inverse turn.
-	 * FIXME currently will error if ' is present at the beginning, also do other sanitise stuff
+	 * FIXME currently will error if ' is present at the beginning, also do other sanitisation
 	 * @param turns
 	 * @return
 	 */
@@ -154,11 +150,6 @@ public class EventHandler implements ActionListener {
 					));
 		}
 		return turnsToReturn;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		world.performTurns(EventHandler.parseTurnsFromString(e.getActionCommand()));	
 	}
 
 }

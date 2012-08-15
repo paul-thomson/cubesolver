@@ -19,15 +19,15 @@ import cube.Turn;
  */
 public class World {
 	
-	Renderer renderer;
-	EventHandler eventHandler;
-	RCube cube;
+	private Renderer renderer;
+	private EventHandler eventHandler;
+	private RCube cube;
 	
 	
 	public World() {
 		renderer = new Renderer();	
 		cube = new RCube(2.0f,0.05f);
-		eventHandler = new EventHandler(this);
+		eventHandler = new EventHandler();
 	}
 
 	/**
@@ -76,7 +76,11 @@ public class World {
 		cube.addListToTurnQueue(turns);
 	}
 	
-	public EventHandler getEventHandler() {
-		return eventHandler;
+//	public EventHandler getEventHandler() {
+//		return eventHandler;
+//	}
+	
+	public RCube getCube() {
+		return this.cube;
 	}
 }

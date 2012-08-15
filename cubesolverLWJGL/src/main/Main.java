@@ -23,7 +23,9 @@ public class Main {
 	public static void main(String[] args)
 	{
 		World world = new World();
-		userInterface = new UserInterface(world.getEventHandler());
+		God.setWorld(world);
+		God.setCube(world.getCube());
+		userInterface = new UserInterface();
 		userInterface.setup();
 
 		try {
@@ -38,12 +40,10 @@ public class Main {
 			  try {
 				  texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/testtexture.png"));
 				  
-				  System.out.println("Texture loaded: "+texture);
 				  System.out.println(">> Image width: "+texture.getImageWidth());
 				  System.out.println(">> Image height: "+texture.getImageHeight());
 				  System.out.println(">> Texture width: "+texture.getTextureWidth());
 				  System.out.println(">> Texture height: "+texture.getTextureHeight());
-				  System.out.println(">> Texture ID: "+texture.getTextureID());
 				  
 				  
 			} catch (IOException e) {

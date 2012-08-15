@@ -83,17 +83,23 @@ public class RCube {
 		cubies.add(new Cubie(new float[]{-size,0,-size}, new float[][]{black,black,black,orange,blue,black},cubieWidth,gap)); 		// middle left
 	}
 	
-	public ArrayList<Cubie> getCubies() {
-		return cubies;
-	}
-
-	/** Returns the first element of the turn turnQueue	 */
-	public Turn getTurn() {
-		if (turnQueue.size() != 0) {
-			return turnQueue.peek();
-		} else {
-			return new Turn();
+	public Cubie getCubie(float[][] faces) {
+		
+		ArrayList<float[]> wantedColours = new ArrayList<float[]>();
+		for (float[] colour : faces) {
+			wantedColours.add(colour);
 		}
+		wantedColours.add(black);
+		
+		for (Cubie cubie : cubies) {
+			for (float[] colour : cubie.getFaceColours()) {
+				if (!wantedColours.contains(colour)) {
+					break;
+				}
+			}
+		}
+		
+		return null;
 	}
 	
 	/** Adds the turn to the end of the turn queue */
@@ -110,6 +116,24 @@ public class RCube {
 	public void addListToTurnQueue(Iterable<Turn> turns) {
 		for (Turn turn : turns) {
 			addToTurnQueue(turn);
+		}
+	}
+
+	public void continueTurning(float amount) {
+		turnQueue.peek().continueTurning(amount);
+	}
+	
+
+	public ArrayList<Cubie> getCubies() {
+		return cubies;
+	}
+	
+	/** Returns the first element of the turn turnQueue	 */
+	public Turn getTurn() {
+		if (turnQueue.size() != 0) {
+			return turnQueue.peek();
+		} else {
+			return new Turn();
 		}
 	}
 	
@@ -141,7 +165,4 @@ public class RCube {
 		return turnQueue.size() > 0;
 	}
 
-	public void continueTurning(float amount) {
-		turnQueue.peek().continueTurning(amount);
-	}
 }

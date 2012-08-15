@@ -1,13 +1,19 @@
 package gui;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
+import main.God;
+import world.EventHandler;
 
-public class Hint {
+
+public class Hint implements ActionListener {
 	/** The button containing the image and the algorithm*/
-	private JButton hintButton;
+	private JButton button;
 	/** The text containing a summary of the algorithm */
 	private JTextArea hintText;
 
@@ -18,10 +24,12 @@ public class Hint {
 	 * @param text to be displayed next to the button
 	 */
 	public Hint(String algorithm, String imagePath, String text) {
-		hintButton = new JButton(algorithm);
-		hintButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource(imagePath)));
-		hintButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		hintButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		button = new JButton(algorithm);
+		button.setIcon(new ImageIcon(getClass().getClassLoader().getResource(imagePath)));
+		button.setVerticalTextPosition(SwingConstants.BOTTOM);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
+		button.setActionCommand(button.getText());
+		button.addActionListener(this);
 		
 		hintText = new JTextArea(text);
 		hintText.setLineWrap(true);
@@ -30,10 +38,15 @@ public class Hint {
 	}
 	
 	public JButton getButton() {
-		return hintButton;
+		return button;
 	}
 	
 	public JTextArea getText() {
 		return hintText;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		God.performTurns(EventHandler.parseTurnsFromString(e.getActionCommand()));	
 	}
 }

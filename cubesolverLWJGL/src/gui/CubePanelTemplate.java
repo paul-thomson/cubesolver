@@ -11,20 +11,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import world.EventHandler;
-
 
 @SuppressWarnings("serial")
 public class CubePanelTemplate extends JPanel {
-	EventHandler eventHandler;
 	JLabel title;
-	JLabel bottomTextBox;
+	JButton bottomTextBox;
 	JTextArea summary;
 	JLabel summaryIcon;
 	ArrayList<Hint> hints;
 	
-	public CubePanelTemplate(EventHandler eventHandler, CubePanelInfo panelInfo) {
-		this.eventHandler = eventHandler;
+	public CubePanelTemplate(CubePanelInfo panelInfo) {
 		title = panelInfo.getTitle();
 		bottomTextBox = panelInfo.getBottomTextBox();
 		summary = panelInfo.getSummary();
@@ -48,8 +44,6 @@ public class CubePanelTemplate extends JPanel {
 		for (int i = 0; i < hints.size(); i++) {
 			JButton button = hints.get(i).getButton();
 			JTextArea hintText = hints.get(i).getText();
-			button.setActionCommand(button.getText());
-			button.addActionListener(this.eventHandler);
 			
 			horizontalHintGroup.addComponent(button, Alignment.LEADING,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE);
 			horizontalHintTextGroup.addComponent(hintText, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE);

@@ -10,18 +10,15 @@ import java.awt.event.WindowEvent;
 
 import main.Main;
 
-import world.EventHandler;
-
+/**
+ * Sets up the user interface and also adds the OpenGL window to a canvas. Doing this allows us to display 
+ * OpenGL inside a swing frame.
+ */
 public class UserInterface {
 	
 	Frame frame;
 	Canvas canvas;
 	public static Dimension openGLSize = new Dimension(750, 500);
-	EventHandler eventHandler;
-	
-	public UserInterface(EventHandler eventHandler) {
-		this.eventHandler = eventHandler;
-	}
 	
 	public void setup() {
 		frame = new Frame("Cube Solver");
@@ -75,7 +72,7 @@ public class UserInterface {
 		panelInfo7.addHint("R U' R U R U R U' R' U' R R", "s7hint1.png", "Perform the algorithm until the edges are positioned correctly");
 		panelInfo7.addHint("R U' R U R U R U' R' U' R R", "s7hint2.png", "No edges are solved so perform the algorithm to solve one edge");
 		
-		CubePanelTemplate cubePanel = new CubePanelTemplate(eventHandler,panelInfo7);
+		CubePanelTemplate cubePanel = new CubePanelTemplate(panelInfo1);
 		
 		frame.add(cubePanel, BorderLayout.EAST);		
 		frame.add(canvas, BorderLayout.WEST);		
