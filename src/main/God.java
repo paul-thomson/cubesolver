@@ -6,11 +6,6 @@ import cube.RCube;
 import cube.Turn;
 import world.World;
 
-/**
- * 
- * 
- *
- */
 public class God {
 
 	static World world;
@@ -26,7 +21,6 @@ public class God {
 
 	public static void performTurns(ArrayList<Turn> turns) {
 		world.performTurns(turns);
-
 	}
 
 	public static RCube getCube() {

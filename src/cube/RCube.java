@@ -1,6 +1,7 @@
 package cube;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -14,16 +15,16 @@ public class RCube {
 	float ROT_X = 20, ROT_Y = 35, ROT_Z = 0;
 	
 	/** Colours */
-	float[] red = new float[]{1.0f,0.0f,0.0f};
-	float[] green = new float[]{0.0f,1.0f,0.0f};
-	float[] blue = new float[]{0.0f,0.0f,1.0f};
-	float[] orange = new float[]{1.0f,0.35f,0.0f};
-	float[] yellow = new float[]{1.0f,1.0f,0.0f};
-	float[] white = new float[]{1.0f,1.0f,1.0f};
-	float[] black = new float[]{0.0f,0.0f,0.0f};
+	public static float[] RED = new float[]{1.0f,0.0f,0.0f};
+	public static float[] GREEN = new float[]{0.0f,1.0f,0.0f};
+	public static float[] BLUE = new float[]{0.0f,0.0f,1.0f};
+	public static float[] ORANGE = new float[]{1.0f,0.35f,0.0f};
+	public static float[] YELLOW = new float[]{1.0f,1.0f,0.0f};
+	public static float[] WHITE = new float[]{1.0f,1.0f,1.0f};
+	public static float[] BLACK = new float[]{0.0f,0.0f,0.0f};
 	
 	/** Unused */
-	float[][] cube = new float[][]{yellow,white,red,orange,blue,green};
+	float[][] cube = new float[][]{YELLOW,WHITE,RED,ORANGE,BLUE,GREEN};
 	/** Width of a cubie */
 	float cubieWidth;
 	/** Size of the gap between cubies */
@@ -39,9 +40,15 @@ public class RCube {
 		this.cubieWidth = cubieWidth;
 		this.gap = gap;
 		this.size = cubieWidth + gap;
-		cubies = new ArrayList<Cubie>();
-		turnQueue = new LinkedList<>();
+		this.cubies = new ArrayList<Cubie>();
+		this.turnQueue = new LinkedList<>();
 		initCubies();
+	}
+	
+	public RCube(float cubieWidth, float gap, ArrayList<Cubie> cubies) {
+		//maybe inefficient? no need to call initCubies (which is called in other constructor)
+		this(cubieWidth, gap);
+		this.cubies = cubies;
 	}
 
 	/**
@@ -50,56 +57,81 @@ public class RCube {
 	private void initCubies() {
 		
 		/** First Layer */
-		cubies.add(new Cubie(new float[]{0.0f,0.0f,size}, new float[][]{black,black,red,black,black,black},cubieWidth,gap)); 	// center
-		cubies.add(new Cubie(new float[]{-size,-size,size}, new float[][]{black,white,red,black,blue,black},cubieWidth,gap)); 	// bottom left
-		cubies.add(new Cubie(new float[]{0.0f,-size,size}, new float[][]{black,white,red,black,black,black},cubieWidth,gap));	// bottom middle
-		cubies.add(new Cubie(new float[]{size,-size,size}, new float[][]{black,white,red,black,black,green},cubieWidth,gap)); 	// bottom right
-		cubies.add(new Cubie(new float[]{size,0,size}, new float[][]{black,black,red,black,black,green},cubieWidth,gap)); 		// middle right
-		cubies.add(new Cubie(new float[]{size,size,size}, new float[][]{yellow,black,red,black,black,green},cubieWidth,gap)); 	// top right
-		cubies.add(new Cubie(new float[]{0,size,size}, new float[][]{yellow,black,red,black,black,black},cubieWidth,gap)); 	// top middle
-		cubies.add(new Cubie(new float[]{-size,size,size}, new float[][]{yellow,black,red,black,blue,black},cubieWidth,gap)); 	// top left
-		cubies.add(new Cubie(new float[]{-size,0,size}, new float[][]{black,black,red,black,blue,black},cubieWidth,gap)); 	// middle left
+		cubies.add(new Cubie(new float[]{0.0f,0.0f,size}, new float[][]{BLACK,BLACK,RED,BLACK,BLACK,BLACK},cubieWidth,gap)); 	// center
+		cubies.add(new Cubie(new float[]{-size,-size,size}, new float[][]{BLACK,WHITE,RED,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// bottom left
+		cubies.add(new Cubie(new float[]{0.0f,-size,size}, new float[][]{BLACK,WHITE,RED,BLACK,BLACK,BLACK},cubieWidth,gap));	// bottom middle
+		cubies.add(new Cubie(new float[]{size,-size,size}, new float[][]{BLACK,WHITE,RED,BLACK,BLACK,GREEN},cubieWidth,gap)); 	// bottom right
+		cubies.add(new Cubie(new float[]{size,0,size}, new float[][]{BLACK,BLACK,RED,BLACK,BLACK,GREEN},cubieWidth,gap)); 		// middle right
+		cubies.add(new Cubie(new float[]{size,size,size}, new float[][]{YELLOW,BLACK,RED,BLACK,BLACK,GREEN},cubieWidth,gap)); 	// top right
+		cubies.add(new Cubie(new float[]{0,size,size}, new float[][]{YELLOW,BLACK,RED,BLACK,BLACK,BLACK},cubieWidth,gap)); 	// top middle
+		cubies.add(new Cubie(new float[]{-size,size,size}, new float[][]{YELLOW,BLACK,RED,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// top left
+		cubies.add(new Cubie(new float[]{-size,0,size}, new float[][]{BLACK,BLACK,RED,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// middle left
 	
 		/** Middle Layer */
-		cubies.add(new Cubie(new float[]{0.0f,0.0f,0}, new float[][]{black,black,black,black,black,black},cubieWidth,gap)); 	// center
-		cubies.add(new Cubie(new float[]{-size,-size,0}, new float[][]{black,white,black,black,blue,black},cubieWidth,gap)); 	// bottom left
-		cubies.add(new Cubie(new float[]{0.0f,-size,0}, new float[][]{black,white,black,black,black,black},cubieWidth,gap));	// bottom middle
-		cubies.add(new Cubie(new float[]{size,-size,0}, new float[][]{black,white,black,black,black,green},cubieWidth,gap)); 	// bottom right
-		cubies.add(new Cubie(new float[]{size,0,0}, new float[][]{black,black,black,black,black,green},cubieWidth,gap)); 		// middle right
-		cubies.add(new Cubie(new float[]{size,size,0}, new float[][]{yellow,black,black,black,black,green},cubieWidth,gap)); 	// top right
-		cubies.add(new Cubie(new float[]{0,size,0}, new float[][]{yellow,black,black,black,black,black},cubieWidth,gap)); 		// top middle
-		cubies.add(new Cubie(new float[]{-size,size,0}, new float[][]{yellow,black,black,black,blue,black},cubieWidth,gap)); 	// top left
-		cubies.add(new Cubie(new float[]{-size,0,0}, new float[][]{black,black,black,black,blue,black},cubieWidth,gap)); 		// middle left
+		cubies.add(new Cubie(new float[]{0.0f,0.0f,0}, new float[][]{BLACK,BLACK,BLACK,BLACK,BLACK,BLACK},cubieWidth,gap)); 	// center
+		cubies.add(new Cubie(new float[]{-size,-size,0}, new float[][]{BLACK,WHITE,BLACK,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// bottom left
+		cubies.add(new Cubie(new float[]{0.0f,-size,0}, new float[][]{BLACK,WHITE,BLACK,BLACK,BLACK,BLACK},cubieWidth,gap));	// bottom middle
+		cubies.add(new Cubie(new float[]{size,-size,0}, new float[][]{BLACK,WHITE,BLACK,BLACK,BLACK,GREEN},cubieWidth,gap)); 	// bottom right
+		cubies.add(new Cubie(new float[]{size,0,0}, new float[][]{BLACK,BLACK,BLACK,BLACK,BLACK,GREEN},cubieWidth,gap)); 		// middle right
+		cubies.add(new Cubie(new float[]{size,size,0}, new float[][]{YELLOW,BLACK,BLACK,BLACK,BLACK,GREEN},cubieWidth,gap)); 	// top right
+		cubies.add(new Cubie(new float[]{0,size,0}, new float[][]{YELLOW,BLACK,BLACK,BLACK,BLACK,BLACK},cubieWidth,gap)); 		// top middle
+		cubies.add(new Cubie(new float[]{-size,size,0}, new float[][]{YELLOW,BLACK,BLACK,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// top left
+		cubies.add(new Cubie(new float[]{-size,0,0}, new float[][]{BLACK,BLACK,BLACK,BLACK,BLUE,BLACK},cubieWidth,gap)); 		// middle left
 	
 		/** Last Layer */
-		cubies.add(new Cubie(new float[]{0.0f,0.0f,-size}, new float[][]{black,black,black,orange,black,black},cubieWidth,gap)); 	// center
-		cubies.add(new Cubie(new float[]{-size,-size,-size}, new float[][]{black,white,black,orange,blue,black},cubieWidth,gap)); 	// bottom left
-		cubies.add(new Cubie(new float[]{0.0f,-size,-size}, new float[][]{black,white,black,orange,black,black},cubieWidth,gap));	// bottom middle
-		cubies.add(new Cubie(new float[]{size,-size,-size}, new float[][]{black,white,black,orange,black,green},cubieWidth,gap)); 	// bottom right
-		cubies.add(new Cubie(new float[]{size,0,-size}, new float[][]{black,black,black,orange,black,green},cubieWidth,gap)); 		// middle right
-		cubies.add(new Cubie(new float[]{size,size,-size}, new float[][]{yellow,black,black,orange,black,green},cubieWidth,gap)); 	// top right
-		cubies.add(new Cubie(new float[]{0,size,-size}, new float[][]{yellow,black,black,orange,black,black},cubieWidth,gap)); 		// top middle
-		cubies.add(new Cubie(new float[]{-size,size,-size}, new float[][]{yellow,black,black,orange,blue,black},cubieWidth,gap)); 	// top left
-		cubies.add(new Cubie(new float[]{-size,0,-size}, new float[][]{black,black,black,orange,blue,black},cubieWidth,gap)); 		// middle left
+		cubies.add(new Cubie(new float[]{0.0f,0.0f,-size}, new float[][]{BLACK,BLACK,BLACK,ORANGE,BLACK,BLACK},cubieWidth,gap)); 	// center
+		cubies.add(new Cubie(new float[]{-size,-size,-size}, new float[][]{BLACK,WHITE,BLACK,ORANGE,BLUE,BLACK},cubieWidth,gap)); 	// bottom left
+		cubies.add(new Cubie(new float[]{0.0f,-size,-size}, new float[][]{BLACK,WHITE,BLACK,ORANGE,BLACK,BLACK},cubieWidth,gap));	// bottom middle
+		cubies.add(new Cubie(new float[]{size,-size,-size}, new float[][]{BLACK,WHITE,BLACK,ORANGE,BLACK,GREEN},cubieWidth,gap)); 	// bottom right
+		cubies.add(new Cubie(new float[]{size,0,-size}, new float[][]{BLACK,BLACK,BLACK,ORANGE,BLACK,GREEN},cubieWidth,gap)); 		// middle right
+		cubies.add(new Cubie(new float[]{size,size,-size}, new float[][]{YELLOW,BLACK,BLACK,ORANGE,BLACK,GREEN},cubieWidth,gap)); 	// top right
+		cubies.add(new Cubie(new float[]{0,size,-size}, new float[][]{YELLOW,BLACK,BLACK,ORANGE,BLACK,BLACK},cubieWidth,gap)); 		// top middle
+		cubies.add(new Cubie(new float[]{-size,size,-size}, new float[][]{YELLOW,BLACK,BLACK,ORANGE,BLUE,BLACK},cubieWidth,gap)); 	// top left
+		cubies.add(new Cubie(new float[]{-size,0,-size}, new float[][]{BLACK,BLACK,BLACK,ORANGE,BLUE,BLACK},cubieWidth,gap)); 		// middle left
 	}
 	
+	/**
+	 * Gets the cubie with the list of colours given.
+	 * @param faces
+	 * @return null if cubie not found
+	 */
 	public Cubie getCubie(float[][] faces) {
+		ArrayList<float[]> wantedColours = new ArrayList<float[]>(Arrays.asList(faces));
+		wantedColours.add(BLACK);
 		
-		ArrayList<float[]> wantedColours = new ArrayList<float[]>();
-		for (float[] colour : faces) {
-			wantedColours.add(colour);
-		}
-		wantedColours.add(black);
-		
-		for (Cubie cubie : cubies) {
-			for (float[] colour : cubie.getFaceColours()) {
+		OUTERLOOP: for (Cubie cubie : cubies) {
+			ArrayList<float[]> cubieColours = new ArrayList<float[]>(Arrays.asList(cubie.getFaceColours()));
+			for (float[] colour : cubieColours) {
 				if (!wantedColours.contains(colour)) {
-					break;
+					continue OUTERLOOP;
 				}
 			}
+			for (float[] colour : wantedColours) {
+				if (!cubieColours.contains(colour)) {
+					continue OUTERLOOP;
+				}
+			}
+			return cubie;
 		}
-		
 		return null;
+	}
+	
+	/**
+	 * Gets the position of the edge cubie inbetween the two faces (denoted by colour of center cubie)
+	 * @param colour1
+	 * @param colour2
+	 * @return
+	 */
+	public float[] getEdgeFromCentres(float[] colour1, float[] colour2) {
+		Cubie cubie1 = getCubie(new float[][]{colour1});
+		Cubie cubie2 = getCubie(new float[][]{colour2});
+		float[] firstPos = cubie1.getPosition();
+		float[] secondPos = cubie2.getPosition();
+		float[] newPos = new float[]{	orOfNumbers(firstPos[0], secondPos[0]),
+										orOfNumbers(firstPos[1], secondPos[1]),
+										orOfNumbers(firstPos[2], secondPos[2])};
+		
+		return newPos;
 	}
 	
 	/** Adds the turn to the end of the turn queue */
@@ -163,6 +195,18 @@ public class RCube {
 	
 	public boolean isTurning() {
 		return turnQueue.size() > 0;
+	}
+	
+	public RCube clone() {
+		return new RCube(this.cubieWidth,this.gap,this.cubies);
+	}
+	
+	public float orOfNumbers(float a, float b) {
+		if (Math.abs(a) > Math.abs(b)) {
+			return a;
+		} else {
+			return b;
+		}
 	}
 
 }

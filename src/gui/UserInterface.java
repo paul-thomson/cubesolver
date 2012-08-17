@@ -59,10 +59,10 @@ public class UserInterface {
 		panelInfo4.addHint("F U R U' R' F'", "s4hint2.png", "Don't know");
 		panelInfo4.addHint("F R U R' U' F' F U R U' R' F'","s4hint3.png","Perform one, then move the top layer, then move the next");
 		
-		CubePanelInfo panelInfo5 = new CubePanelInfo("Stage 5 - Corner orientation", "s5icon.png", "Depending on the number of yellow sticks on top, move the top layer to match the images below then perform the algorithm");
-		panelInfo5.addHint("R U R' U R U U R", "s5hint1.png", "If no corners have yellow stickers on top then put a corner in the bottom left with the sticker facing left");
-		panelInfo5.addHint("R U R' U R U U R","s5hint2.png","If one corner has a yellow sticker on top put it in the bottom left then perform the algorithm");
-		panelInfo5.addHint("R U R' U R U U R", "s5hint3.png", "If two corners have a yellow sticker on top put a corner in the bottom left with the yellow sticker facing down");
+		CubePanelInfo panelInfo5 = new CubePanelInfo("Stage 5 - Corner orientation", "s5icon.png", "Depending on the number of YELLOW sticks on top, move the top layer to match the images below then perform the algorithm");
+		panelInfo5.addHint("R U R' U R U U R", "s5hint1.png", "If no corners have YELLOW stickers on top then put a corner in the bottom left with the sticker facing left");
+		panelInfo5.addHint("R U R' U R U U R","s5hint2.png","If one corner has a YELLOW sticker on top put it in the bottom left then perform the algorithm");
+		panelInfo5.addHint("R U R' U R U U R", "s5hint3.png", "If two corners have a YELLOW sticker on top put a corner in the bottom left with the YELLOW sticker facing down");
 		
 		CubePanelInfo panelInfo6 = new CubePanelInfo("Stage 6 - Corner positioning", "s6icon.png", "In this stage we want to rotate the top layer until we get \"headlights\" at the back of the cube");
 		panelInfo6.addHint("R' F R' B B R F' R' B B R R", "s6hint1.png", "The headlights are at the back of the cube so perform the algorithm");
