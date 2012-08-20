@@ -1,5 +1,5 @@
 bin/
-.classpath
-.settings
-.project
-.jpage
+*.classpath
+*.settings
+*.project
+*.jpage
