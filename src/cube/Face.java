@@ -5,18 +5,27 @@ package cube;
  *
  */
 public enum Face {
-	FRONT,
-	Z,
-	BACK,
-	UP,
-	Y,
-	DOWN,
-	LEFT,
-	RIGHT,
-	X,
-	NONE;
+	FRONT ("F","F'"),
+	Z ("Z","Z'"),
+	BACK ("B","B'"),
+	UP ("U","U'"),
+	Y ("Y","Y'"),
+	DOWN ("D","D'"),
+	LEFT ("L","L'"),
+	RIGHT ("R","R'"),
+	X ("X","X'"),
+	NONE ("N","N'");
+	
+	private final String turnCW;
+	private final String turnCCW;
+	
+	private Face (String turnCW, String turnCCW) {
+		this.turnCW = turnCW;
+		this.turnCCW = turnCCW;
+	}
 	
 	public static Face getFaceFromChar(char character) {
+		//TODO find better way to do this
 		switch (character) {
 		case('F'):
 			return FRONT;
@@ -40,5 +49,13 @@ public enum Face {
 			System.err.println("Could not find face from char : " + character);
 			return NONE;
 		}
+	}
+	
+	public String getCWTurn() {
+		return turnCW;
+	}
+	
+	public String getCCWTurn() {
+		return turnCCW;
 	}
 }

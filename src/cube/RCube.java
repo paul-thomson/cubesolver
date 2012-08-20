@@ -8,12 +8,12 @@ import java.util.LinkedList;
  * Internal representation of a rubik's cube
  */
 public class RCube {
-	
+
 	/** position of cube */
 	float POS_X = 0.0f, POS_Y = 0.0f, POS_Z = -17;
 	/** Angle of the cube */
 	float ROT_X = 20, ROT_Y = 35, ROT_Z = 0;
-	
+
 	/** Colours */
 	public static float[] RED = new float[]{1.0f,0.0f,0.0f};
 	public static float[] GREEN = new float[]{0.0f,1.0f,0.0f};
@@ -22,7 +22,7 @@ public class RCube {
 	public static float[] YELLOW = new float[]{1.0f,1.0f,0.0f};
 	public static float[] WHITE = new float[]{1.0f,1.0f,1.0f};
 	public static float[] BLACK = new float[]{0.0f,0.0f,0.0f};
-	
+
 	/** Unused */
 	float[][] cube = new float[][]{YELLOW,WHITE,RED,ORANGE,BLUE,GREEN};
 	/** Width of a cubie */
@@ -35,7 +35,7 @@ public class RCube {
 	ArrayList<Cubie> cubies;
 	/** The current turn the cube is performing */
 	LinkedList<Turn> turnQueue;
-	
+
 	public RCube(float cubieWidth, float gap) {
 		this.cubieWidth = cubieWidth;
 		this.gap = gap;
@@ -44,7 +44,7 @@ public class RCube {
 		this.turnQueue = new LinkedList<>();
 		initCubies();
 	}
-	
+
 	public RCube(float cubieWidth, float gap, ArrayList<Cubie> cubies) {
 		//maybe inefficient? no need to call initCubies (which is called in other constructor)
 		this(cubieWidth, gap);
@@ -55,7 +55,7 @@ public class RCube {
 	 * Create and add all 27 cubies to the list of cubies. This creates the Rubik's cube.
 	 */
 	private void initCubies() {
-		
+
 		/** First Layer */
 		cubies.add(new Cubie(new float[]{0.0f,0.0f,size}, new float[][]{BLACK,BLACK,RED,BLACK,BLACK,BLACK},cubieWidth,gap)); 	// center
 		cubies.add(new Cubie(new float[]{-size,-size,size}, new float[][]{BLACK,WHITE,RED,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// bottom left
@@ -66,7 +66,7 @@ public class RCube {
 		cubies.add(new Cubie(new float[]{0,size,size}, new float[][]{YELLOW,BLACK,RED,BLACK,BLACK,BLACK},cubieWidth,gap)); 	// top middle
 		cubies.add(new Cubie(new float[]{-size,size,size}, new float[][]{YELLOW,BLACK,RED,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// top left
 		cubies.add(new Cubie(new float[]{-size,0,size}, new float[][]{BLACK,BLACK,RED,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// middle left
-	
+
 		/** Middle Layer */
 		cubies.add(new Cubie(new float[]{0.0f,0.0f,0}, new float[][]{BLACK,BLACK,BLACK,BLACK,BLACK,BLACK},cubieWidth,gap)); 	// center
 		cubies.add(new Cubie(new float[]{-size,-size,0}, new float[][]{BLACK,WHITE,BLACK,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// bottom left
@@ -77,7 +77,7 @@ public class RCube {
 		cubies.add(new Cubie(new float[]{0,size,0}, new float[][]{YELLOW,BLACK,BLACK,BLACK,BLACK,BLACK},cubieWidth,gap)); 		// top middle
 		cubies.add(new Cubie(new float[]{-size,size,0}, new float[][]{YELLOW,BLACK,BLACK,BLACK,BLUE,BLACK},cubieWidth,gap)); 	// top left
 		cubies.add(new Cubie(new float[]{-size,0,0}, new float[][]{BLACK,BLACK,BLACK,BLACK,BLUE,BLACK},cubieWidth,gap)); 		// middle left
-	
+
 		/** Last Layer */
 		cubies.add(new Cubie(new float[]{0.0f,0.0f,-size}, new float[][]{BLACK,BLACK,BLACK,ORANGE,BLACK,BLACK},cubieWidth,gap)); 	// center
 		cubies.add(new Cubie(new float[]{-size,-size,-size}, new float[][]{BLACK,WHITE,BLACK,ORANGE,BLUE,BLACK},cubieWidth,gap)); 	// bottom left
@@ -89,7 +89,7 @@ public class RCube {
 		cubies.add(new Cubie(new float[]{-size,size,-size}, new float[][]{YELLOW,BLACK,BLACK,ORANGE,BLUE,BLACK},cubieWidth,gap)); 	// top left
 		cubies.add(new Cubie(new float[]{-size,0,-size}, new float[][]{BLACK,BLACK,BLACK,ORANGE,BLUE,BLACK},cubieWidth,gap)); 		// middle left
 	}
-	
+
 	/**
 	 * Gets the cubie with the list of colours given.
 	 * @param faces
@@ -98,7 +98,7 @@ public class RCube {
 	public Cubie getCubie(float[][] faces) {
 		ArrayList<float[]> wantedColours = new ArrayList<float[]>(Arrays.asList(faces));
 		wantedColours.add(BLACK);
-		
+
 		OUTERLOOP: for (Cubie cubie : cubies) {
 			ArrayList<float[]> cubieColours = new ArrayList<float[]>(Arrays.asList(cubie.getFaceColours()));
 			for (float[] colour : cubieColours) {
@@ -115,30 +115,12 @@ public class RCube {
 		}
 		return null;
 	}
-	
-	/**
-	 * Gets the position of the edge cubie inbetween the two faces (denoted by colour of center cubie)
-	 * @param colour1
-	 * @param colour2
-	 * @return
-	 */
-	public float[] getEdgeFromCentres(float[] colour1, float[] colour2) {
-		Cubie cubie1 = getCubie(new float[][]{colour1});
-		Cubie cubie2 = getCubie(new float[][]{colour2});
-		float[] firstPos = cubie1.getPosition();
-		float[] secondPos = cubie2.getPosition();
-		float[] newPos = new float[]{	orOfNumbers(firstPos[0], secondPos[0]),
-										orOfNumbers(firstPos[1], secondPos[1]),
-										orOfNumbers(firstPos[2], secondPos[2])};
-		
-		return newPos;
-	}
-	
+
 	/** Adds the turn to the end of the turn queue */
 	public void addToTurnQueue(Turn turn) {
 		turnQueue.add(turn);
 	}
-	
+
 	/**
 	 * Used for adding entire algorithms to the queue.
 	 * 
@@ -154,12 +136,12 @@ public class RCube {
 	public void continueTurning(float amount) {
 		turnQueue.peek().continueTurning(amount);
 	}
-	
+
 
 	public ArrayList<Cubie> getCubies() {
 		return cubies;
 	}
-	
+
 	/** Returns the first element of the turn turnQueue	 */
 	public Turn getTurn() {
 		if (turnQueue.size() != 0) {
@@ -168,21 +150,21 @@ public class RCube {
 			return new Turn();
 		}
 	}
-	
+
 	public float[] getPosition() {
 		return new float[]{POS_X,POS_Y,POS_Z};
 	}
-	
+
 	public float[] getRotation() {
 		return new float[]{ROT_X,ROT_Y,ROT_Z};
 	}
-	
+
 	public void setPosition(float[] pos) {
 		POS_X = pos[0];
 		POS_Y = pos[1];
 		POS_Z = pos[2];
 	}
-	
+
 	public void setRotation(float[] rot) {
 		ROT_X = rot[0];
 		ROT_Y = rot[1];
@@ -192,21 +174,33 @@ public class RCube {
 	public void stopTurning() {
 		turnQueue.pop();
 	}
-	
+
 	public boolean isTurning() {
 		return turnQueue.size() > 0;
 	}
-	
+
 	public RCube clone() {
 		return new RCube(this.cubieWidth,this.gap,this.cubies);
 	}
 	
-	public float orOfNumbers(float a, float b) {
-		if (Math.abs(a) > Math.abs(b)) {
-			return a;
-		} else {
-			return b;
+	/**
+	 * Used when simulating movements but not displaying them
+	 * @param amount
+	 */
+	public void fakeTurn(float amount) {
+		continueTurning(amount);
+		if (getTurn().getRotationAngle() >= 90) {
+			stopTurning();
 		}
 	}
 
+	public void performSimulatedTurns() {
+		int amount = 0;
+		while (isTurning()) {
+			fakeTurn(10);
+			amount+= 10;
+		}
+	}
+
+	
 }
