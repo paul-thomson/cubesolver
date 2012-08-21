@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import world.EventHandler;
 
 import main.God;
 import cube.Cubie;
@@ -24,8 +23,8 @@ public class Solver implements ActionListener {
 	}
 	
 	public void solveStageOne() {
-		RCube cube = God.getCube().clone();
-		//first break down the problem: find which pieces aren't in the right positions
+		RCube cube = new RCube(God.getCube());
+		// find which pieces aren't in the right positions
 		float[][] edgeColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
 		
 		ArrayList<Cubie> unsolvedCubies = new ArrayList<Cubie>();
@@ -36,12 +35,6 @@ public class Solver implements ActionListener {
 			Cubie cubie = cube.getCubie(new float[][]{RCube.WHITE, colour});
 			// now we have one of the first layer edges, check if it is in the right position
 			float[] desiredPosition = getEdgeFromCentres(cube, RCube.WHITE, colour);
-//			System.out.println("desiredPosition = " + desiredPosition[0] + ", "
-//													+ desiredPosition[1] + ", "
-//													+ desiredPosition[2]);
-//			System.out.println("cubiePosition = " 	+ cubie.getPosition()[0] + ", "
-//													+ cubie.getPosition()[1] + ", "
-//													+ cubie.getPosition()[2]);
 			if (!Arrays.equals(cubie.getPosition(), (desiredPosition))) {
 				unsolvedCubies.add(cubie);
 				howToSolveCubie.add("");
@@ -57,12 +50,23 @@ public class Solver implements ActionListener {
 			if (!isOnTopLayer(pos)) {
 				for (Face face : new Face[]{Face.LEFT,Face.RIGHT,Face.FRONT,Face.BACK}) {
 					if (cubie.isOnFace(face)) {
-						//FIXME not always correct (50%)
+						RCube tempCube = new RCube(cube);
 						String getOnTop = face.getCCWTurn().
 								concat("U").
 								concat(face.getCWTurn());
 						
-						howToSolveCubie.set(i, howToSolveCubie.get(i).concat(getOnTop));
+						String getOnTopPrime = face.getCWTurn().
+								concat("U").
+								concat(face.getCCWTurn());
+						
+						
+						tempCube.addListToTurnQueue(God.parseTurnsFromString(getOnTop));
+						tempCube.performSimulatedTurns();
+						if (isOnTopLayer(tempCube.getCubie(new float[][]{colours.get(i),RCube.WHITE}).getPosition())) {
+							howToSolveCubie.set(i, howToSolveCubie.get(i).concat(getOnTop));
+						} else {
+							howToSolveCubie.set(i, howToSolveCubie.get(i).concat(getOnTopPrime));
+						}
 						break;
 					}
 				}
@@ -70,17 +74,9 @@ public class Solver implements ActionListener {
 			
 			//check if it is in the right position in top layer; if it is not, get it there
 			//first perform previous algorithm on new cube
-			RCube partSolvedCube = cube.clone();
-			partSolvedCube.addListToTurnQueue(EventHandler.parseTurnsFromString(howToSolveCubie.get(i)));
+			RCube partSolvedCube = new RCube(cube);
+			partSolvedCube.addListToTurnQueue(God.parseTurnsFromString(howToSolveCubie.get(i)));
 			partSolvedCube.performSimulatedTurns();
-			
-			
-			
-			
-			System.out.println(Arrays.toString(partSolvedCube.getCubie(new float[][]{colours.get(i),RCube.WHITE}).getPosition()));
-			
-			System.out.println(Arrays.toString(partSolvedCube.getCubie(new float[][]{colours.get(i)}).getPosition()));
-			
 			
 			
 			while (!isAdjacent(
@@ -89,14 +85,21 @@ public class Solver implements ActionListener {
 					) {
 				//find out how many turns to do
 				howToSolveCubie.set(i,howToSolveCubie.get(i).concat("U"));
-				partSolvedCube.addListToTurnQueue(EventHandler.parseTurnsFromString("U"));
+				partSolvedCube.addListToTurnQueue(God.parseTurnsFromString("U"));
 				partSolvedCube.performSimulatedTurns();
 				
 			}
 		}
 		
 		// then find out which one is the best to perform
-		God.performTurns(EventHandler.parseTurnsFromString(howToSolveCubie.get(0)));
+		int index = -1;
+		double shortest = Double.POSITIVE_INFINITY; 
+		for (int i = 0; i < howToSolveCubie.size(); i++) {
+			if (howToSolveCubie.get(i).length() < shortest) {
+				index = i;
+			}
+		}
+		God.performTurns(God.parseTurnsFromString(howToSolveCubie.get(index)));
 	}
 	
 	/*************************************************************************************************/

@@ -26,6 +26,23 @@ public class Cubie {
 		this.gap = gap;
 		this.size = cubieWidth + gap; 
 	}
+	
+	/**
+	 * Clone constructor
+	 * @param cubie
+	 */
+	public Cubie(Cubie cubie) {
+		this.position = cubie.position.clone();
+		this.cubieWidth = cubie.cubieWidth;
+		this.gap = cubie.gap;
+		this.size = cubie.cubieWidth + cubie.gap;
+		//need to clone face colours
+		float[][] faceColoursClone = new float[faceColours.length][];
+		for (int i = 0; i < faceColours.length; i++) {
+			faceColoursClone[i] = cubie.getFaceColours()[i];
+		}
+		this.faceColours = faceColoursClone;
+	}
 
 	/**
 	 * Returns true if the object is on the given face

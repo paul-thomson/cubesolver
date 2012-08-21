@@ -13,7 +13,8 @@ import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
-import world.EventHandler;
+import main.God;
+
 import world.World;
 
 
@@ -136,6 +137,6 @@ public class CubePanelTester extends JPanel implements ActionListener {
 		setLayout(groupLayout);
 	}
 	public void actionPerformed(ActionEvent e) {
-		world.performTurns(EventHandler.parseTurnsFromString(e.getActionCommand()));
+		world.performTurns(God.parseTurnsFromString(e.getActionCommand()));
 	}
 }

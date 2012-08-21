@@ -54,19 +54,11 @@ public class World {
 	private void drawCube(RCube cube) {
 		ArrayList<Cubie> cubies = cube.getCubies();
 		Turn turn = cube.getTurn();
-		Face turningFace = turn.getTurningFace();
-		if (turn.getRotationAngle() >= 90) {
-			cube.stopTurning();
-		}
 		for (Cubie cubie : cubies) {
-			if (cubie.isOnFace(turningFace)) {
-				if (turn.getRotationAngle() >= 90) {
-					cubie.rotateCubieOnFace(turn);
-					renderer.drawCubie(cubie, null);
-				} else {
-					renderer.drawCubie(cubie, turn);
-				}
+			if (cubie.isOnFace(turn.getTurningFace())) {
+				renderer.drawCubie(cubie, turn);
 			} else {
+				//TODO maybe don't need to give null? just give default turn then change drawCubie
 				renderer.drawCubie(cubie, null);
 			}
 		}
@@ -75,10 +67,6 @@ public class World {
 	public void performTurns(ArrayList<Turn> turns) {
 		cube.addListToTurnQueue(turns);
 	}
-	
-//	public EventHandler getEventHandler() {
-//		return eventHandler;
-//	}
 	
 	public RCube getCube() {
 		return this.cube;

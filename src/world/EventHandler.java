@@ -1,7 +1,7 @@
 package world;
 
-import java.util.ArrayList;
-import java.util.Random;
+
+import main.God;
 
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -29,15 +29,10 @@ public class EventHandler {
 	 */
 	public void update(RCube cube) {
 		int delta = getDelta();
-		/* Use a copy of the turn */
-		Turn turn = new Turn(cube.getTurn());
-		Face turningFace = turn.getTurningFace();
+		cube.continueTurning(0.15f * delta);
+		Face turningFace = Face.NONE;
 
-		if (turningFace != Face.NONE) {
-			cube.continueTurning(0.15f * delta);
-		}
 		//FIXME use case statements
-
 		if (!cube.isTurning()) { 
 			if (Keyboard.isKeyDown(Keyboard.KEY_U)) {
 				turningFace = Face.UP;
@@ -58,7 +53,7 @@ public class EventHandler {
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
 				turningFace = Face.Z;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_K)) {
-									cube.addListToTurnQueue(parseTurnsFromString(generateString(21)));
+				cube.addListToTurnQueue(God.parseTurnsFromString(God.generateString(21)));
 			}
 			if (turningFace != Face.NONE) { 
 				cube.addToTurnQueue(new Turn(turningFace,Keyboard.isKeyDown(Keyboard.KEY_LSHIFT),0));
@@ -106,50 +101,6 @@ public class EventHandler {
 
 	public void setLastFPS(long lastFPS) {
 		this.lastFPS = lastFPS;
-	}
-
-	/**
-	 * Generates a random string from a list of characters 
-	 * chosen to represent each face of the cube.
-	 * @param length
-	 * @return
-	 */
-	public static String generateString(int length) {
-		String characters = "FBUDLR";
-		Random rng = new Random();
-	    char[] text = new char[length];
-	    for (int i = 0; i < length; i++) {
-	        text[i] = characters.charAt(rng.nextInt(characters.length()));
-	    }
-	    return new String(text);
-	}
-	
-	/**
-	 * Creates a list of Turns from a string of characters. The string will be a list 
-	 * of initials to represent each face of the cube, optionally followed by a ' to indicate 
-	 * and inverse turn.
-	 * FIXME currently will error if ' is present at the beginning, also do other sanitisation
-	 * @param turns
-	 * @return
-	 */
-	public static ArrayList<Turn> parseTurnsFromString(String turns) {
-		turns = turns.replaceAll(" ", "");
-		ArrayList<Turn> turnsToReturn = new ArrayList<Turn>();
-
-		for (int i = turns.length() - 1; i >= 0; i--) {
-			boolean inverseTurn = false;
-			if (turns.charAt(i) == '\'') {
-				//prime turn
-				inverseTurn = true;
-				i--;
-			}
-			turnsToReturn.add(0,new Turn(
-					Face.getFaceFromChar(turns.charAt(i)), 
-					inverseTurn, 
-					0
-					));
-		}
-		return turnsToReturn;
 	}
 
 }

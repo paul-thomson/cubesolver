@@ -8,7 +8,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import main.God;
-import world.EventHandler;
 
 
 public class Hint implements ActionListener {
@@ -47,6 +46,6 @@ public class Hint implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		God.performTurns(EventHandler.parseTurnsFromString(e.getActionCommand()));	
+		God.performTurns(God.parseTurnsFromString(e.getActionCommand()));	
 	}
 }

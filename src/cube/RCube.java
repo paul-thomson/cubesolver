@@ -45,10 +45,17 @@ public class RCube {
 		initCubies();
 	}
 
-	public RCube(float cubieWidth, float gap, ArrayList<Cubie> cubies) {
-		//maybe inefficient? no need to call initCubies (which is called in other constructor)
-		this(cubieWidth, gap);
-		this.cubies = cubies;
+	/**
+	 * Clone constructor: does not copy turnQueue
+	 * @param cube
+	 */
+	public RCube(RCube cube) {
+		this(cube.cubieWidth,cube.gap);
+		// now clone cubies
+		ArrayList<Cubie> oldCubies = cube.cubies;
+		for (int i = 0; i < oldCubies.size(); i++) {
+			cubies.set(i, new Cubie(oldCubies.get(i)));
+		}
 	}
 
 	/**
@@ -134,9 +141,24 @@ public class RCube {
 	}
 
 	public void continueTurning(float amount) {
-		turnQueue.peek().continueTurning(amount);
+		if (turnQueue.peek() != null) {
+			turnQueue.peek().continueTurning(amount);
+			Turn turn = getTurn();
+			if (turn.getRotationAngle() >= 90) {
+				newStopTurning(turn);
+			}
+		}
 	}
 
+	private void newStopTurning(Turn turn) {
+		for (Cubie cubie : cubies) {
+			if (cubie.isOnFace(turn.getTurningFace())) {
+				cubie.rotateCubieOnFace(turn);
+			}
+		}
+		turnQueue.pop();
+		
+	}
 
 	public ArrayList<Cubie> getCubies() {
 		return cubies;
@@ -171,33 +193,14 @@ public class RCube {
 		ROT_Z = rot[2];
 	}
 
-	public void stopTurning() {
-		turnQueue.pop();
-	}
-
 	public boolean isTurning() {
 		return turnQueue.size() > 0;
-	}
-
-	public RCube clone() {
-		return new RCube(this.cubieWidth,this.gap,this.cubies);
-	}
-	
-	/**
-	 * Used when simulating movements but not displaying them
-	 * @param amount
-	 */
-	public void fakeTurn(float amount) {
-		continueTurning(amount);
-		if (getTurn().getRotationAngle() >= 90) {
-			stopTurning();
-		}
 	}
 
 	public void performSimulatedTurns() {
 		int amount = 0;
 		while (isTurning()) {
-			fakeTurn(10);
+			continueTurning(10);;
 			amount+= 10;
 		}
 	}
