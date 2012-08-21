@@ -1,16 +1,13 @@
 package world;
 
 import static org.lwjgl.opengl.GL11.glPopMatrix;
-
 import gui.UserInterface;
 
 import java.util.ArrayList;
 
-
 import org.lwjgl.opengl.GL11;
 
 import cube.Cubie;
-import cube.Face;
 import cube.RCube;
 import cube.Turn;
 

@@ -17,6 +17,7 @@ public class Main {
 
 	private static boolean closeRequested = false;
 	public static Texture texture;
+	public static Texture textureHighlight;
 	static UserInterface userInterface;
 
 
@@ -39,11 +40,12 @@ public class Main {
 			
 			  try {
 				  texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/testtexture.png"));
+				  textureHighlight = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/testtexturehighlight.png"));
 				  
-				  System.out.println(">> Image width: "+texture.getImageWidth());
-				  System.out.println(">> Image height: "+texture.getImageHeight());
-				  System.out.println(">> Texture width: "+texture.getTextureWidth());
-				  System.out.println(">> Texture height: "+texture.getTextureHeight());
+//				  System.out.println(">> Image width: "+texture.getImageWidth());
+//				  System.out.println(">> Image height: "+texture.getImageHeight());
+//				  System.out.println(">> Texture width: "+texture.getTextureWidth());
+//				  System.out.println(">> Texture height: "+texture.getTextureHeight());
 				  
 				  
 			} catch (IOException e) {

@@ -3,8 +3,6 @@ package solver;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 
 import main.God;
 import cube.Cubie;
@@ -17,8 +15,7 @@ public class Solver implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO SOLVE THE CUBE
-		System.out.println("NOT DONE YET");
+		System.out.println("Solving...");
 		solveStageOne();
 	}
 	
@@ -35,7 +32,7 @@ public class Solver implements ActionListener {
 			Cubie cubie = cube.getCubie(new float[][]{RCube.WHITE, colour});
 			// now we have one of the first layer edges, check if it is in the right position
 			float[] desiredPosition = getEdgeFromCentres(cube, RCube.WHITE, colour);
-			if (!Arrays.equals(cubie.getPosition(), (desiredPosition))) {
+			if (!God.arrayEquals(cubie.getPosition(), (desiredPosition)) | (cubie.getBottomColour() != RCube.WHITE	)) {
 				unsolvedCubies.add(cubie);
 				howToSolveCubie.add("");
 				colours.add(colour);
@@ -47,7 +44,7 @@ public class Solver implements ActionListener {
 			Cubie cubie = unsolvedCubies.get(i);
 			//check if it is on top layer; if it is not, get it there
 			float[] pos = cubie.getPosition();
-			if (!isOnTopLayer(pos)) {
+			if (isOnMiddleLayer(pos)) {
 				for (Face face : new Face[]{Face.LEFT,Face.RIGHT,Face.FRONT,Face.BACK}) {
 					if (cubie.isOnFace(face)) {
 						RCube tempCube = new RCube(cube);
@@ -59,7 +56,6 @@ public class Solver implements ActionListener {
 								concat("U").
 								concat(face.getCCWTurn());
 						
-						
 						tempCube.addListToTurnQueue(God.parseTurnsFromString(getOnTop));
 						tempCube.performSimulatedTurns();
 						if (isOnTopLayer(tempCube.getCubie(new float[][]{colours.get(i),RCube.WHITE}).getPosition())) {
@@ -70,6 +66,12 @@ public class Solver implements ActionListener {
 						break;
 					}
 				}
+			} else if (isOnBottomLayer(pos)) {
+				for (Face face : new Face[]{Face.LEFT,Face.RIGHT,Face.FRONT,Face.BACK}) {
+					if (cubie.isOnFace(face)) {
+						howToSolveCubie.set(i, howToSolveCubie.get(i).concat(face.getCWTurn().concat(face.getCWTurn())));
+					}
+				}
 			}
 			
 			//check if it is in the right position in top layer; if it is not, get it there
@@ -77,7 +79,6 @@ public class Solver implements ActionListener {
 			RCube partSolvedCube = new RCube(cube);
 			partSolvedCube.addListToTurnQueue(God.parseTurnsFromString(howToSolveCubie.get(i)));
 			partSolvedCube.performSimulatedTurns();
-			
 			
 			while (!isAdjacent(
 					partSolvedCube.getCubie(new float[][]{colours.get(i),RCube.WHITE}).getPosition(), 
@@ -96,10 +97,17 @@ public class Solver implements ActionListener {
 		double shortest = Double.POSITIVE_INFINITY; 
 		for (int i = 0; i < howToSolveCubie.size(); i++) {
 			if (howToSolveCubie.get(i).length() < shortest) {
+				shortest = howToSolveCubie.get(i).length();
 				index = i;
 			}
 		}
-		God.performTurns(God.parseTurnsFromString(howToSolveCubie.get(index)));
+		if (index != -1) {
+			God.getCube().getCubie(new float[][]{RCube.WHITE,colours.get(index)}).setHighlight(true);
+			God.performTurns(God.parseTurnsFromString(howToSolveCubie.get(index)));
+			God.getCube().getCubie(new float[][]{RCube.WHITE,colours.get(index)}).setHighlight(false);
+		} else {
+			System.out.println("First stage solved!");
+		}
 	}
 	
 	/*************************************************************************************************/
@@ -146,6 +154,34 @@ public class Solver implements ActionListener {
 	 */
 	public static boolean isOnTopLayer(float[] pos) {
 		if (pos[1] > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Simple check to see if the position is a position on the top layer. Assumes centre of 
+	 * the cube is 0 on y axis.
+	 * @param pos
+	 * @return
+	 */
+	public static boolean isOnBottomLayer(float[] pos) {
+		if (pos[1] < 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Simple check to see if the position is a position on the top layer. Assumes centre of 
+	 * the cube is 0 on y axis.
+	 * @param pos
+	 * @return
+	 */
+	public static boolean isOnMiddleLayer(float[] pos) {
+		if (pos[1] == 0) {
 			return true;
 		} else {
 			return false;

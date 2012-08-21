@@ -141,7 +141,11 @@ public class Renderer {
 			rotateFace(turn);
 		}
 			glTranslatef(position[0],position[1],position[2]);
+			if (cubie.isHighlighted()) {
+				Main.textureHighlight.bind();
+			}
 			drawSmallCube(faceColours);
+			Main.texture.bind();
 		glPopMatrix();
 		
 	}

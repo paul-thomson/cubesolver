@@ -198,10 +198,8 @@ public class RCube {
 	}
 
 	public void performSimulatedTurns() {
-		int amount = 0;
 		while (isTurning()) {
 			continueTurning(10);;
-			amount+= 10;
 		}
 	}
 

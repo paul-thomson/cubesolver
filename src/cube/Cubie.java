@@ -18,6 +18,8 @@ public class Cubie {
 	float gap;
 	/** The total size of one cube: width + gap */
 	float size;
+	
+	boolean highlight = false;
 
 	public Cubie(float[] position, float[][] faceColours, float cubieWidth, float gap) {
 		this.position = position;
@@ -230,5 +232,37 @@ public class Cubie {
 
 	private void setFaceColours(float[][] faceColours) {
 		this.faceColours = faceColours;
+	}
+	
+	public void setHighlight(boolean highlight) {
+		this.highlight = highlight;
+	}
+	
+	public boolean isHighlighted() {
+		return this.highlight;
+	}
+	
+	public float[] getTopColour() {
+		return faceColours[0];
+	}
+	
+	public float[] getBottomColour() {
+		return faceColours[1];
+	}
+	
+	public float[] getFrontColour() {
+		return faceColours[2];
+	}
+	
+	public float[] getBackColour() {
+		return faceColours[3];
+	}
+	
+	public float[] getLeftColour() {
+		return faceColours[4];
+	}
+	
+	public float[] getRightColour() {
+		return faceColours[5];
 	}
 }
