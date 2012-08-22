@@ -32,7 +32,7 @@ public class Solver implements ActionListener {
 			Cubie cubie = cube.getCubie(new float[][]{RCube.WHITE, colour});
 			// now we have one of the first layer edges, check if it is in the right position
 			float[] desiredPosition = getEdgeFromCentres(cube, RCube.WHITE, colour);
-			if (!God.arrayEquals(cubie.getPosition(), (desiredPosition)) | (cubie.getBottomColour() != RCube.WHITE	)) {
+			if (!God.arrayEquals(cubie.getPosition(), (desiredPosition)) | (cubie.getBottomColour() != RCube.WHITE)) {
 				unsolvedCubies.add(cubie);
 				howToSolveCubie.add("");
 				colours.add(colour);
@@ -80,6 +80,7 @@ public class Solver implements ActionListener {
 			partSolvedCube.addListToTurnQueue(God.parseTurnsFromString(howToSolveCubie.get(i)));
 			partSolvedCube.performSimulatedTurns();
 			
+			// check if the edge we are working with is adjacent to the center piece
 			while (!isAdjacent(
 					partSolvedCube.getCubie(new float[][]{colours.get(i),RCube.WHITE}).getPosition(), 
 					partSolvedCube.getCubie(new float[][]{colours.get(i)}).getPosition())

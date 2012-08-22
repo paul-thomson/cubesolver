@@ -202,6 +202,4 @@ public class RCube {
 			continueTurning(10);;
 		}
 	}
-
-	
 }
