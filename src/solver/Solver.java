@@ -13,9 +13,6 @@ import cube.Position;
 import cube.RCube;
 
 public class Solver implements ActionListener {
-	
-	Stage currentStage = Stage.ONE;
-
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -24,6 +21,7 @@ public class Solver implements ActionListener {
 			System.out.println("SOLVED");
 			return;
 		}
+		Stage currentStage = God.getStage();
 		switch (currentStage) {
 		case ONE: 
 			solveStageOne();
@@ -51,77 +49,7 @@ public class Solver implements ActionListener {
 		
 	}
 
-	private void solveStageSeven() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void solveStageSix() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void solveStageFive() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void solveStageFour() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void solveStageThree() {
-		float[][] edgeColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
-		double shortestSolutionLength = Double.POSITIVE_INFINITY;
-		String shortestSolution = "";
-
-		for(int i = 0; i < edgeColours.length; i++) {
-			String currentSolution = "";
-			RCube cube = new RCube(God.getCube());
-			float[] colour1 = edgeColours[i];
-			float[] colour2 = edgeColours[(i+1) % edgeColours.length];
-			Cubie cubie = cube.getCubie(new float[][]{colour1, colour2});
-			
-			if (cube.isCubieSolved(cube, cubie)) {
-				continue;
-			}
-			
-			if (cubie.getPosition().isOnMiddleLayer()) {
-				while (!(cubie.isOnFace(Face.FRONT) & cubie.isOnFace(Face.RIGHT))) {
-					currentSolution += "Y";
-					cube.addListToTurnQueue(God.parseTurnsFromString("Y"));
-					cube.performSimulatedTurns();
-				}
-				currentSolution += "U R U' R' U' F' U F";
-			}
-			
-			//now it is on top layer
-			
-			float[] frontColour = Arrays.equals(cubie.getTopColour(),colour1) ? colour2 : colour1;
-			
-			Cubie center = cube.getCubie(new float[][]{frontColour});
-			while (!center.isOnFace(Face.FRONT)) {
-				currentSolution += "Y";
-				cube.addListToTurnQueue(God.parseTurnsFromString("Y"));
-				cube.performSimulatedTurns();
-			}
-			
-			while (!cubie.isOnFace(Face.FRONT)) {
-				currentSolution += "U";
-				cube.addListToTurnQueue(God.parseTurnsFromString("U"));
-				cube.performSimulatedTurns();
-			}
-			currentSolution = God.cleanUpTurns(currentSolution);
-			// we only want to perform the shortest solution
-			if (currentSolution.length() < shortestSolutionLength) {
-				shortestSolution = currentSolution;
-				shortestSolutionLength = shortestSolution.length();
-			}
-		}
-	}
-
-	public void solveStageOne() {
+	private void solveStageOne() {
 		// find which pieces aren't in the right positions
 		float[][] edgeColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
 		double shortestSolutionLength = Double.POSITIVE_INFINITY;
@@ -209,11 +137,10 @@ public class Solver implements ActionListener {
 		} else {
 			System.out.println("First stage solved!");
 			God.setStage(Stage.TWO);
-			currentStage = Stage.TWO;
 		}
 	}
 	
-	public void solveStageTwo() {
+	private void solveStageTwo() {
 		//TODO add += to currentsolution DUH
 		double shortestSolutionLength = Double.POSITIVE_INFINITY;
 		String shortestSolution = "";
@@ -274,7 +201,83 @@ public class Solver implements ActionListener {
 		} else {
 			System.out.println("Second stage solved!");
 			God.setStage(Stage.THREE);
-			currentStage = Stage.THREE;
 		}
+	}
+
+	
+	private void solveStageThree() {
+		float[][] edgeColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
+		double shortestSolutionLength = Double.POSITIVE_INFINITY;
+		String shortestSolution = "";
+	
+		for(int i = 0; i < edgeColours.length; i++) {
+			String currentSolution = "";
+			RCube cube = new RCube(God.getCube());
+			float[] colour1 = edgeColours[i];
+			float[] colour2 = edgeColours[(i+1) % edgeColours.length];
+			Cubie cubie = cube.getCubie(new float[][]{colour1, colour2});
+			
+			if (cube.isCubieSolved(cube, cubie)) {
+				continue;
+			}
+			
+			if (cubie.getPosition().isOnMiddleLayer()) {
+				while (!(cubie.isOnFace(Face.FRONT) & cubie.isOnFace(Face.RIGHT))) {
+					currentSolution += "Y";
+					cube.addListToTurnQueue(God.parseTurnsFromString("Y"));
+					cube.performSimulatedTurns();
+				}
+				currentSolution += "U R U' R' U' F' U F";
+			}
+			
+			//now it is on top layer
+			
+			float[] frontColour = Arrays.equals(cubie.getTopColour(),colour1) ? colour2 : colour1;
+			
+			Cubie center = cube.getCubie(new float[][]{frontColour});
+			while (!center.isOnFace(Face.FRONT)) {
+				currentSolution += "Y";
+				cube.addListToTurnQueue(God.parseTurnsFromString("Y"));
+				cube.performSimulatedTurns();
+			}
+			
+			while (!cubie.isOnFace(Face.FRONT)) {
+				currentSolution += "U";
+				cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+				cube.performSimulatedTurns();
+			}
+			currentSolution = God.cleanUpTurns(currentSolution);
+			// we only want to perform the shortest solution
+			if (currentSolution.length() < shortestSolutionLength) {
+				shortestSolution = currentSolution;
+				shortestSolutionLength = shortestSolution.length();
+			}
+		}
+		if (shortestSolutionLength != Double.POSITIVE_INFINITY) {
+			God.performTurns(God.parseTurnsFromString(shortestSolution));
+		} else {
+			System.out.println("Third stage solved!");
+			God.setStage(Stage.FOUR);
+		}
+	}
+
+	private void solveStageFour() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void solveStageFive() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void solveStageSix() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void solveStageSeven() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -18,6 +18,7 @@ public class God {
 	private static RCube cube;
 	private static UserInterface userInterface;
 
+
 	public static void setWorld(World newWorld) {
 		world = newWorld;		
 	}
@@ -40,6 +41,10 @@ public class God {
 	
 	public static void setStage(Stage stage) {
 		userInterface.setStage(stage);
+	}
+	
+	public static Stage getStage() {
+		return userInterface.getStage();
 	}
 
 	/**

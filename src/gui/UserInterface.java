@@ -21,6 +21,7 @@ public class UserInterface {
 	public static Dimension openGLSize = new Dimension(750, 500);
 	CubePanelInfo[] listOfPanelInfo = new CubePanelInfo[7];
 	CubePanelTemplate currentPanel;
+	private Stage currentStage = Stage.ONE;
 	
 	public void setup() {
 		frame = new Frame("Cube Solver");
@@ -112,5 +113,10 @@ public class UserInterface {
 
 	public void setStage(Stage stage) {
 		changePanel(stage.getNumber());
+		currentStage = stage;
+	}
+
+	public Stage getStage() {
+		return currentStage;
 	}
 }
