@@ -14,6 +14,16 @@ public enum Face {
 	LEFT ("L","L'"),
 	RIGHT ("R","R'"),
 	X ("X","X'"),
+	
+	MIDDLE("M","M'"),
+	S("S","S'"),
+	E("E","E'"),
+	UP2("u","u'"),
+	DOWN2("d","d'"),
+	LEFT2("l","l'"),
+	RIGHT2("r","r'"),
+	FRONT2("f","f'"),
+	BACK2("b","b'"),
 	NONE ("N","N'");
 	
 	private final String turnCW;
@@ -30,12 +40,14 @@ public enum Face {
 		case('F'):
 			return FRONT;
 		case('Z'):
+		case('z'):
 			return Z;
 		case('B'):
 			return BACK;
 		case('U'):
 			return UP;
 		case('Y'):
+		case('y'):
 			return Y;
 		case('D'):
 			return DOWN;
@@ -44,9 +56,28 @@ public enum Face {
 		case('R'):
 			return RIGHT;
 		case('X'):
+		case('x'):
 			return X;
+		case('f'):
+			return FRONT2;
+		case('b'):
+			return BACK2;
+		case('u'):
+			return UP2;
+		case('d'):
+			return DOWN2;
+		case('l'):
+			return LEFT2;
+		case('r'):
+			return RIGHT2;
+		case('M'):
+			return MIDDLE;
+		case('S'):
+			return S;
+		case('E'):
+			return E;
 		default:
-			System.err.println("Could not find face from char : " + character);
+			System.err.println("Could not find face from char : \"" + character + "\"");
 			return NONE;
 		}
 	}

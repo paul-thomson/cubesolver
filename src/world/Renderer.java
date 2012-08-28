@@ -133,7 +133,7 @@ public class Renderer {
 	 * @param cubie
 	 */
 	void drawCubie(Cubie cubie, Turn turn) {
-		float[] position = cubie.getPosition();
+		float[] position = cubie.getPosition().toArray();
 		float[][] faceColours = cubie.getFaceColours();
 		
 		glPushMatrix();
@@ -275,13 +275,15 @@ public class Renderer {
 		float angle;
 		switch (face) {
 		case Z:
+		case S:
+		case FRONT2:
 		case FRONT:
 			angle = inverse ? rotation : -rotation;
 			glTranslatef(0.0f,0.0f,2.05f);
 			glRotatef(angle,0,0,1);
 			glTranslatef(0.0f,0.0f,-2.05f);
 			break;
-			
+		case BACK2:
 		case BACK:
 			angle = inverse ? -rotation : rotation;
 			glTranslatef(0.0f,0.0f,-2.05f);
@@ -289,20 +291,23 @@ public class Renderer {
 			glTranslatef(0.0f,0.0f,2.05f);
 			break;
 		case Y:
+		case UP2:
 		case UP:
 			angle = inverse ? rotation : -rotation;
 			glTranslatef(0.0f,2.05f,0.0f);
 			glRotatef(angle,0,1,0);
 			glTranslatef(0.0f,-2.05f,0.0f);
 			break;
-			
+		case E:
+		case DOWN2:
 		case DOWN:
-			angle = inverse ? rotation : -rotation;
-			glTranslatef(0.0f,-2.05f,0.0f);
-			glRotatef(angle,0,1,0);
+			angle = inverse ? -rotation : rotation;
 			glTranslatef(0.0f,2.05f,0.0f);
+			glRotatef(angle,0,1,0);
+			glTranslatef(0.0f,-2.05f,0.0f);
 			break;
-			
+		case MIDDLE:
+		case LEFT2:
 		case LEFT:
 			angle = inverse ? -rotation : rotation;
 			glTranslatef(-2.05f,0.0f,0.0f);
@@ -310,6 +315,7 @@ public class Renderer {
 			glTranslatef(2.05f,0.0f,0.0f);
 			break;
 		case X:
+		case RIGHT2:
 		case RIGHT:
 			angle = inverse ? rotation : -rotation;
 			glTranslatef(2.05f,0.0f,0.0f);

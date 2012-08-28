@@ -50,4 +50,12 @@ public class Turn {
 	public void continueTurning(float amount) {
 		rotationAngle += amount;
 	}
+	
+	public String toString() {
+		if (inverseTurn) {
+			return turningFace.getCCWTurn();
+		} else {
+			return turningFace.getCWTurn();
+		}
+	}
 }

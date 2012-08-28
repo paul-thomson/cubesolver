@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import main.God;
+
+
 /**
  * Internal representation of a rubik's cube
  */
@@ -12,29 +15,30 @@ public class RCube {
 	/** position of cube */
 	float POS_X = 0.0f, POS_Y = 0.0f, POS_Z = -17;
 	/** Angle of the cube */
-	float ROT_X = 20, ROT_Y = 35, ROT_Z = 0;
+	float ROT_X = 20, ROT_Y = -35, ROT_Z = 0;
 
 	/** Colours */
 	public static float[] RED = new float[]{1.0f,0.0f,0.0f};
 	public static float[] GREEN = new float[]{0.0f,1.0f,0.0f};
 	public static float[] BLUE = new float[]{0.0f,0.0f,1.0f};
-	public static float[] ORANGE = new float[]{1.0f,0.35f,0.0f};
+	public static float[] ORANGE = new float[]{1.0f,0.45f,0.0f};
 	public static float[] YELLOW = new float[]{1.0f,1.0f,0.0f};
 	public static float[] WHITE = new float[]{1.0f,1.0f,1.0f};
 	public static float[] BLACK = new float[]{0.0f,0.0f,0.0f};
 
 	/** Unused */
-	float[][] cube = new float[][]{YELLOW,WHITE,RED,ORANGE,BLUE,GREEN};
+	@SuppressWarnings("unused")
+	private float[][] cube = new float[][]{YELLOW,WHITE,RED,ORANGE,BLUE,GREEN};
 	/** Width of a cubie */
-	float cubieWidth;
+	private float cubieWidth;
 	/** Size of the gap between cubies */
-	float gap;
+	private float gap;
 	/** Total size of a cubie: width + gap */
-	float size;
+	private float size;
 	/** The list of cubies (should be 27 in length) */
-	ArrayList<Cubie> cubies;
+	private ArrayList<Cubie> cubies;
 	/** The current turn the cube is performing */
-	LinkedList<Turn> turnQueue;
+	private LinkedList<Turn> turnQueue;
 
 	public RCube(float cubieWidth, float gap) {
 		this.cubieWidth = cubieWidth;
@@ -145,19 +149,20 @@ public class RCube {
 			turnQueue.peek().continueTurning(amount);
 			Turn turn = getTurn();
 			if (turn.getRotationAngle() >= 90) {
-				newStopTurning(turn);
+				stopTurning(turn);
 			}
+		} else {
+			
 		}
 	}
 
-	private void newStopTurning(Turn turn) {
+	private void stopTurning(Turn turn) {
 		for (Cubie cubie : cubies) {
 			if (cubie.isOnFace(turn.getTurningFace())) {
 				cubie.rotateCubieOnFace(turn);
 			}
 		}
 		turnQueue.pop();
-		
 	}
 
 	public ArrayList<Cubie> getCubies() {
@@ -197,9 +202,95 @@ public class RCube {
 		return turnQueue.size() > 0;
 	}
 
+	/**
+	 * Performs turns without displaying them.
+	 * IMPORTANT NOTE: still changes the positions etc of cubies
+	 */
 	public void performSimulatedTurns() {
 		while (isTurning()) {
-			continueTurning(10);;
+			continueTurning(90);
 		}
+	}
+
+	/**
+	 * Gets the position of the edge cubie inbetween the two faces (denoted by colour of center cubie)
+	 * @param colour1
+	 * @param colour2
+	 * @return
+	 */
+	public Position getEdgeFromCentres(float[] colour1, float[] colour2) {
+		Cubie cubie1 = getCubie(new float[][]{colour1});
+		Cubie cubie2 = getCubie(new float[][]{colour2});
+		float[] pos1 = cubie1.getPosition().toArray();
+		float[] pos2 = cubie2.getPosition().toArray();
+		float[] newPos = new float[]{
+				God.orOfTwoNumbers(pos1[0], pos2[0]),
+				God.orOfTwoNumbers(pos1[1], pos2[1]),
+				God.orOfTwoNumbers(pos1[2], pos2[2])
+		};
+	
+		return new Position(newPos);
+	}
+	
+	public Position getCornerPosition(float[] colour1, float[] colour2, float[] colour3) {
+		Cubie cubie1 = getCubie(new float[][]{colour1});
+		Cubie cubie2 = getCubie(new float[][]{colour2});
+		Cubie cubie3 = getCubie(new float[][]{colour3});
+		float[] pos1 = cubie1.getPosition().toArray();
+		float[] pos2 = cubie2.getPosition().toArray();
+		float[] pos3 = cubie3.getPosition().toArray();
+		float[] newPos = new float[]{
+				God.orOfThreeNumbers(pos1[0], pos2[0],pos3[0]),
+				God.orOfThreeNumbers(pos1[1], pos2[1],pos3[1]),
+				God.orOfThreeNumbers(pos1[2], pos2[2],pos3[2])
+		};
+		return new Position(newPos);
+	}
+	
+	/**
+	 * Compares the cube to a new cube to see if they are equal 
+	 * (compares the colours of the faces and the positions)
+	 * @return
+	 */
+	public boolean isSolved() {
+		RCube solvedCube = new RCube(this.cubieWidth,this.gap);
+		ArrayList<Cubie> solvedCubies = solvedCube.getCubies();
+		for (int i = 0; i < solvedCubies.size(); i++) {
+			Cubie solvedCubie = solvedCubies.get(i);
+			Cubie currentCubie = cubies.get(i);
+			if (!solvedCubie.getPosition().equals(currentCubie.getPosition())) {
+				return false;
+			}
+			float[][] solvedColours = solvedCubie.getFaceColours();
+			float[][] currentColours = currentCubie.getFaceColours();
+			for (int j = 0; j < solvedColours.length; j++) {
+				if (!God.arrayEquals(solvedColours[j], currentColours[j])) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * By comparing the cubie to the solved version it determines if 
+	 * the cubie is solved.
+	 * @param cube: this is need so we can position the solved cube the same 
+	 * way as the cube the cubie is from
+	 * @param cubie
+	 * @return
+	 */
+	public boolean isCubieSolved(RCube cube, Cubie cubie) {
+		RCube solvedCube = new RCube(this.cubieWidth,this.gap);
+		//need to position cube correctly: we assume it has only done Y turns:
+		Cubie centreSolved = solvedCube.getCubie(new float[][]{RCube.RED});
+		Cubie centre = cube.getCubie(new float[][]{RCube.RED});
+		while (!centreSolved.isEqual(centre)) {
+			solvedCube.addListToTurnQueue(God.parseTurnsFromString("Y"));
+			solvedCube.performSimulatedTurns();
+		}
+		
+		Cubie solvedCubie = solvedCube.getCubie(cubie.getFaceColours());
+		return solvedCubie.isEqual(cubie);
 	}
 }

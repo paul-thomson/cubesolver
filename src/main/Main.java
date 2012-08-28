@@ -28,6 +28,7 @@ public class Main {
 		God.setCube(world.getCube());
 		userInterface = new UserInterface();
 		userInterface.setup();
+		God.setInterface(userInterface);
 
 		try {
 			Display.setParent(userInterface.getCanvas());
@@ -53,7 +54,7 @@ public class Main {
 				System.exit(0);
 			}
 
-			while(!Display.isCloseRequested() && !closeRequested) {
+			while(!Display.isCloseRequested() & !closeRequested) {
 				
 				world.render();
 				Display.update();

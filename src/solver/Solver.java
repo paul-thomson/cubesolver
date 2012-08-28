@@ -1,211 +1,280 @@
 package solver;
 
+import gui.Stage;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.God;
 import cube.Cubie;
 import cube.Face;
+import cube.Position;
 import cube.RCube;
 
 public class Solver implements ActionListener {
 	
-	private static final double EPSILON = 5.96e-08;
+	Stage currentStage = Stage.ONE;
+
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		System.out.println("Solving...");
-		solveStageOne();
-	}
-	
-	public void solveStageOne() {
-		RCube cube = new RCube(God.getCube());
-		// find which pieces aren't in the right positions
-		float[][] edgeColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
+		if (God.getCube().isSolved()) {
+			System.out.println("SOLVED");
+			return;
+		}
+		switch (currentStage) {
+		case ONE: 
+			solveStageOne();
+			break;
+		case TWO:
+			solveStageTwo();
+			break;
+		case THREE:
+			solveStageThree();
+			break;
+		case FOUR:
+			solveStageFour();
+			break;
+		case FIVE:
+			solveStageFive();
+			break;
+		case SIX:
+			solveStageSix();
+			break;
+		case SEVEN:
+			solveStageSeven();
+			break;
 		
-		ArrayList<Cubie> unsolvedCubies = new ArrayList<Cubie>();
-		ArrayList<String> howToSolveCubie = new ArrayList<String>();
-		ArrayList<float[]> colours = new ArrayList<float[]>();
-		
-		for(float[] colour : edgeColours) {
-			Cubie cubie = cube.getCubie(new float[][]{RCube.WHITE, colour});
-			// now we have one of the first layer edges, check if it is in the right position
-			float[] desiredPosition = getEdgeFromCentres(cube, RCube.WHITE, colour);
-			if (!God.arrayEquals(cubie.getPosition(), (desiredPosition)) | (cubie.getBottomColour() != RCube.WHITE)) {
-				unsolvedCubies.add(cubie);
-				howToSolveCubie.add("");
-				colours.add(colour);
-			}
 		}
 		
-		// then find a solution for each piece
-		for (int i = 0; i < unsolvedCubies.size(); i++) {
-			Cubie cubie = unsolvedCubies.get(i);
-			//check if it is on top layer; if it is not, get it there
-			float[] pos = cubie.getPosition();
-			if (isOnMiddleLayer(pos)) {
+	}
+
+	private void solveStageSeven() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void solveStageSix() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void solveStageFive() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void solveStageFour() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void solveStageThree() {
+		float[][] edgeColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
+		double shortestSolutionLength = Double.POSITIVE_INFINITY;
+		String shortestSolution = "";
+
+		for(int i = 0; i < edgeColours.length; i++) {
+			String currentSolution = "";
+			RCube cube = new RCube(God.getCube());
+			float[] colour1 = edgeColours[i];
+			float[] colour2 = edgeColours[(i+1) % edgeColours.length];
+			Cubie cubie = cube.getCubie(new float[][]{colour1, colour2});
+			
+			if (cube.isCubieSolved(cube, cubie)) {
+				continue;
+			}
+			
+			if (cubie.getPosition().isOnMiddleLayer()) {
+				while (!(cubie.isOnFace(Face.FRONT) & cubie.isOnFace(Face.RIGHT))) {
+					currentSolution += "Y";
+					cube.addListToTurnQueue(God.parseTurnsFromString("Y"));
+					cube.performSimulatedTurns();
+				}
+				currentSolution += "U R U' R' U' F' U F";
+			}
+			
+			//now it is on top layer
+			
+			float[] frontColour = Arrays.equals(cubie.getTopColour(),colour1) ? colour2 : colour1;
+			
+			Cubie center = cube.getCubie(new float[][]{frontColour});
+			while (!center.isOnFace(Face.FRONT)) {
+				currentSolution += "Y";
+				cube.addListToTurnQueue(God.parseTurnsFromString("Y"));
+				cube.performSimulatedTurns();
+			}
+			
+			while (!cubie.isOnFace(Face.FRONT)) {
+				currentSolution += "U";
+				cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+				cube.performSimulatedTurns();
+			}
+			currentSolution = God.cleanUpTurns(currentSolution);
+			// we only want to perform the shortest solution
+			if (currentSolution.length() < shortestSolutionLength) {
+				shortestSolution = currentSolution;
+				shortestSolutionLength = shortestSolution.length();
+			}
+		}
+	}
+
+	public void solveStageOne() {
+		// find which pieces aren't in the right positions
+		float[][] edgeColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
+		double shortestSolutionLength = Double.POSITIVE_INFINITY;
+		String shortestSolution = "";
+
+		for(float[] colour : edgeColours) {
+			String currentSolution = "";
+			RCube cube = new RCube(God.getCube());
+			Cubie cubie = cube.getCubie(new float[][]{RCube.WHITE, colour});
+			// now we have one of the first layer edges, check if it is in the correct position
+			if (cube.isCubieSolved(cube, cubie)) {
+				continue;
+			}
+
+			/* We now want the edge to go on to the top layer so we have 
+			 * two different procedures: one for if the edge is on the middle 
+			 * layer and one if it is on the bottom layer
+			 */
+			Position startingPos = cubie.getPosition();
+			if (startingPos.isOnMiddleLayer()) {
 				for (Face face : new Face[]{Face.LEFT,Face.RIGHT,Face.FRONT,Face.BACK}) {
 					if (cubie.isOnFace(face)) {
 						RCube tempCube = new RCube(cube);
+						
 						String getOnTop = face.getCCWTurn().
 								concat("U").
 								concat(face.getCWTurn());
-						
+
 						String getOnTopPrime = face.getCWTurn().
 								concat("U").
 								concat(face.getCCWTurn());
-						
+
 						tempCube.addListToTurnQueue(God.parseTurnsFromString(getOnTop));
 						tempCube.performSimulatedTurns();
-						if (isOnTopLayer(tempCube.getCubie(new float[][]{colours.get(i),RCube.WHITE}).getPosition())) {
-							howToSolveCubie.set(i, howToSolveCubie.get(i).concat(getOnTop));
+						if (tempCube.getCubie(new float[][]{colour,RCube.WHITE}).getPosition().isOnTopLayer()) {
+							currentSolution += getOnTop;
 						} else {
-							howToSolveCubie.set(i, howToSolveCubie.get(i).concat(getOnTopPrime));
+							currentSolution += getOnTopPrime;
 						}
 						break;
 					}
 				}
-			} else if (isOnBottomLayer(pos)) {
+			} else if (startingPos.isOnBottomLayer()) {
 				for (Face face : new Face[]{Face.LEFT,Face.RIGHT,Face.FRONT,Face.BACK}) {
 					if (cubie.isOnFace(face)) {
-						howToSolveCubie.set(i, howToSolveCubie.get(i).concat(face.getCWTurn().concat(face.getCWTurn())));
+						currentSolution += face.getCWTurn();
+						currentSolution += face.getCWTurn();
 					}
 				}
 			}
 			
+			//do not need an "else" because if it is on top layer we do nothing
+
 			//check if it is in the right position in top layer; if it is not, get it there
 			//first perform previous algorithm on new cube
-			RCube partSolvedCube = new RCube(cube);
-			partSolvedCube.addListToTurnQueue(God.parseTurnsFromString(howToSolveCubie.get(i)));
-			partSolvedCube.performSimulatedTurns();
-			
+			cube.addListToTurnQueue(God.parseTurnsFromString(currentSolution));
+			cube.performSimulatedTurns();
+
 			// check if the edge we are working with is adjacent to the center piece
-			while (!isAdjacent(
-					partSolvedCube.getCubie(new float[][]{colours.get(i),RCube.WHITE}).getPosition(), 
-					partSolvedCube.getCubie(new float[][]{colours.get(i)}).getPosition())
+			while (!cube.getCubie(new float[][]{colour,RCube.WHITE}).getPosition().
+					isAdjacent( 
+							cube.getCubie(new float[][]{colour}).getPosition())
 					) {
-				//find out how many turns to do
-				howToSolveCubie.set(i,howToSolveCubie.get(i).concat("U"));
-				partSolvedCube.addListToTurnQueue(God.parseTurnsFromString("U"));
-				partSolvedCube.performSimulatedTurns();
-				
+				//do one turn then check again
+				currentSolution += "U";
+				cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+				cube.performSimulatedTurns();
+			}
+			
+			while (!cubie.isOnFace(Face.FRONT)) {
+				currentSolution += "Y";
+				cube.addListToTurnQueue(God.parseTurnsFromString("Y"));
+				cube.performSimulatedTurns();
+			}
+			currentSolution = God.cleanUpTurns(currentSolution);
+			// we only want to perform the shortest solution
+			if (currentSolution.length() < shortestSolutionLength) {
+				shortestSolution = currentSolution;
+				shortestSolutionLength = shortestSolution.length();
 			}
 		}
-		
-		// then find out which one is the best to perform
-		int index = -1;
-		double shortest = Double.POSITIVE_INFINITY; 
-		for (int i = 0; i < howToSolveCubie.size(); i++) {
-			if (howToSolveCubie.get(i).length() < shortest) {
-				shortest = howToSolveCubie.get(i).length();
-				index = i;
-			}
-		}
-		if (index != -1) {
-			God.getCube().getCubie(new float[][]{RCube.WHITE,colours.get(index)}).setHighlight(true);
-			God.performTurns(God.parseTurnsFromString(howToSolveCubie.get(index)));
-			God.getCube().getCubie(new float[][]{RCube.WHITE,colours.get(index)}).setHighlight(false);
+
+		if (shortestSolutionLength != Double.POSITIVE_INFINITY) {
+			God.performTurns(God.parseTurnsFromString(shortestSolution));
 		} else {
 			System.out.println("First stage solved!");
+			God.setStage(Stage.TWO);
+			currentStage = Stage.TWO;
 		}
 	}
 	
-	/*************************************************************************************************/
-	
-	/**
-	 * Gets the position of the edge cubie inbetween the two faces (denoted by colour of center cubie)
-	 * @param colour1
-	 * @param colour2
-	 * @return
-	 */
-	public static float[] getEdgeFromCentres(RCube cube, float[] colour1, float[] colour2) {
-		Cubie cubie1 = cube.getCubie(new float[][]{colour1});
-		Cubie cubie2 = cube.getCubie(new float[][]{colour2});
-		float[] firstPos = cubie1.getPosition();
-		float[] secondPos = cubie2.getPosition();
-		float[] newPos = new float[]{
-				orOfNumbers(firstPos[0], secondPos[0]),
-				orOfNumbers(firstPos[1], secondPos[1]),
-				orOfNumbers(firstPos[2], secondPos[2])
-		};
+	public void solveStageTwo() {
+		//TODO add += to currentsolution DUH
+		double shortestSolutionLength = Double.POSITIVE_INFINITY;
+		String shortestSolution = "";
 
-		return newPos;
-	}
+		float[][] cornerColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
 
-	/**
-	 * Returns the number with the highest absolute value.
-	 * @param a
-	 * @param b
-	 * @return
-	 */
-	public static float orOfNumbers(float a, float b) {
-		if (Math.abs(a) > Math.abs(b)) {
-			return a;
-		} else {
-			return b;
-		}
-	}
-	
-	/**
-	 * Simple check to see if the position is a position on the top layer. Assumes centre of 
-	 * the cube is 0 on y axis.
-	 * @param pos
-	 * @return
-	 */
-	public static boolean isOnTopLayer(float[] pos) {
-		if (pos[1] > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * Simple check to see if the position is a position on the top layer. Assumes centre of 
-	 * the cube is 0 on y axis.
-	 * @param pos
-	 * @return
-	 */
-	public static boolean isOnBottomLayer(float[] pos) {
-		if (pos[1] < 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * Simple check to see if the position is a position on the top layer. Assumes centre of 
-	 * the cube is 0 on y axis.
-	 * @param pos
-	 * @return
-	 */
-	public static boolean isOnMiddleLayer(float[] pos) {
-		if (pos[1] == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * Returns true if no more than 1 axis has a different value
-	 * @param pos1
-	 * @param pos2
-	 * @return
-	 */
-	public static boolean isAdjacent(float[] pos1, float[] pos2) {
-		int counter = 0;
+		for (int i = 0; i < cornerColours.length; i++) {
+			String currentSolution = "";
+			RCube cube = new RCube(God.getCube());
+			float[] colour1 = cornerColours[i];
+			float[] colour2 = cornerColours[(i+1) % cornerColours.length];
+			Cubie cubie = cube.getCubie(new float[][]{colour1, colour2, RCube.WHITE});
 
-		for (int i = 0; i < 3; i++) {
-			// check for inequality
-			if (Math.abs(pos1[i]/pos2[i] - 1) > EPSILON) {
-				if (counter++ != 0) {
-					return false;
-				}
+			if (cube.isCubieSolved(cube, cubie)) {
+				continue;
 			}
+
+			// now we know the corner is not correctly solved so SOLVE IT
+			if (cubie.getPosition().isOnBottomLayer()) {
+
+				// put cubie to front right position, then perform algorithm
+				while (!(cubie.isOnFace(Face.FRONT) & cubie.isOnFace(Face.RIGHT))) {
+					currentSolution = currentSolution + "Y";
+					cube.addListToTurnQueue(God.parseTurnsFromString("Y"));
+					cube.performSimulatedTurns();
+				}
+				currentSolution = currentSolution + "RUR'";
+				cube.addListToTurnQueue(God.parseTurnsFromString("RUR'"));
+				cube.performSimulatedTurns();
+			} 
+
+			// now it must be on top layer so rotate UP until in correct position
+
+			Position pos = cube.getCornerPosition(colour1, colour2, RCube.YELLOW);
+			while (!cubie.getPosition().equals(pos)) {
+				currentSolution = currentSolution + "U";
+				cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+				cube.performSimulatedTurns();
+			}
+
+			//turn to front
+			while (!(cubie.isOnFace(Face.FRONT) & cubie.isOnFace(Face.RIGHT))) {
+				currentSolution = currentSolution + "Y";
+				cube.addListToTurnQueue(God.parseTurnsFromString("Y"));
+				cube.performSimulatedTurns();
+			}
+			currentSolution = God.cleanUpTurns(currentSolution);
+
+			// we only want to perform the shortest solution
+			if (currentSolution.length() < shortestSolutionLength) {
+				shortestSolution = currentSolution;
+				shortestSolutionLength = shortestSolution.length();
+			}
+
 		}
-		return true;
+		if (shortestSolutionLength != Double.POSITIVE_INFINITY) {
+			God.performTurns(God.parseTurnsFromString(shortestSolution));
+		} else {
+			System.out.println("Second stage solved!");
+			God.setStage(Stage.THREE);
+			currentStage = Stage.THREE;
+		}
 	}
 }
