@@ -26,3 +26,7 @@ What will it do?
 * Have lots more information: cube notation etc
 * Have proper lighting
 * Have extra animations: e.g. a bar showing what moves have been performed, highlight some cubes
+
+How do I install?
+-------------
+TODO
