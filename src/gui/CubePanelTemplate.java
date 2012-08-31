@@ -16,6 +16,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 public class CubePanelTemplate extends JPanel {
 	JLabel title;
 	JButton bottomTextBox;
+	JButton previousButton;
+	JButton nextButton;
 	JTextArea summary;
 	JLabel summaryIcon;
 	ArrayList<Hint> hints;
@@ -23,6 +25,8 @@ public class CubePanelTemplate extends JPanel {
 	public CubePanelTemplate(CubePanelInfo panelInfo) {
 		title = panelInfo.getTitle();
 		bottomTextBox = panelInfo.getBottomTextBox();
+		previousButton = panelInfo.getPreviousButton();
+		nextButton = panelInfo.getNextButton();
 		summary = panelInfo.getSummary();
 		summaryIcon = panelInfo.getSummaryIcon();
 		hints = panelInfo.getHints();
@@ -54,7 +58,11 @@ public class CubePanelTemplate extends JPanel {
 			.addPreferredGap(ComponentPlacement.RELATED);
 		
 		}
-		verticalGroup.addComponent(bottomTextBox);
+		verticalGroup.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(previousButton)
+				.addComponent(bottomTextBox)
+				.addComponent(nextButton)
+				);
 		verticalGroup.addContainerGap();
 		
 		groupLayout.setHorizontalGroup(
@@ -64,7 +72,11 @@ public class CubePanelTemplate extends JPanel {
 					.addGap(20))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(bottomTextBox, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+					.addComponent(previousButton, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(bottomTextBox, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(nextButton, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
 					.addContainerGap())
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()

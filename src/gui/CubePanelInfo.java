@@ -1,5 +1,7 @@
 package gui;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -8,14 +10,18 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
+import main.God;
+
 import solver.Solver;
 
-public class CubePanelInfo {
+public class CubePanelInfo implements ActionListener {
 	public static Font titleFont = new Font("Tahoma", Font.PLAIN, 26);
 	private JLabel title;
 	private JLabel summaryIcon;
 	private JTextArea summary;
-	private JButton bottomTextBox;
+	private JButton helperButton;
+	private JButton previousButton;
+	private JButton nextButton;
 	private ArrayList<Hint> hints;
 
 	public CubePanelInfo(String titleText, String summaryIconPath, String summaryText) {
@@ -31,10 +37,18 @@ public class CubePanelInfo {
 		summary.setWrapStyleWord(true);
 		summary.setOpaque(false);
 
-		bottomTextBox = new JButton("ALGORITHM GOES HERE");
-		bottomTextBox.setFont(titleFont);
-		bottomTextBox.setHorizontalAlignment(SwingConstants.CENTER);
-		bottomTextBox.addActionListener(new Solver());
+		helperButton = new JButton("Need help?");
+		helperButton.setFont(titleFont);
+		helperButton.setHorizontalAlignment(SwingConstants.CENTER);
+		helperButton.addActionListener(new Solver());
+
+		previousButton = new JButton("<-");
+		previousButton.setFont(titleFont);
+		previousButton.addActionListener(this);
+		
+		nextButton = new JButton("->");
+		nextButton.setFont(titleFont);
+		nextButton.addActionListener(this);
 		
 		hints = new ArrayList<Hint>();
 	}
@@ -60,10 +74,28 @@ public class CubePanelInfo {
 	}
 
 	public JButton getBottomTextBox() {
-		return bottomTextBox;
+		return helperButton;
 	}
 
 	public ArrayList<Hint> getHints() {
 		return hints;
+	}
+	
+	public JButton getPreviousButton() {
+		return previousButton;
+	}
+
+	public JButton getNextButton() {
+		return nextButton;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == previousButton) {
+			God.previousStage();
+		} else {
+			God.nextStage();
+		}
+		
 	}
 }

@@ -39,8 +39,12 @@ public class God {
 		return cube;
 	}
 	
-	public static void setStage(Stage stage) {
-		userInterface.setStage(stage);
+	public static void nextStage() {
+		userInterface.setStage(Stage.getStage(getStage().getNumber() + 1));
+	}
+	
+	public static void previousStage() {
+		userInterface.setStage(Stage.getStage(getStage().getNumber() - 1));
 	}
 	
 	public static Stage getStage() {

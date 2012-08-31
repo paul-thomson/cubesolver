@@ -18,5 +18,17 @@ public enum Stage {
 	public int getNumber() {
 		return number;
 	}
+	
+	public static Stage getStage(int num) {
+		for (Stage stage : values()) {
+		    if (stage.number == num) {
+		      return stage;
+		    }
+		  }
+		
+		System.err.println("No such stage for the number: " + num);
+		return null;
+
+	}
 
 }

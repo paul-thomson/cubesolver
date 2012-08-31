@@ -136,7 +136,7 @@ public class Solver implements ActionListener {
 			God.performTurns(God.parseTurnsFromString(shortestSolution));
 		} else {
 			System.out.println("First stage solved!");
-			God.setStage(Stage.TWO);
+			God.nextStage();
 		}
 	}
 	
@@ -200,7 +200,7 @@ public class Solver implements ActionListener {
 			God.performTurns(God.parseTurnsFromString(shortestSolution));
 		} else {
 			System.out.println("Second stage solved!");
-			God.setStage(Stage.THREE);
+			God.nextStage();
 		}
 	}
 
@@ -257,7 +257,7 @@ public class Solver implements ActionListener {
 			God.performTurns(God.parseTurnsFromString(shortestSolution));
 		} else {
 			System.out.println("Third stage solved!");
-			God.setStage(Stage.FOUR);
+			God.nextStage();
 		}
 	}
 
