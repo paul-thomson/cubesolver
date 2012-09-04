@@ -34,6 +34,7 @@ import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glShadeModel;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex3f;
+import gui.UserInterface;
 import main.Main;
 
 import org.lwjgl.opengl.Display;
@@ -92,10 +93,10 @@ public class Renderer {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity(); 
 
-		DisplayMode displayMode = Display.getDisplayMode();
+//		DisplayMode displayMode = Display.getDisplayMode();
 		GLU.gluPerspective(
 				45.0f,
-				(float) displayMode.getWidth() / (float) displayMode.getHeight(),
+				(float) UserInterface.pane.getWidth() / (float) UserInterface.pane.getHeight(),
 				0.1f,
 				100.0f);
 		glMatrixMode(GL_MODELVIEW);

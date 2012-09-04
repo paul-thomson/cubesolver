@@ -14,6 +14,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 @SuppressWarnings("serial")
 public class CubePanelTemplate extends JPanel {
+	
 	JLabel title;
 	JButton bottomTextBox;
 	JButton previousButton;

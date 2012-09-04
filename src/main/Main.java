@@ -34,7 +34,6 @@ public class Main {
 		try {
 			Display.setParent(userInterface.getCanvas());
 			Display.setVSyncEnabled(true);
-			
 			Display.create();
 						
 			//texture stuff
@@ -56,9 +55,9 @@ public class Main {
 			}
 
 			while(!Display.isCloseRequested() & !closeRequested) {
-				
 				world.render();
 				Display.update();
+				
 			}
 
 			Display.destroy();

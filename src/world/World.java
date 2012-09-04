@@ -32,8 +32,12 @@ public class World {
 	 * state of the cube using {@link #drawCube}
 	 */
 	public void render() {
-		GL11.glViewport(0, 0, UserInterface.openGLSize.width, UserInterface.openGLSize.height);
-		GL11.glClearColor(0.93333f, 0.93333f, 0.93333f, 1);
+		// TODO make cube resize to fit
+		GL11.glViewport(0, 0, UserInterface.pane.getWidth(), UserInterface.pane.getHeight());
+		GL11.glClearColor(	(float) UserInterface.backgroundColour.getRed()/255, 
+				(float) UserInterface.backgroundColour.getGreen()/255, 
+				(float) UserInterface.backgroundColour.getBlue()/255,
+				(float) UserInterface.backgroundColour.getAlpha()/255);
 		eventHandler.update(cube);
 		renderer.init3D();
 		renderer.prepare3D(cube);

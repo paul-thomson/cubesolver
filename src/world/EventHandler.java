@@ -53,7 +53,10 @@ public class EventHandler {
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
 				turningFace = Face.Z;
 			} else if (Keyboard.isKeyDown(Keyboard.KEY_K)) {
-				cube.addListToTurnQueue(God.parseTurnsFromString(God.generateString(21)));
+				cube.addListToTurnQueue(
+						God.parseTurnsFromString(
+								God.cleanUpTurns(
+										God.generateString(21))));
 			}
 			if (turningFace != Face.NONE) { 
 				cube.addToTurnQueue(new Turn(turningFace,Keyboard.isKeyDown(Keyboard.KEY_LSHIFT),0));
