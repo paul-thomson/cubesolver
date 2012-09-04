@@ -62,14 +62,14 @@ public class UserInterface {
 		
 		CubePanelInfo panelInfo4 = new CubePanelInfo("Stage 4 - Cross", "s4icon.png", "Orient edges to make the cross. Turn the top layer to make one of the shapes below.");
 		panelInfo4.addHint("F R U R' U' F'", "s4hint1.png", "Don't know");
-		panelInfo4.addHint("F U R U' R' F'", "s4hint2.png", "Don't know");
-		panelInfo4.addHint("F R U R' U' F' F U R U' R' F'","s4hint3.png","Perform one, then move the top layer, then move the next");
+		panelInfo4.addHint("f R U R' U' f'", "s4hint2.png", "Don't know");
+		panelInfo4.addHint("F R U R' U' F' f R U R' U' f'","s4hint3.png","Perform one, then move the top layer, then move the next");
 		listOfPanelInfo[3] = panelInfo4;
 		
 		CubePanelInfo panelInfo5 = new CubePanelInfo("Stage 5 - Corner orientation", "s5icon.png", "Depending on the number of YELLOW sticks on top, move the top layer to match the images below then perform the algorithm");
-		panelInfo5.addHint("R U R' U R U U R", "s5hint1.png", "If no corners have YELLOW stickers on top then put a corner in the bottom left with the sticker facing left");
-		panelInfo5.addHint("R U R' U R U U R","s5hint2.png","If one corner has a YELLOW sticker on top put it in the bottom left then perform the algorithm");
-		panelInfo5.addHint("R U R' U R U U R", "s5hint3.png", "If two corners have a YELLOW sticker on top put a corner in the bottom left with the YELLOW sticker facing down");
+		panelInfo5.addHint("R U R' U R U U R'", "s5hint1.png", "If no corners have YELLOW stickers on top then put a corner in the bottom left with the sticker facing left");
+		panelInfo5.addHint("R U R' U R U U R'","s5hint2.png","If one corner has a YELLOW sticker on top put it in the bottom left then perform the algorithm");
+		panelInfo5.addHint("R U R' U R U U R'", "s5hint3.png", "If two corners have a YELLOW sticker on top put a corner in the bottom left with the YELLOW sticker facing down");
 		listOfPanelInfo[4] = panelInfo5;
 		
 		CubePanelInfo panelInfo6 = new CubePanelInfo("Stage 6 - Corner positioning", "s6icon.png", "In this stage we want to rotate the top layer until we get \"headlights\" at the back of the cube");
@@ -78,8 +78,8 @@ public class UserInterface {
 		listOfPanelInfo[5] = panelInfo6;
 		
 		CubePanelInfo panelInfo7 = new CubePanelInfo("Stage 7 - Edge positioning", "s7icon.png", "Put the solved edge to the back of the cube and perform the algorithm until the other edges are solved");
-		panelInfo7.addHint("R U' R U R U R U' R' U' R R", "s7hint1.png", "Perform the algorithm until the edges are positioned correctly");
-		panelInfo7.addHint("R U' R U R U R U' R' U' R R", "s7hint2.png", "No edges are solved so perform the algorithm to solve one edge");
+		panelInfo7.addHint("R U' R U R U R U' R' U' R' R'", "s7hint2.png", "No edges are solved so perform the algorithm to solve one edge");
+		panelInfo7.addHint("R U' R U R U R U' R' U' R' R'", "s7hint1.png", "Perform the algorithm until the edges are positioned correctly");
 		listOfPanelInfo[6] = panelInfo7;
 				
 		currentPanel = new CubePanelTemplate(panelInfo1);

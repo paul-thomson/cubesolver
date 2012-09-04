@@ -17,12 +17,11 @@ What can it do so far?
 -------------
 * Turn all faces of the cube in both directions using the keyboard
 * Parse text into turns
-* Solve some stages of the cube
+* Solve all stages of the cube
 * Switch between stages in the GUI
 
 What will it do?
 -------------
-* Solve all stages
 * Have lots more information: cube notation etc
 * Have proper lighting
 * Have extra animations: e.g. a bar showing what moves have been performed, highlight some cubes

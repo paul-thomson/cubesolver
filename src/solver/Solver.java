@@ -4,6 +4,7 @@ import gui.Stage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import main.God;
@@ -17,6 +18,7 @@ public class Solver implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		System.out.println("Solving...");
+				
 		if (God.getCube().isSolved()) {
 			System.out.println("SOLVED");
 			return;
@@ -262,22 +264,138 @@ public class Solver implements ActionListener {
 	}
 
 	private void solveStageFour() {
-		// TODO Auto-generated method stub
+		RCube cube = new RCube(God.getCube());
+		String currentSolution = "";
+		// get all edges with yellow on top
+		float[][] edgeColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
+		ArrayList<Cubie> orientedEdges = new ArrayList<Cubie>();
+		for (float[] colour : edgeColours) {
+			Cubie edge = cube.getCubie(new float[][]{RCube.YELLOW,colour});
+			if (edge.getTopColour() == RCube.YELLOW) {
+				orientedEdges.add(edge);
+			}
+		}
+		float size = cube.getCubies().get(0).getSize();
+		if (orientedEdges.size() == 2) {
+			while (!(cube.getCubieFromPosition(new Position(size,size,0)).getTopColour() == RCube.YELLOW &
+					(cube.getCubieFromPosition(new Position(size,size,size)).getTopColour() == RCube.YELLOW |
+					 cube.getCubieFromPosition(new Position(-size,size,0)).getTopColour() == RCube.YELLOW))) {
+				currentSolution += "U";
+				cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+				cube.performSimulatedTurns();
+			}
+		}
+		God.performTurns(
+				God.parseTurnsFromString(
+						God.cleanUpTurns(currentSolution)));
+		if (orientedEdges.size() == 4) {
+			System.out.println("Fourth stage solved!");
+			God.nextStage();
+		}
 		
 	}
 
 	private void solveStageFive() {
-		// TODO Auto-generated method stub
+		RCube cube = new RCube(God.getCube());
+		String currentSolution = "";
+		// get all corners with yellow on top
+		float[][] cornerColours = new float[][]{RCube.RED,RCube.GREEN,RCube.ORANGE,RCube.BLUE};
+		ArrayList<Cubie> orientedCorners = new ArrayList<Cubie>();
+		for (int i = 0; i < cornerColours.length; i++) {
+			Cubie edge = cube.getCubie(new float[][]{RCube.YELLOW, cornerColours[i], cornerColours[(i+1) % 4]});
+			if (edge.getTopColour() == RCube.YELLOW) {
+				orientedCorners.add(edge);
+			}
+		}
+		float size = cube.getCubies().get(0).getSize();
+		int length = orientedCorners.size();
+		switch (length) {
+		case 0:
+			while (!(cube.getCubieFromPosition(new Position(-size, size, size)).getLeftColour() == RCube.YELLOW)) {
+				currentSolution += "U";
+				cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+				cube.performSimulatedTurns();
+			}
+			break;
+		case 1:
+			while (!(cube.getCubieFromPosition(new Position(-size, size, size)).getTopColour() == RCube.YELLOW)) {
+				currentSolution += "U";
+				cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+				cube.performSimulatedTurns();
+			}
+			
+			break;
+		case 2:
+			while (!(cube.getCubieFromPosition(new Position(-size, size, size)).getFrontColour() == RCube.YELLOW)) {
+				currentSolution += "U";
+				cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+				cube.performSimulatedTurns();
+			}
+			break;
+		case 4:
+			//solved
+			System.out.println("Fourth stage solved!");
+			God.nextStage();
+			return;
+		default:
+			// not solved and problem
+			System.err.println("Problem solving stage five");
+			break;
+		}
+		God.performTurns(
+				God.parseTurnsFromString(
+						God.cleanUpTurns(currentSolution)));
 		
 	}
 
 	private void solveStageSix() {
-		// TODO Auto-generated method stub
+		RCube cube = new RCube(God.getCube());
+		String currentSolution = "";
+		float size = cube.getCubies().get(0).getSize();
+		Cubie backLeft = cube.getCubieFromPosition(new Position(-size,size,-size));
+		Cubie backRight = cube.getCubieFromPosition(new Position(size,size,-size));
+		while (backLeft.getBackColour() != backRight.getBackColour()) {
+			if (currentSolution.length() >= 3) {
+				// this means there are no headlights
+				return;
+			}
+			currentSolution += "U";
+			cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+			cube.performSimulatedTurns();
+
+			backLeft = cube.getCubieFromPosition(new Position(-size,size,-size));
+			backRight = cube.getCubieFromPosition(new Position(size,size,-size));
+		}
+		God.performTurns(
+				God.parseTurnsFromString(
+						God.cleanUpTurns(currentSolution)));
+		//TODO find out when this stage is solved, then move on to next stage
 		
 	}
 
-	private void solveStageSeven() {
-		// TODO Auto-generated method stub
+	private void solveStageSeven() {RCube cube = new RCube(God.getCube());
+	String currentSolution = "";
+	float size = cube.getCubies().get(0).getSize();
+	Cubie backLeft = cube.getCubieFromPosition(new Position(-size,size,-size));
+	Cubie backMiddle = cube.getCubieFromPosition(new Position(0,size,-size));
+	Cubie backRight = cube.getCubieFromPosition(new Position(size,size,-size));
+	while (!(backLeft.getBackColour() == backRight.getBackColour() &
+			backLeft.getBackColour() == backMiddle.getBackColour())) {
+		if (currentSolution.length() >= 3) {
+			// this means there are no solved edges
+			return;
+		}
+		currentSolution += "U";
+		cube.addListToTurnQueue(God.parseTurnsFromString("U"));
+		cube.performSimulatedTurns();
+
+		backLeft = cube.getCubieFromPosition(new Position(-size,size,-size));
+		backMiddle = cube.getCubieFromPosition(new Position(0,size,-size));
+		backRight = cube.getCubieFromPosition(new Position(size,size,-size));
+	}
+	God.performTurns(
+			God.parseTurnsFromString(
+					God.cleanUpTurns(currentSolution)));
 		
 	}
 }

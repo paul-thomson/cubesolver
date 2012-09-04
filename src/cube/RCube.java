@@ -135,7 +135,6 @@ public class RCube {
 	/**
 	 * Used for adding entire algorithms to the queue.
 	 * 
-	 * Not sure about parameter... ???? 
 	 * @param turns
 	 */
 	public void addListToTurnQueue(Iterable<Turn> turns) {
@@ -213,7 +212,7 @@ public class RCube {
 	}
 
 	/**
-	 * Gets the position of the edge cubie inbetween the two faces (denoted by colour of center cubie)
+	 * Gets the position of the edge position inbetween the two faces (denoted by colour of center cubie)
 	 * @param colour1
 	 * @param colour2
 	 * @return
@@ -230,6 +229,20 @@ public class RCube {
 		};
 	
 		return new Position(newPos);
+	}
+	
+	/**
+	 * Return the cubie which is in the given position
+	 * @param pos
+	 * @return null if no cubie in the position (shouldn't really happen)
+	 */
+	public Cubie getCubieFromPosition(Position pos) {
+		for (Cubie cubie : cubies) {
+			if (cubie.getPosition().equals(pos)) {
+				return cubie;
+			}
+		}
+		return null;
 	}
 	
 	public Position getCornerPosition(float[] colour1, float[] colour2, float[] colour3) {
