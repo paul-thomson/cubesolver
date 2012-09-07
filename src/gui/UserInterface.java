@@ -10,15 +10,12 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-/**
- * Sets up the user interface and also adds the OpenGL window to a canvas. Doing this allows us to display 
- * OpenGL inside a swing frame.
- */
-public class UserInterface {
+import main.Main;
 
-	/** The frame which contains everything. When this is changed to 
-	 * a JFrame an error occurs: who knows why.*/
-	public static JFrame frame;
+/** TODO */
+@SuppressWarnings("serial")
+public class UserInterface extends JFrame {
+
 	/** The canvas which is the parent of the LWJGL Display*/
 	public static Canvas canvas;
 	/** The overlay which is displayed on top of the LWJGL stuff*/
@@ -29,24 +26,27 @@ public class UserInterface {
 	CubePanelTemplate currentPanel;
 	private Stage currentStage = Stage.ONE;
 	private GridBagConstraints panelConstraints;
-
-
-	public void setup() {
-
-		setUpPanels();
-
-		frame = new JFrame("Cube Solver");
-		frame.setLayout(new GridBagLayout());
-		frame.setBackground(backgroundColour);
-		frame.addWindowFocusListener(new WindowAdapter() {
+	
+	public UserInterface() {
+		setTitle("Cube Solver");
+		setLayout(new GridBagLayout());
+		setBackground(backgroundColour);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowFocusListener(new WindowAdapter() {
 			@Override
 			public void windowGainedFocus(WindowEvent e)
 			{ canvas.requestFocusInWindow(); }
 		});
-		/* Not how I want to exit but there are problems doing it nicely*/
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e)
+			{ Main.requestClose(); }
+		});
+	}
 
-		
+	public void setup() {
+		setUpPanels();
+
 		canvas = new Canvas();
 		canvas.setPreferredSize(openGLSize);
 		
@@ -57,19 +57,18 @@ public class UserInterface {
 		gbc.weighty = 1.0;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		frame.add(canvas, gbc);
+		add(canvas, gbc);
 		
 		gbc.weightx = 1 - gbc.weightx;
         gbc.gridx = 1;
-        frame.add(currentPanel, gbc);
+        add(currentPanel, gbc);
         panelConstraints = gbc;
 
         Dimension currentPanelDimension = currentPanel.getPreferredSize();
-        frame.setPreferredSize(new Dimension(openGLSize.width + currentPanelDimension.width, currentPanelDimension.height));
-		frame.setResizable(true);
-		frame.pack();
-		frame.setVisible(true);
-
+        setPreferredSize(new Dimension(openGLSize.width + currentPanelDimension.width, currentPanelDimension.height));
+		setResizable(true);
+		pack();
+		setVisible(true);
 	}
 
 	public Canvas getCanvas() {
@@ -77,7 +76,6 @@ public class UserInterface {
 	}
 
 	private void setUpPanels() {
-
 		CubePanelInfo panelInfo1 = new CubePanelInfo("Stage One - Cross", "firststageicon.png","To get the cross you turn the top layer to get a bottom layer piece above the correct position. Then perform the correct algorithm below:");
 		panelInfo1.addHint("F F", "s1hint1.png", "The edge is now oriented correctly so swivel it around into the correct position");
 		panelInfo1.addHint("U' R' F R", "s1hint2.png", "The edge is not oriented correctly so we position and orient it at the same time. Notice the second R ensures we do not ruin other cross pieces");
@@ -123,9 +121,9 @@ public class UserInterface {
 	 */
 	public void changePanel(int stageNumber) {
 		CubePanelTemplate panel = new CubePanelTemplate(listOfPanelInfo[stageNumber-1]);
-		frame.add(panel,panelConstraints);
-		frame.remove(currentPanel);
-		frame.revalidate();
+		add(panel,panelConstraints);
+		remove(currentPanel);
+		revalidate();
 		currentPanel = panel;
 	}
 
