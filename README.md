@@ -11,7 +11,7 @@ How is it written?
 * LWJGL (animation)
 
 A LWJGL Display is created which displays the animated cube. This is contained inside a Canvas. 
-Also inside this Canvas is a Swing JPanel (CubePanelTemplate) which displays the GUI.
+Another JPanel containing the GUI is alongside the Canvas inside a JFrame which displays the two in a window.
 
 What can it do so far?
 -------------

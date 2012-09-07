@@ -1,20 +1,14 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JLayeredPane;
-
-import main.Main;
+import javax.swing.JFrame;
 
 /**
  * Sets up the user interface and also adds the OpenGL window to a canvas. Doing this allows us to display 
@@ -22,10 +16,9 @@ import main.Main;
  */
 public class UserInterface {
 
-	/** The frame which contains everything*/
-	public static Frame frame;
-	/** The layered pane which holds the LWJGL Display and the Overlay*/
-	public static JLayeredPane pane;
+	/** The frame which contains everything. When this is changed to 
+	 * a JFrame an error occurs: who knows why.*/
+	public static JFrame frame;
 	/** The canvas which is the parent of the LWJGL Display*/
 	public static Canvas canvas;
 	/** The overlay which is displayed on top of the LWJGL stuff*/
@@ -35,38 +28,27 @@ public class UserInterface {
 	CubePanelInfo[] listOfPanelInfo = new CubePanelInfo[7];
 	CubePanelTemplate currentPanel;
 	private Stage currentStage = Stage.ONE;
+	private GridBagConstraints panelConstraints;
 
 
 	public void setup() {
 
 		setUpPanels();
 
-		frame = new Frame("Cube Solver");
+		frame = new JFrame("Cube Solver");
 		frame.setLayout(new GridBagLayout());
+		frame.setBackground(backgroundColour);
 		frame.addWindowFocusListener(new WindowAdapter() {
 			@Override
 			public void windowGainedFocus(WindowEvent e)
 			{ canvas.requestFocusInWindow(); }
 		});
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e)
-			{ Main.requestClose(); }
-		});
+		/* Not how I want to exit but there are problems doing it nicely*/
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		pane = new JLayeredPane();
-		pane.setPreferredSize(openGLSize);
-		pane.setMinimumSize(openGLSize);
-		pane.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				canvas.setSize(pane.getSize());
-			}
-		});
-
+		
 		canvas = new Canvas();
 		canvas.setPreferredSize(openGLSize);
-		pane.add(canvas, JLayeredPane.DEFAULT_LAYER);
 		
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -75,12 +57,15 @@ public class UserInterface {
 		gbc.weighty = 1.0;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		frame.add(pane, gbc);
+		frame.add(canvas, gbc);
 		
 		gbc.weightx = 1 - gbc.weightx;
         gbc.gridx = 1;
         frame.add(currentPanel, gbc);
+        panelConstraints = gbc;
 
+        Dimension currentPanelDimension = currentPanel.getPreferredSize();
+        frame.setPreferredSize(new Dimension(openGLSize.width + currentPanelDimension.width, currentPanelDimension.height));
 		frame.setResizable(true);
 		frame.pack();
 		frame.setVisible(true);
@@ -89,10 +74,6 @@ public class UserInterface {
 
 	public Canvas getCanvas() {
 		return canvas;
-	}
-
-	public void dispose() {
-		frame.dispose();
 	}
 
 	private void setUpPanels() {
@@ -142,7 +123,7 @@ public class UserInterface {
 	 */
 	public void changePanel(int stageNumber) {
 		CubePanelTemplate panel = new CubePanelTemplate(listOfPanelInfo[stageNumber-1]);
-		frame.add(panel,BorderLayout.EAST);
+		frame.add(panel,panelConstraints);
 		frame.remove(currentPanel);
 		frame.revalidate();
 		currentPanel = panel;

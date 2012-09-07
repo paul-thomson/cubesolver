@@ -59,15 +59,14 @@ public class Main {
 				Display.update();
 				
 			}
-
-			Display.destroy();
-			userInterface.dispose();
-			System.exit(0);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/** 
+	 * Currently unused
+	 */
 	public static void requestClose() {
 		closeRequested = true;
 	}

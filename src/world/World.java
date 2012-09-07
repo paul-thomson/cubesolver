@@ -33,7 +33,7 @@ public class World {
 	 */
 	public void render() {
 		// TODO make cube resize to fit
-		GL11.glViewport(0, 0, UserInterface.pane.getWidth(), UserInterface.pane.getHeight());
+		GL11.glViewport(0, 0, UserInterface.canvas.getWidth(), UserInterface.canvas.getHeight());
 		GL11.glClearColor(	(float) UserInterface.backgroundColour.getRed()/255, 
 				(float) UserInterface.backgroundColour.getGreen()/255, 
 				(float) UserInterface.backgroundColour.getBlue()/255,

@@ -93,10 +93,9 @@ public class Renderer {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity(); 
 
-//		DisplayMode displayMode = Display.getDisplayMode();
 		GLU.gluPerspective(
-				45.0f,
-				(float) UserInterface.pane.getWidth() / (float) UserInterface.pane.getHeight(),
+				50.0f,
+				(float) UserInterface.canvas.getWidth() / (float) UserInterface.canvas.getHeight(),
 				0.1f,
 				100.0f);
 		glMatrixMode(GL_MODELVIEW);
